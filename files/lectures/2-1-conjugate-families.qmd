@@ -1,0 +1,1387 @@
+---
+title: "Conjugate Families"
+execute:
+  echo: true
+  warning: false
+  message: false
+format:
+  revealjs:
+    theme: simple
+    css: style_lecture.css
+    include-after-body: headers.html
+    self-contained: true
+    slide-number: true
+    footer: "STA6349 · Applied Bayesian Analysis · Summer 2026"
+    width: 1600
+    height: 900
+    df-print: kable
+    html-math-method: katex
+    code-fold: false
+    code-tools: false
+    incremental: false
+editor: source
+---
+
+## Introduction: Beta-Binomial Model
+
+- Last week, we learned how to think like a Bayesian.
+    - Today, we will formalize the models we muddled through last time.
+
+- This is called the Beta-Binomial model.
+    - The Beta distribution is the *prior*.
+    - The Binomial distribution is the *data* distribution (or the *likelihood*).
+    - The *posterior* also follows a Beta distribution.
+    
+- **Conjugate family**: When the prior and posterior are the same named distribution, but different parameters.
+
+## R Packages Needed
+
+- To follow today's lecture, please load the following packages:
+    - `tidyverse`
+    - `janitor`
+    - `bayesrules`
+    - `ggpubr`
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(bayesrules)
+library(ggpubr)
+```
+
+```{r}
+#| echo: false
+library(latex2exp)
+```
+
+## Example Set Up
+
+- Consider the following scenario. 
+    - "Michelle" has decided to run for president and you're her campaign manager for the state of Florida. 
+    - As such, you've conducted 30 different polls throughout the election season. 
+    - Though Michelle's support has hovered around 45%, she polled at around 35% in the dreariest days and around 55% in the best days on the campaign trail.
+
+- Past polls provide prior information about $\pi$, the proportion of Floridians that currently support Michelle. 
+
+## Example Set Up
+
+![](images/W07-L1-a.png){fig-align="center" width="500" fig-alt="Histogram of poll results on left, density of poll results on right."}
+
+- A reasonable prior is represented by the curve on the right. 
+
+    - Notice that this curve preserves the overall information and variability in the past polls, i.e., Michelle's support, $\pi$ can be anywhere between 0 and 1, but is most likely around 0.45.
+    
+## Beta Prior
+
+![](images/W07-L1-a.png){fig-align="center" width="500" fig-alt="Histogram of poll results on left, density of poll results on right."}
+
+- In building the Bayesian election model of Michelle's election support among Floridians, $\pi$, we begin with the prior. 
+
+    - Our continuous prior probability model of $\pi$ is specified by the probability density function (pdf). 
+    
+- What values can $\pi$ take and which are more plausible than others?
+
+## Beta Prior
+
+- Let $\pi$ be a random variable, where $\pi \in [0, 1]$. 
+
+- The variability in $\pi$ may be captured by a Beta model with hyperparameters $\alpha > 0$ and $\beta > 0$,
+
+    - **hyperparameter:** a parameter used in a *prior* model.
+    
+$$\pi \sim \text{Beta}(\alpha, \beta)$$
+
+## Beta Prior: Shapes
+
+- Let's explore the shape of the Beta:
+
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Beta(1,5)."
+plot_beta(1, 5) + theme_minimal() + ggtitle("Beta(1, 5)")
+```
+
+
+## Beta Prior: Shapes
+
+- Let's explore the shape of the Beta:
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Beta(1,2)."
+plot_beta(1, 2) + theme_minimal() + ggtitle("Beta(1, 2)")
+```
+
+## Beta Prior: Shapes
+
+- Let's explore the shape of the Beta:
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Beta(3, 7)."
+plot_beta(3, 7) + theme_minimal() + ggtitle("Beta(3, 7)")
+```
+
+## Beta Prior: Shapes
+
+- Let's explore the shape of the Beta:
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Beta(1, 1)."
+plot_beta(1, 1) + theme_minimal() + ggtitle("Beta(1, 1)")
+```
+
+## Beta Prior: Shapes
+
+- Your turn!
+
+- How would you describe the typical behavior of a:
+    - Beta($\alpha, \beta$) variable, $\pi$, when $\alpha=\beta$?
+    - Beta($\alpha, \beta$) variable, $\pi$, when $\alpha>\beta$?
+    - Beta($\alpha, \beta$) variable, $\pi$, when $\alpha<\beta$?
+    
+- For which model is there greater variability in the plausible values of $\pi$, Beta(20, 20) or Beta(5, 5)?
+
+## Beta Prior: Shapes
+
+- How would you describe the typical behavior of a Beta($\alpha, \beta$) variable, $\pi$, when $\alpha=\beta$?
+    
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Four density plots showing Beta distributions when alpha equals beta, for parameter values 1 through 4."
+
+plot_scale <- list(xlim(0, 1), ylim(0, 2.5))
+
+ggarrange(plot_beta(1, 1) + theme_minimal() + ggtitle("Beta(1, 1)") + plot_scale, 
+          plot_beta(2, 2) + theme_minimal() + ggtitle("Beta(2, 2)") + plot_scale, 
+          plot_beta(3, 3) + theme_minimal() + ggtitle("Beta(3, 3)") + plot_scale, 
+          plot_beta(4, 4) + theme_minimal() + ggtitle("Beta(4, 4)") + plot_scale, 
+          ncol=2, nrow=2)
+```
+
+
+## Beta Prior: Shapes
+
+- How would you describe the typical behavior of a Beta($\alpha, \beta$) variable, $\pi$, when $\alpha>\beta$?
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Four density plots of Beta distributions where alpha is greater than beta"
+
+plot_scale <- list(xlim(0, 1), ylim(0, 3.5))
+
+ggarrange(plot_beta(2, 1) + theme_minimal() + ggtitle("Beta(2, 1)") + plot_scale, 
+          plot_beta(4, 1) + theme_minimal() + ggtitle("Beta(4, 1)") + plot_scale,
+          plot_beta(4, 2) + theme_minimal() + ggtitle("Beta(4, 2)") + plot_scale,
+          plot_beta(10, 5) + theme_minimal() + ggtitle("Beta(10, 5)") + plot_scale,
+          ncol=2, nrow=2)
+```
+
+
+## Beta Prior: Shapes
+
+- How would you describe the typical behavior of a Beta($\alpha, \beta$) variable, $\pi$, when $\alpha<\beta$?
+    
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Four density plots of Beta distributions where alpha is less than beta"
+
+plot_scale <- list(xlim(0, 1), ylim(0, 3.5))
+
+ggarrange(plot_beta(1, 2) + theme_minimal() + ggtitle("Beta(1, 2)") + plot_scale, 
+          plot_beta(1, 4) + theme_minimal() + ggtitle("Beta(1, 4)") + plot_scale,
+          plot_beta(2, 4) + theme_minimal() + ggtitle("Beta(2, 4)") + plot_scale,
+          plot_beta(5, 10) + theme_minimal() + ggtitle("Beta(5, 10)") + plot_scale,
+          ncol=2, nrow=2)
+```
+
+## Beta Prior: Shapes
+
+- For which model is there greater variability in the plausible values of $\pi$, Beta(20, 20) or Beta(5, 5)?
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Two density plots of symmetric Beta distributions where alpha equals beta."
+
+plot_scale <- list(xlim(0, 1), ylim(0, 5.5))
+
+ggarrange(plot_beta(20, 20) + theme_minimal() + ggtitle("Beta(20, 20)") + plot_scale,
+          plot_beta(5, 5) + theme_minimal() + ggtitle("Beta(5, 5)") + plot_scale,
+          ncol=2)
+```
+
+
+## Tuning the Beta Prior
+
+- We can *tune* the shape hyperparameters ($\alpha$ and $\beta$) to reflect our prior information about Michelle's election support, $\pi$.
+
+- In our example, we saw that she polled between 25 and 55 percentage points, with an average of 45 percentage points.
+    - We want our Beta($\alpha, \beta$) to have similar patterns, so we should pick $\alpha$ and $\beta$ such that $\pi$ is around 0.45.
+    
+$$
+E[\pi] = \frac{\alpha}{\alpha+\beta} \approx 0.45
+$$
+
+- Using algebra, we can tune, and find
+
+$$\alpha \approx \frac{9}{11} \beta$$
+
+## Tuning the Beta Prior
+
+- Your turn!
+
+    - Graph the following and determine which is best for the example.
+        
+```{r}
+#| eval: false
+
+plot_beta(9, 11) + theme_minimal() + list(xlim(0, 1), ylim(0, 10))
+plot_beta(27, 33) + theme_minimal() + list(xlim(0, 1), ylim(0, 10))
+plot_beta(45, 55) + theme_minimal() + list(xlim(0, 1), ylim(0, 10))
+```        
+        
+- Recall, this is what we are going for:        
+
+![](images/W07-L1-a.png){fig-align="center" fig-alt="Histogram of poll results on left, density of poll results on right."}
+
+## Tuning the Beta Prior
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Plot of Beta(9, 11)."
+plot_beta(9, 11) + theme_minimal() + ggtitle("Beta(9, 11)") + list(xlim(0, 1), ylim(0, 10))
+```
+
+![](images/W07-L1-a.png){fig-align="center" fig-alt="Histogram of poll results on left, density of poll results on right."} 
+
+## Tuning the Beta Prior
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Plot of Beta(27, 33)."
+plot_beta(27, 33) + theme_minimal() + ggtitle("Beta(27, 33)") + list(xlim(0, 1), ylim(0, 10))
+```
+
+![](images/W07-L1-a.png){fig-align="center" fig-alt="Histogram of poll results on left, density of poll results on right."}
+
+## Tuning the Beta Prior
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Plot of Beta(45, 55)."
+plot_beta(45, 55) + theme_minimal() + ggtitle("Beta(45, 55)") + list(xlim(0, 1), ylim(0, 10))
+```
+
+![](images/W07-L1-a.png){fig-align="center" fig-alt="Histogram of poll results on left, density of poll results on right."} 
+
+## Tuning the Beta Prior
+
+- Now that we have a prior, we "know" some things.
+
+$$\pi \sim \text{Beta}(45, 55)$$
+
+- From the properties of the beta distribution,
+
+$$
+\begin{equation*}
+\begin{aligned}
+E[\pi] &= \frac{\alpha}{\alpha + \beta} & \text{ and } & \text{ } & \text{ }  \\
+&=\frac{45}{45+55} \\
+&= 0.45
+\end{aligned} 
+\begin{aligned}
+\text{var}[\pi] &= \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)} \\
+&= \frac{(45)(55)}{(45+55)^2(45+55+1)} \\
+&= 0.0025
+\end{aligned}
+\end{equation*}
+$$
+
+
+## Binomial Data Model
+
+- A new poll of $n = 50$ Floridians recorded $Y$, the number that support Michelle. 
+    - The results depend upon $\pi$ (as $\pi$ increases, $Y$ tends to increase).
+    
+- To model the dependence of $Y$ on $\pi$, we assume
+    - voters answer the poll independently of one another;
+    - the probability that any polled voter supports your candidate Michelle is $\pi$
+    
+- This is a binomial event, $Y|\pi \sim \text{Bin}(50, \pi)$,  with conditional pmf, $f(y|\pi)$ defined for $y \in \{0, 1, ..., 50\}$
+
+$$f(y|\pi) = P[Y = y|\pi] = {50 \choose y} \pi^y (1-\pi)^{50-y}$$
+
+## Binomial Data Model
+
+- The conditional pmf, $f(y|\pi)$, gives us answers to a hypothetical question:
+
+    - If Michelle's support were given some value of $\pi$, then how many of the 50 polled voters ($Y=y$) might we expect to support her?
+
+- Let's look at this graphically:
+
+```{r}
+#| eval: false
+sample_size <- [value]
+pi_value <- [value]
+tibble(n_success = 1:sample_size,
+       prob = dbinom(n_success, 
+                     size=sample_size, 
+                     prob=pi_value)) %>%
+  ggplot(aes(x=n_success,y=prob)) +
+  geom_col(width=0.2) +
+  labs(x= "Number of Successes",
+       y= "Probability") +
+  theme_minimal()
+```
+
+## Binomial Data Model
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Three bar plots showing Binomial probability distributions"
+
+sample_size <- 50
+common_scale <- list(xlim(0, sample_size), ylim(0, 0.2))
+
+make_binom_plot <- function(pi_value) {
+  tibble(n_success = 0:sample_size,
+    prob = dbinom(n_success, size = sample_size, prob = pi_value)) %>%
+    ggplot(aes(x = n_success, y = prob)) +
+    geom_col(width = 0.5) +
+    labs(x = "Number of Successes",
+         y = "Probability",
+         title = bquote(pi == .(pi_value))) +
+    theme_minimal() +
+    common_scale
+}
+
+g1 <- make_binom_plot(0.1)
+g2 <- make_binom_plot(0.5)
+g3 <- make_binom_plot(0.8)
+
+ggarrange(g1, g2, g3, ncol = 3)
+```
+
+## Binomial Data Model
+
+- It is observed that $Y=30$ of the $n=50$ polled voters support Michelle.
+
+- We now want to find the likelihood function -- remember that we treat $Y=30$ as the observed data and $\pi$ as unknown,
+
+$$
+\begin{align*}
+f(y|\pi) &= {50 \choose y} \pi^y (1-\pi)^{50-y} \\
+L(\pi|y=30) &= {50 \choose 30} \pi^{30} (1-\pi)^{20}
+\end{align*}
+$$
+
+- This is valid for $\pi \in [0, 1]$.
+
+## Binomial Data Model
+
+- What is the likelihood of 30/50 voters supporting Michelle?
+
+```{r}
+#| eval: false
+dbinom(30, 50, pi)
+```
+
+- You try this for $\pi = \{0.25, 0.50, 0.75\}$.
+
+```{r}
+#| eval: false
+dbinom(30, 50, 0.25)
+dbinom(30, 50, 0.5)
+dbinom(30, 50, 0.75)
+```
+
+## Binomial Data Model
+
+- What is the likelihood of 30/50 voters supporting Michelle?
+
+```{r}
+dbinom(30, 50, 0.25)
+dbinom(30, 50, 0.5)
+dbinom(30, 50, 0.75)
+```
+    
+## Binomial Data Model
+
+- Looking at $\pi$ in a more continuous fashion,
+
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "A line plot showing the likelihood function for observing 30 successes in 50 Binomial trials across all possible values of pi from 0 to 1."
+graph <- tibble(pi = seq(0, 1, 0.001)) %>%
+  mutate(likelihood = dbinom(30, 50, pi))
+graph %>% ggplot(aes(x = pi, y = likelihood)) +
+  geom_line() +
+  labs(x = "Probability of Success, pi", y = "Likelihood") +
+  theme_minimal()
+```
+
+
+- Where is the maximum?
+
+## Binomial Data Model
+
+- Where is the maximum?
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "A line plot showing the likelihood function for observing 30 successes in 50 Binomial trials across all possible values of pi from 0 to 1 with the maximum at pi=0.60."
+graph <- tibble(pi = seq(0, 1, 0.001)) %>%
+  mutate(likelihood = dbinom(30, 50, pi))
+  
+graph2 <- graph %>% filter(likelihood == max(likelihood))
+
+graph %>% ggplot(aes(x = pi, y = likelihood)) +
+  geom_line() +
+  geom_point(data = graph2, color = "red", size = 3) +
+  geom_text(data = graph2, label =  TeX(r'($\pi=0.60$)'), hjust=-.5) +
+  labs(x = "Probability of Success", y = "Likelihood") +
+  theme_minimal()
+```
+
+## The Beta Posterior Model
+
+- The `plot_beta_binomial()` function:
+
+```{r}
+#| eval: false
+plot_beta_binomial(alpha = prior_alpha, 
+                   beta = prior_beta, 
+                   y = num_success, 
+                   n = num_trials, 
+                   posterior = TRUE or FALSE) 
+```
+
+- The `summarize_beta_binomial()` function: 
+
+```{r}
+#| eval: false
+summarize_beta_binomial(alpha = prior_alpha, 
+                        beta = prior_beta, 
+                        y = num_success, 
+                        n = num_trials)
+```
+
+## The Beta Posterior Model
+
+- Looking at just the prior and the data distributions,
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "A line plot showing two curves: the prior Beta(45, 55) distribution and the scaled likelihood function for observing 30 successes in 50 trials."
+plot_beta_binomial(alpha = 45, beta = 55, y = 30, n = 50, posterior = FALSE) + 
+  theme_minimal()
+```
+
+- The prior is a bit more pessimistic about Michelle's election support than the data obtained from the latest poll.
+
+## The Beta Posterior Model
+
+- Now including the posterior,
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "A line plot showing two curves: the prior Beta(45, 55) distribution, the scaled likelihood function for observing 30 successes in 50 trials, and the resulting posterior distribution."
+plot_beta_binomial(alpha = 45, beta = 55, y = 30, n = 50) + theme_minimal()
+```
+
+- We can see that the posterior model of $\pi$ is continuous and $\in [0, 1]$.
+
+- The shape of the posterior appears to also have a Beta($\alpha$, $\beta$) model.
+
+    - The shape parameters ($\alpha$ and $\beta$) have been *updated*.
+
+## The Beta Posterior Model
+    
+- If we were to collect more information about Michelle's support, we would use the current posterior as the new prior, then update our posterior. 
+
+    - How do we know what the updated parameters are?
+
+```{r}
+summarize_beta_binomial(alpha = 45, beta = 55, y = 30, n = 50)
+```
+
+## The Beta Posterior Model
+
+- We used Michelle's election support to understand the Beta-Binomial model.
+
+- Let's now generalize it for any appropriate situation.
+
+$$
+\begin{align*}
+Y|\pi &\sim \text{Bin}(n, \pi) \\
+\pi &\sim \text{Beta}(\alpha, \beta) \\
+\pi | (Y=y) &\sim \text{Beta}(\alpha+y, \beta+n-y)
+\end{align*}
+$$
+
+- We can see that the posterior distribution reveals the influence of the prior ($\alpha$ and $\beta$) and data ($y$ and $n$).
+
+## The Beta Posterior Model
+
+- Under this updated distribution,
+
+$$
+\pi | (Y=y) \sim \text{Beta}(\alpha+y, \beta+n-y)
+$$
+
+- we have updated moments:
+
+$$
+\begin{align*}
+E[\pi | Y = y] &= \frac{\alpha + y}{\alpha + \beta + n} \\
+\text{Var}[\pi|Y=y] &= \frac{(\alpha+y)(\beta+n-y)}{(\alpha+\beta+n)^2(\alpha+\beta+n+1)}
+\end{align*}
+$$
+
+## The Beta Posterior Model
+
+- Let's pause and think about this from a theoretical standpoint.
+
+- The Beta distribution is a *conjugate prior* for the likelihood.
+
+    - **Conjugate prior**: the posterior is from the same model family as the prior.
+    
+- Recall the Beta prior, $f(\pi)$, 
+
+$$ f(\pi) = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \pi^{\alpha-1}(1-\pi)^{\beta-1}, $$
+
+- and the likelihood function, $L(\pi|y)$,
+
+$$ L(\pi|y) = {n \choose y} \pi^y (1-\pi)^{n-y} $$
+
+
+
+## The Beta Posterior Model
+
+- We can put the prior and likelihood together to create the posterior,
+
+$$
+\begin{align*}
+f(\pi|y) &\propto f(\pi)L(\pi|y) \\
+&= \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \pi^{\alpha-1}(1-\pi)^{\beta-1} \times {n \choose y} \pi^y (1-\pi)^{n-y} \\
+&\propto \pi^{(\alpha+y)-1} (1-\pi)^{(\beta+n-y)-1}
+\end{align*}
+$$
+
+- This is the same structure as the normalized Beta($\alpha+y, \beta+n-y$),
+
+$$f(\pi|y) = \frac{\Gamma(\alpha+\beta+n)}{\Gamma(\alpha+y) \Gamma(\beta+n-y)} \pi^{(\alpha+y)-1} (1-\pi)^{(\beta+n-y)-1}$$
+
+## Beta-Binomial: Example
+
+- In Mario Kart 8 Deluxe, item boxes give different items depending on race position. To reduce the "position bias," only item boxes opened while the racer was in mid-pack (positions 4–10) were recorded. 
+
+- You want to estimate the probability that an item box yields a Red Shell. When playing the Special Cup, only 31 red shells were seen in 114 boxes opened by mid-pack racers.
+
+- Find the posterior distribution under two priors:
+    1. Flat/uninformative prior, Beta(1,1).
+    2. Beta($\alpha$, $\beta$) of your choosing.
+
+## Wrap Up: Beta-Binomial Model
+
+- We have built the Beta-Binomial model for $\pi$, an unknown proportion.
+
+$$
+\begin{equation*}
+\begin{aligned}
+Y|\pi &\sim \text{Bin}(n,\pi) \\
+\pi &\sim \text{Beta}(\alpha,\beta) &
+\end{aligned} 
+\Rightarrow 
+\begin{aligned}
+&& \pi | (Y=y) &\sim \text{Beta}(\alpha+y, \beta+n-y) \\
+\end{aligned}
+\end{equation*}
+$$
+
+- The prior model, $f(\pi)$, is given by Beta($\alpha,\beta$).
+
+- The data model, $f(Y|\pi)$, is given by Bin($n,\pi$).
+
+- The likelihood function, $L(\pi|y)$, is obtained by plugging $y$ into the Binomial pmf.
+
+- The posterior model is a Beta distribution with updated parameters $\alpha+y$ and $\beta+n-y$.
+
+## {background-color="#003A6B"}
+
+```{=html}
+<div style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:75vh; gap:1.25rem;">
+  <p style="font-family:'EB Garamond',Georgia,serif; font-size:64px; font-weight:400; color:#ffffff !important; margin:0; letter-spacing:0.01em;">Take a break!</p>
+  <div style="width:56px; height:3px; background:#97D200; border-radius:2px;"></div>
+  <p style="font-family:'EB Garamond',Georgia,serif; font-size:36px; font-weight:300; color:#8DC8E8 !important; margin:0; font-style:italic;">Back in 5 minutes.</p>
+</div>
+```
+
+## Introduction: Gamma-Poisson Model
+
+- Recall the Beta-Binomial model,
+    - $y \sim \text{Bin}(n, \pi)$ (data distribution)
+    - $\pi \sim \text{Beta}(\alpha, \beta)$ (prior distribution)
+    - $\pi|y \sim \text{Beta}(\alpha+y, \beta+n-y)$ (posterior distribution)
+    
+- Further recall that the Beta-Binomial model is from a *conjugate family*.
+
+- Now, we will learn about the Gamma-Poisson, another conjugate family.
+
+## Example Set Up
+
+- Suppose we are now interested in modeling the number of spam calls we receive.
+
+    - This means that we are modeling the rate, $\lambda$.
+    
+- We take a guess and say that the value of $\lambda$ that is most likely is around 5, 
+
+    - ... but reasonably ranges between 2 and 7 calls per day.
+
+- Why can't we use the Beta distribution as our prior distribution?
+    - $\lambda$ is the mean of a count $\to$ $\lambda \in \mathbb{R}^+$ $\to$ $\lambda$ is not limited to $[0, 1]$ $\to$ broken assumption for Beta distribution.
+
+- Why can't we use the binomial distribution as our data distribution? 
+    - $Y_i$ is a count $\to$ $Y_i \in \mathbb{N}^+$ $\to$ $Y_i$ is not limited to $\{0, 1\}$ $\to$ broken assumption for Binomial distribution.
+
+## Poisson Data Model
+
+- We will use the Poisson distribution to model the number of spam calls, $Y \in \{0, 1, 2, ...\}$
+    - $Y$ is the number of independent events that occur in a fixed amount of time or space. 
+    - $\lambda > 0$ is the rate at which these events occur.
+
+- Mathematically, 
+
+$$Y | \lambda \sim \text{Pois}(\lambda),$$
+
+- with pmf,
+
+$$f(y|\lambda) = \frac{\lambda^y e^{-\lambda}}{y!}, \ \ \ y \in \{0,1, 2, ... \}$$
+
+## Gamma Prior
+
+- If $\lambda$ is a continuous, positive random variable ($\lambda > 0$), we will employ the Gamma distribution defined by shape hyperparameter $s$ ($s>0$) and rate hyperparameter ($r>0$),
+
+$$\lambda \sim \text{Gamma}(s, r)$$
+    
+- The Gamma pdf is given by
+
+$$f(\lambda) = \frac{r^s}{\Gamma(s)} \lambda^{s-1} e^{-r\lambda}$$
+
+## Gamma Prior: Shapes
+
+- Let's explore the shape of the Gamma:
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Gamma(1,1)."
+plot_gamma(1, 1) + theme_minimal() + ggtitle("Gamma(1, 1)")
+```
+
+## Gamma Prior: Shapes
+
+- Let's explore the shape of the Gamma:
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Gamma(2,1)."
+plot_gamma(2, 1) + theme_minimal() + ggtitle("Gamma(2, 1)")
+```
+
+## Gamma Prior: Shapes
+
+- Let's explore the shape of the Gamma:
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Gamma(10,1)."
+plot_gamma(10, 1) + theme_minimal() + ggtitle("Gamma(10, 1)")
+```
+
+## Gamma Prior: Shapes
+
+- Let's explore the shape of the Gamma:
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Gamma(10,10)."
+plot_gamma(10, 10) + theme_minimal() + ggtitle("Gamma(10, 10)")
+```
+
+## Gamma Prior: Shapes
+
+- What happens when we change hyperparameters $r$ and $s$?
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plots showing Gamma distributions."
+#| echo: false
+ggarrange(plot_gamma(1, 1) + theme_minimal() + ggtitle("Gamma(1, 1)") + xlim(0, 25) + ylim(0, 2),
+          plot_gamma(5, 1) + theme_minimal() + ggtitle("Gamma(5, 1)") + xlim(0, 25) + ylim(0, 2),
+          plot_gamma(10, 1) + theme_minimal() + ggtitle("Gamma(10, 1)") + xlim(0, 25) + ylim(0, 2),
+          plot_gamma(5, 1) + theme_minimal() + ggtitle("Gamma(5, 1)") + xlim(0, 25) + ylim(0, 2),
+          plot_gamma(5, 5) + theme_minimal() + ggtitle("Gamma(5, 5)") + xlim(0, 25) + ylim(0, 2),
+          plot_gamma(5, 10) + theme_minimal() + ggtitle("Gamma(5, 10)") + xlim(0, 25) + ylim(0, 2),
+          ncol = 3, nrow=2)
+```
+
+
+## Tuning the Gamma Prior
+
+- Let's now tune our prior assuming $\lambda \approx 5$.
+
+- We know the mean of the gamma distribution,
+
+$$E(\lambda) = \frac{s}{r} \approx 5 \to 5r \approx s$$
+
+- Your turn! Use the `plot_gamma()` function to figure out what value of $s$ and $r$ we need.
+
+## Tuning the Gamma Prior
+
+- Looking at different values:
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plots showing Gamma distributions."
+#| echo: false
+gam_graph <- tibble(x = seq(0, 25, 0.001),
+                    gam_1 = dgamma(x, 5, 1),
+                    gam_2 = dgamma(x, 10, 2),
+                    gam_3 = dgamma(x, 15, 3),
+                    gam_4 = dgamma(x, 20, 4))                    
+g1 <- ggplot(gam_graph, aes(x = x, y = gam_1)) + geom_line() + theme_minimal() + labs(x = "", y = "", title = "Gamma(5, 1)") #+ ylim(0, 0.4)
+g2 <- ggplot(gam_graph, aes(x = x, y = gam_2)) + geom_line() + theme_minimal() + labs(x = "", y = "", title = "Gamma(10, 2)") #+ ylim(0, 0.4)
+g3 <- ggplot(gam_graph, aes(x = x, y = gam_3)) + geom_line() + theme_minimal() + labs(x = "", y = "", title = "Gamma(15, 3)") #+ ylim(0, 0.4)
+g4 <- ggplot(gam_graph, aes(x = x, y = gam_4)) + geom_line() + theme_minimal() + labs(x = "", y = "", title = "Gamma(20, 4)") #+ ylim(0, 0.4)
+ggarrange(g1, g2, g3, g4, ncol = 2, nrow = 2)
+```
+
+## Poisson Data Model
+
+- We will be taking samples from different days.
+    - Each day's count is independently drawn from the same Poisson distribution. On each day $i$,
+    
+$$Y_i|\lambda \sim \text{Pois}(\lambda)$$  
+
+- This has a unique pmf for each day ($i$),
+
+$$f(y_i|\lambda) = \frac{\lambda^{y_i} e^{-\lambda}}{y_i!}$$
+
+- However, we are interested in the *joint* information in our sample of $n$ observations.
+    
+## Poisson Data Model
+
+- The joint pmf for the Poisson,
+    
+$$
+\begin{align*}
+f\left(\overset{\to}{y_i}|\lambda\right) &= \prod_{i=1}^n f(y_i|\lambda) \\ 
+&= f(y_1|\lambda) \times f(y_2|\lambda) \times ... \times f(y_n|\lambda) \\
+&= \frac{\lambda^{y_1}e^{-\lambda}}{y_1!} \times \frac{\lambda^{y_2}e^{-\lambda}}{y_2!} \times ... \times \frac{\lambda^{y_n}e^{-\lambda}}{y_n!} \\
+&= \frac{\left( \lambda^{y_1} \lambda^{y_2} \cdot \cdot \cdot \ \lambda^{y_n}  \right) \left( e^{-\lambda} e^{-\lambda} \cdot \cdot \cdot e^{-\lambda}\right)}{y_1! y_2! \cdot \cdot \cdot y_n!} \\
+&= \frac{\lambda^{\sum y_i}e^{-n\lambda}}{\prod_{i=1}^n y_i !}
+\end{align*}
+$$    
+
+## Poisson Data Model
+
+- If the joint pmf for the Poisson is
+
+$$f\left(\overset{\to}{y_i}|\lambda\right) = \frac{\lambda^{\sum y_i}e^{-n\lambda}}{\prod_{i=1}^n y_i !}$$
+
+- then the likelihood function for $\lambda > 0$ is
+
+$$
+\begin{align*}
+L\left(\lambda|\overset{\to}{y_i}\right) &= \frac{\lambda^{\sum y_i}e^{-n\lambda}}{\prod_{i=1}^n y_i !} \\
+& \propto \lambda^{\sum y_i} e^{-n\lambda}
+\end{align*}
+$$
+
+- Please see page 102 in Bayes Rules! for full derivations.
+
+## Gamma-Poisson Conjugacy
+
+- Let $\lambda > 0$ be an unknown *rate* parameter and $(Y_1, Y_2, ... , Y_n)$ be an independent sample from the Poisson distribution.
+
+- The Gamma-Poisson Bayesian model is as follows:
+
+$$
+\begin{align*}
+Y_i | \lambda &\overset{\text{ind}}\sim \text{Poisson}(\lambda) \\
+\lambda &\sim \text{Gamma}(s, r) \\
+\lambda | \overset{\to}y &\sim \text{Gamma}\left( s + \sum y_i, r + n \right)
+\end{align*}
+$$
+
+- The proof can be seen in section 5.2.4 of Bayes Rules!
+
+## Gamma-Poisson Conjugacy
+
+- Suppose we use Gamma(10, 2) as the prior for $\lambda$, the daily rate of calls.
+
+- On four separate days in the second week of August (i.e., independent days), we received $\overset{\to}y = (6, 2, 2, 1)$ calls.
+
+```{r}
+mean(c(6, 2, 2, 1))
+```
+
+- We can see that the average is around 2.75, which will inform the likelihood.
+    
+## Gamma-Poisson Conjugacy
+
+- We know our prior distribution is Gamma(10, 2) and the data distribution is $\text{Poi}(\lambda)$, with observed sample mean $\bar{y} = 2.75$.
+
+- Thus, the posterior is as follows,
+
+$$
+\begin{align*}
+\lambda | \overset{\to}y &\sim \text{Gamma}\left( s + \sum y_i, r + n \right) \\
+&\sim \text{Gamma}\left(10 + 11, 2 + 4 \right) \\
+&\sim \text{Gamma}\left(21, 6 \right)
+\end{align*}
+$$
+
+## The Gamma Posterior Model
+
+- The `plot_gamma_poisson()` function:
+
+```{r}
+#| eval: false
+plot_gamma_poisson(shape = prior_s, 
+                   rate = prior_r, 
+                   sum_y = sum_of_obs, 
+                   n = sample_size, 
+                   posterior = TRUE or FALSE)
+```
+
+- The `summarize_gamma_poisson()` function:
+
+```{r}
+#| eval: false
+summarize_gamma_poisson(shape = prior_s, 
+                        rate = prior_r, 
+                        sum_y = sum_of_obs, 
+                        n = sample_size)
+```
+
+## The Gamma Posterior Model
+
+- Looking at just the prior and the data distributions,
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Poisson likelihood and Gamma prior"
+#| echo: false
+plot_gamma_poisson(shape = 10, rate = 2, sum_y = 11, n = 4, posterior = FALSE) + theme_minimal()
+```
+
+- The prior expects more spam calls than what we observed.
+
+## The Gamma Posterior Model
+
+- Now including the posterior,
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Poisson likelihood, Gamma prior, and resulting Gamma posterior."
+plot_gamma_poisson(shape = 10, rate = 2, sum_y = 11, n = 4, posterior = TRUE) + theme_minimal()
+```
+
+- The shape of the posterior has a Gamma($s$, $r$) model.
+    - The shape and rate parameters ($s$ and $r$) have been *updated*.
+
+## The Gamma Posterior Model
+
+- Your turn! What is different if we had used one of the other priors?
+
+- Recall, we considered
+    - Gamma(5, 1)
+    - Gamma(10, 2)
+    - Gamma(15, 3)
+    - Gamma(20, 4)
+
+## The Gamma Posterior Model
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing Gamma posterior distributions with Poisson likelihoods and Gamma prior distributions."
+#| echo: false
+ggarrange(plot_gamma_poisson(shape = 5, rate = 1, sum_y = 11, n = 4) + theme_minimal() + ylim(0, 0.6) + xlim(0, 15) + labs(title = "Gamma(5, 1) prior"),
+          plot_gamma_poisson(shape = 10, rate = 2, sum_y = 11, n = 4) + theme_minimal() + ylim(0, 0.6) + xlim(0, 15) + labs(title = "Gamma(10, 2) prior"),
+          plot_gamma_poisson(shape = 15, rate = 3, sum_y = 11, n = 4) + theme_minimal() + ylim(0, 0.6) + xlim(0, 15) + labs(title = "Gamma(15, 3) prior"),
+          plot_gamma_poisson(shape = 20, rate = 4, sum_y = 11, n = 4) + theme_minimal() + ylim(0, 0.6) + xlim(0, 15) + labs(title = "Gamma(20, 4) prior"),
+          ncol = 2, nrow = 2)
+```
+
+## The Gamma Posterior Model
+
+```{r}
+summarize_gamma_poisson(shape = 5, rate = 1,  sum_y = 11, n = 4)
+summarize_gamma_poisson(shape = 10, rate = 2,  sum_y = 11, n = 4)
+summarize_gamma_poisson(shape = 15, rate = 3,  sum_y = 11, n = 4)
+summarize_gamma_poisson(shape = 20, rate = 4,  sum_y = 11, n = 4)
+```
+
+## Wrap Up: Gamma-Poisson Model
+
+- We have built the Gamma-Poisson model for $\lambda$, an unknown rate.
+
+$$
+\begin{equation*}
+\begin{aligned}
+Y|\lambda &\sim \text{Poi}(\lambda) \\
+\lambda &\sim \text{Gamma}(s, r) &
+\end{aligned} 
+\Rightarrow 
+\begin{aligned}
+&& \lambda | y &\sim \text{Gamma}(s + \sum y_i, r + n) \\
+\end{aligned}
+\end{equation*}
+$$
+
+- The prior model, $f(\lambda)$, is given by Gamma($s, r$).
+
+- The data model, $f(Y|\lambda)$, is given by Poi($\lambda$).
+
+- The posterior model is a Gamma distribution with updated parameters $s+\sum y_i$ and $r + n$.
+
+## {background-color="#003A6B"}
+
+```{=html}
+<div style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:75vh; gap:1.25rem;">
+  <p style="font-family:'EB Garamond',Georgia,serif; font-size:64px; font-weight:400; color:#ffffff !important; margin:0; letter-spacing:0.01em;">Take a break!</p>
+  <div style="width:56px; height:3px; background:#97D200; border-radius:2px;"></div>
+  <p style="font-family:'EB Garamond',Georgia,serif; font-size:36px; font-weight:300; color:#8DC8E8 !important; margin:0; font-style:italic;">Back in 5 minutes.</p>
+</div>
+```
+
+## Introduction: Normal-Normal Model
+
+- We have so far learned two conjugate families:
+    - Beta-Binomial (binary outcomes)
+        - $y \sim \text{Bin}(n, \pi)$ (data distribution)
+        - $\pi \sim \text{Beta}(\alpha, \beta)$ (prior distribution)
+        - $\pi|y \sim \text{Beta}(\alpha+y, \beta+n-y)$ (posterior distribution)
+    - Gamma-Poisson (count outcomes)
+        - $Y_i | \lambda \overset{ind}\sim \text{Pois}(\lambda)$ (data distribution) 
+        - $\lambda \sim \text{Gamma}(s, r)$ (prior distribution)
+        - $\lambda | \overset{\to}y \sim \text{Gamma}\left( s + \sum y_i, r + n \right)$ (posterior distribution)    
+        
+- Now, we will learn about another conjugate family, the Normal-Normal, for continuous outcomes.
+
+## Example Set Up  
+
+- As scientists learn more about brain health, the dangers of concussions are gaining greater attention.
+
+- We are interested in $\mu$, the average volume (cm^3^) of a specific part of the brain: the hippocampus. 
+
+- [Wikipedia](https://en.wikipedia.org/wiki/Hippocampus#Other_mammals) tells us that among the general population of human adults, each half of the hippocampus has volume between 3.0 and 3.5 cm^3^.
+    - Total hippocampal volume of both sides of the brain is between 6 and 7  cm^3^.
+    - Let's assume that the mean hippocampal volume among people with a history of concussions is also somewhere between 6 and 7 cm^3^.
+    
+- We will take a sample of $n=25$ participants and update our belief.
+
+## The Normal Model
+
+- Let $Y \in \mathbb{R}$ be a continuous random variable.
+    - The variability in $Y$ may be represented with a Normal model with mean parameter $\mu \in \mathbb{R}$ and standard deviation parameter $\sigma > 0$.
+    
+- The Normal model's pdf is as follows,
+
+$$f(y) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left\{ \frac{-(y-\mu)^2}{2\sigma^2} \right\}$$
+
+## The Normal Model
+
+- If we vary $\mu$,
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Normal density plots."
+#| echo: false
+g1 <- plot_normal(-1, 1) + theme_minimal() + xlim(-5, 5) + ggtitle("N(-1, 1)")
+g2 <- plot_normal(0, 1) + theme_minimal() + xlim(-5, 5)+ ggtitle("N(0, 1)")
+g3 <- plot_normal(1, 1) + theme_minimal() + xlim(-5, 5)+ ggtitle("N(1, 1)")
+ggarrange(g1, g2, g3, ncol=3, nrow=1)
+```
+
+## The Normal Model
+
+- If we vary $\sigma$,
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Normal density plots."
+#| echo: false
+g1 <- plot_normal(0, 1) + theme_minimal() + xlim(-10, 10) + ylim(0, 0.4) + ggtitle("N(0, 1)")
+g2 <- plot_normal(0, 3) + theme_minimal() + xlim(-10, 10) + ylim(0, 0.4) + ggtitle("N(0, 3)")
+g3 <- plot_normal(0, 6) + theme_minimal() + xlim(-10, 10) + ylim(0, 0.4) + ggtitle("N(0, 6)")
+ggarrange(g1, g2, g3, ncol=3, nrow=1)
+```
+
+## The Normal Model
+
+- Our data model is as follows,
+
+$$Y_i | \mu \sim N(\mu, \sigma^2)$$
+
+- The joint pdf is as follows,
+
+$$
+f(\overset{\to}y | \mu) = \prod_{i=1}^n f(y_i | \mu) = \prod_{i=1}^n \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left\{ \frac{-(y_i-\mu)^2}{2\sigma^2} \right\}
+$$
+
+## The Normal Model
+
+- And the likelihood is as follows,
+
+$$
+L(\mu|\overset{\to}y) \propto \prod_{i=1}^n \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left\{ \frac{-(y_i-\mu)^2}{2\sigma^2} \right\} = \exp \left\{ \frac{- \sum_{i=1}^n(y_i-\mu)^2}{2\sigma^2} \right\}
+$$
+
+## The Normal Model
+
+- Our data model is as follows,
+
+$$Y_i | \mu \sim N(\mu, \sigma^2)$$
+
+- Returning to our brain analysis, we will assume that the hippocampal volumes of our $n = 25$ subjects have a normal distribution with mean $\mu$ and standard deviation $\sigma$.
+    - Right now, we are only interested in $\mu$, so we assume $\sigma = 0.5$ cm^3^
+    - This choice suggests that most people have hippocampal volumes within $2 \sigma = 1$ cm^3^.
+
+## Normal Prior
+
+- We know that with $Y_i | \mu \sim N(\mu, \sigma^2)$, $\mu \in \mathbb{R}$.
+    - We think a normal prior for $\mu$ is reasonable.
+    
+- Thus, we assume that $\mu$ has a normal distribution around some mean, $\theta$, with standard deviation, $\tau$.
+
+$$\mu \sim N(\theta, \tau^2)$$
+
+- meaning that $\mu$ has prior pdf
+
+$$f(\mu) = \frac{1}{\sqrt{2 \pi \tau^2}} \exp \left\{ \frac{-(\mu - \theta)^2}{2 \tau^2} \right\}$$
+
+## Tuning the Normal Prior
+
+- We can tune the hyperparameters $\theta$ and $\tau$ to reflect our understanding and uncertainty about the average hippocampal volume ($\mu$) among people with a history of concussions.
+
+- Wikipedia showed us that hippocampal volumes tend to be between 6 and 7 cm^3^ $\to$ $\theta=6.5$.
+    
+- When we set the standard deviation we can check the plausible range of values of $\mu$:
+    - Follow up: why 2?
+
+$$\theta \pm 2 \times \tau$$
+
+- If we assume $\tau=0.4$,
+
+$$(6.5 \pm 2 \times 0.4) = (5.7, 7.3)$$
+
+## Tuning the Normal Prior
+
+- Thus, our tuned prior is  $\mu \sim N(6.5, 0.4^2)$
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot of normal distribution"
+#| echo: false
+plot_normal(6.5, 0.4) + theme_minimal()
+```
+
+- This range incorporates our uncertainty - it is wider than the Wikipedia range.
+
+## Normal-Normal Conjugacy
+
+- Let $\mu \in \mathbb{R}$ be an unknown mean parameter and $(Y_1, Y_2, ..., Y_n)$ be an independent $N(\mu, \sigma^2)$ sample where $\sigma$ is assumed to be known.
+
+- The Normal-Normal Bayesian model is as follows:
+
+$$
+\begin{align*}
+Y_i | \mu &\overset{\text{iid}} \sim N(\mu, \sigma^2) \\
+\mu &\sim N(\theta, \tau^2) \\
+\mu | \overset{\to}y &\sim N\left( \theta \frac{\sigma^2}{n\tau^2 + \sigma^2} + \bar{y} \frac{n\tau^2}{n\tau^2 + \sigma^2}, \frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2} \right)
+\end{align*}
+$$
+
+## Normal-Normal Conjugacy
+
+- Let's think about our posterior and some implications,
+
+$$\mu | \overset{\to}y \sim N\left( \theta \frac{\sigma^2}{n\tau^2 + \sigma^2} + \bar{y} \frac{n\tau^2}{n\tau^2 + \sigma^2}, \frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2} \right)$$
+
+- What happens as $n$ increases?
+
+## Normal-Normal Conjugacy
+
+- Let's think about our posterior and some implications,
+
+$$\mu | \overset{\to}y \sim N\left( \theta \frac{\sigma^2}{n\tau^2 + \sigma^2} + \bar{y} \frac{n\tau^2}{n\tau^2 + \sigma^2}, \frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2} \right)$$
+
+- What happens as $n$ increases?
+
+$$
+\begin{align*}
+\frac{\sigma^2}{n\tau^2 + \sigma^2} &\to 0 \\
+\frac{n\tau^2}{n\tau^2 + \sigma^2} &\to 1 \\
+\frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2} &\to 0
+\end{align*}
+$$
+
+## Normal-Normal Conjugacy
+
+- Let's think about our posterior and some implications,
+
+$$
+\begin{align*}
+\frac{\sigma^2}{n\tau^2 + \sigma^2} &\to 0 \\
+\frac{n\tau^2}{n\tau^2 + \sigma^2} &\to 1 \\
+\frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2} &\to 0
+\end{align*}
+$$
+
+- The posterior mean places less weight on the prior mean and more weight on the sample mean $\bar{y}$.
+
+- The posterior certainty about $\mu$ increases and becomes more in sync with the data.
+
+## The Normal Posterior Model
+
+- Let us now apply this to our example.
+
+- We have our prior model, $\mu \sim N(6.5, 0.4^2)$.
+
+- Let's look at the `football` dataset in the `bayesrules` package.
+
+```{r}
+data(football)
+concussion_subjects <- football %>% 
+  filter(group == "fb_concuss")
+```
+
+- What is the average hippocampal volume?
+
+## The Normal Posterior Model
+
+- Let us now apply this to our example.
+
+- We have our prior model, $\mu \sim N(6.5, 0.4^2)$.
+
+- Let's look at the `football` dataset in the `bayesrules` package.
+
+```{r}
+data(football)
+concussion_subjects <- football %>% 
+  filter(group == "fb_concuss")
+```
+
+- What is the average hippocampal volume?
+
+```{r}
+mean(concussion_subjects$volume)
+```
+
+## The Normal Posterior Model
+
+- Before computing the posterior, let's examine the distribution of observed hippocampal volumes.
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot of observed hippocampal volumes among concussion subjects."
+#| echo: false
+concussion_subjects %>% ggplot(aes(x = volume)) + geom_density() + theme_minimal()
+```
+
+## The Normal Posterior Model
+
+- Now, we can plug in the information we have ($n = 25, \bar{y} = 5.735, \sigma = 0.5$) into our likelihood,
+
+$$
+L(\mu|\overset{\to}y) \propto \exp \left\{ \frac{-(5.735 - \mu)^2}{2(0.5^2/25)} \right\}
+$$
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot of normal distribution"
+plot_normal_likelihood(y = concussion_subjects$volume, sigma = 0.5) + theme_minimal()
+```
+
+## The Normal Posterior Model
+
+- We are now ready to put together our posterior:
+    - Data distribution, $Y_i | \mu \overset{\text{iid}} \sim N(\mu, \sigma^2)$
+    - Prior distribution, $\mu \sim N(\theta, \tau^2)$    
+    - Posterior distribution, $\mu | \overset{\to}y \sim N\left( \theta \frac{\sigma^2}{n\tau^2 + \sigma^2} + \bar{y} \frac{n\tau^2}{n\tau^2 + \sigma^2}, \frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2} \right)$
+    
+- Given our information ($\theta=6.5$, $\tau=0.4$, $n=25$, $\bar{y}=5.735$, $\sigma=0.5$), our posterior is
+
+$$
+\mu | \overset{\to}y \sim N\left( \theta \frac{\sigma^2}{n\tau^2 + \sigma^2} + \bar{y} \frac{n\tau^2}{n\tau^2 + \sigma^2}, \frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2} \right)
+$$
+
+## The Normal Posterior Model
+
+- Given our information ($\theta=6.5$, $\tau=0.4$, $n=25$, $\bar{y}=5.735$, $\sigma=0.5$), our posterior is
+
+
+$$
+\begin{align*}
+\mu | \overset{\to}y &\sim N\left( \theta \frac{\sigma^2}{n\tau^2 + \sigma^2} + \bar{y} \frac{n\tau^2}{n\tau^2 + \sigma^2}, \frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2} \right) \\
+&\sim N\left( 6.5 \frac{0.5^2}{25 \cdot 0.4^2 + 0.5^2} + 5.735 \frac{25 \cdot 0.4^2}{25 \cdot 0.4^2 + 0.5^2}, \frac{0.4^2 \cdot 0.5^2}{25 \cdot 0.4^2 + 0.5^2} \right) \\
+&\sim N(6.5 \cdot 0.0588 + 5.735 \cdot 0.9412, 0.09^2) \\
+&\sim N(5.78, 0.09^2)
+\end{align*}
+$$
+
+- Looking at the posterior, we can see the weights
+    - 94% on the data mean, 6% on the prior mean.
+
+## The Normal Posterior Model
+
+- Looking at just the prior and data distributions,
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing normal posterior distribution with normal likelihood and normal prior distribution."
+plot_normal_normal(mean = 6.5, sd = 0.4, sigma = 0.5, y_bar = 5.735, n = 25, posterior = FALSE) + theme_minimal()
+```
+
+
+## The Normal Posterior Model
+
+- Now including the posterior,
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing normal posterior distribution with normal likelihood and normal prior distribution."
+plot_normal_normal(mean = 6.5, sd = 0.4, sigma = 0.5, y_bar = 5.735, n = 25, posterior = TRUE) + theme_minimal()
+```
+
+## The Normal Posterior Model
+
+- We can use the `summarize_normal_normal()` function to summarize the distribution,
+
+```{r}
+summarize_normal_normal(mean = 6.5, sd = 0.4, sigma = 0.5, y_bar = 5.735, n = 25) 
+```
+
+
+## Wrap Up: Normal-Normal Model
+
+- We have built the Normal-Normal model for $\mu$, an unknown mean.
+
+$$
+\begin{equation*}
+\begin{aligned}
+Y_i | \mu &\overset{\text{iid}} \sim N(\mu, \sigma^2) \\
+\mu &\sim N(\theta, \tau^2) &
+\end{aligned} 
+\Rightarrow 
+\begin{aligned}
+&& \mu | \overset{\to}y &\sim N\left( \theta \frac{\sigma^2}{n\tau^2 + \sigma^2} + \bar{y} \frac{n\tau^2}{n\tau^2 + \sigma^2}, \frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2} \right) \\
+\end{aligned}
+\end{equation*}
+$$
+
+- The prior model, $f(\mu)$, is given by N($\theta,\tau^2$).
+
+- The data model, $f(Y|\mu)$, is given by N($\mu, \sigma^2$).
+
+- The posterior model is a Normal distribution with updated parameters 
+    - mean = $\theta \frac{\sigma^2}{n\tau^2 + \sigma^2} + \bar{y} \frac{n\tau^2}{n\tau^2 + \sigma^2}$
+    - variance = $\frac{\tau^2 \sigma^2}{n \tau^2 + \sigma^2}$
+
+## Wrap Up
+
+- Today we covered the main *conjugate families*.
+    - Beta-Binomial: binary outcomes
+    - Gamma-Poisson: count outcomes
+    - Normal-Normal: continuous outcomes
+    
+- You now are ready to work on Assignment 3: Conjugate Families.
+    - .qmd file is available to download on Canvas.    
+
+- Wednesday: how do we draw conclusions using the posterior distribution?
+
+

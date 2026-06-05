@@ -1,0 +1,42 @@
+---
+title: "Assignment 2: Thinking Like a Bayesian"
+author: "Your Name Here"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format: 
+  html:
+    df-print: kable
+    self-contained: true
+    html-math-method: katex
+    code-fold: false
+    code-tools: false
+    incremental: false
+editor: source
+---
+
+**1. Think of a recent situation in which you changed your mind. As with the restaurant example in class, make a diagram that includes your prior information, your new data that helped you change your mind, and your posterior conclusion.**
+
+<!-- this is a great place to ask AI for help with coding! with Claude's help it took me about an hour to iron out the code for the diagrams in lecture :) -->
+
+**2. Odie is trying to convince Jon that Garfield stole the lasagna. Jon thinks there is a 0.10 probability that Garfield would steal the lasagna. Jon also believes that the probability Garfield raids the fridge given that he's in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield stole the lasagna?**
+
+<!-- another great place to ask AI for help -- how to format your solution in LaTeX -->
+
+**3. Arlene, Garfield's on-again-off-again girlfriend, has two dispositions toward Garfield: happy or annoyed. In general, Arlene is happy with Garfield 55% of the time. You've noticed, however, that her disposition is related to how many times Garfield ignored her the day before. If Arlene is happy with Garfield today, there's a 60% chance Garfield ignored her 0 times, a 35% chance he ignored her between 1 and 3 times, and a 5% chance he ignored her more than 3 times yesterday. If Arlene is annoyed with Garfield today, there's a 10% chance Garfield ignored her 0 times, a 55% chance he ignored her between 1 and 3 times, and a 35% chance he ignored her more than 3 times yesterday.**
+
+**a. Use the given information to complete the following table:**
+
+| Ignores yesterday | P(ignores | happy) | P(ignores | annoyed) |
+|---|---|---|
+| 0 times | | |
+| 1–3 times | | |
+| More than 3 times | | |
+
+**b. Today's a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what's the probability that Arlene is happy with Garfield? What part of the Bayes' Rule equation is this: the prior, likelihood, normalizing constant, or posterior?**
+
+**c. You've been spying on Garfield all day and have tallied that he ignored Arlene a whopping 5 times yesterday. How likely is Arlene to have been ignored 4 times if she's happy with Garfield today? What part of the Bayes' Rule equation is this?**
+
+**d. What is the posterior probability that Arlene is happy with Garfield today, given that Garfield ignored her 4 times yesterday?**

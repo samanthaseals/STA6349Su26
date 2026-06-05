@@ -1,0 +1,1156 @@
+---
+title: "Thinking Like a Bayesian"
+execute:
+  echo: true
+  warning: false
+  message: false
+format:
+  revealjs:
+    theme: simple
+    css: style_lecture.css
+    include-after-body: headers.html
+    self-contained: true
+    slide-number: true
+    footer: "STA6349 · Applied Bayesian Analysis · Summer 2026"
+    width: 1600
+    height: 900
+    df-print: kable
+    html-math-method: katex
+    code-fold: false
+    code-tools: false
+    incremental: false
+editor: source
+---
+
+## Introduction
+
+- On Monday:
+    - Refresher on probability theory
+    - What does each distribution do?
+        - beta $\to$ outcomes limited to [0, 1]
+        - binomial $\to$ binary outcomes
+        - gamma $\to$ continuous & positive outcomes; skewed right
+        - normal $\to$ continuous outcomes; mound-shaped & symmetric distribution
+        - Poisson $\to$ count outcomes; skewed right
+        - uniform $\to$ each outcome has equal probability; rectangular distribution
+        
+- Today: building up Bayesian analysis concepts
+
+## R Packages Needed
+
+- To follow today's lecture, please load the following packages:
+    - `tidyverse`
+    - `janitor`
+    - `bayesrules`
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(bayesrules)
+```
+
+## Thinking Like a Bayesian
+
+- Bayesian analysis involves updating beliefs based on observed data.
+
+```{r}
+#| echo: false
+library(DiagrammeR)
+library(htmltools)
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = rectangle, style = rounded, fontname = 'EB Garamond',
+      color = '#2e2e2e', fontcolor = '#2e2e2e', width = 2.5, height = 0.8,
+      fontsize = 18]
+  edge [color = '#2e2e2e']
+  
+  A [label = 'Incoming information:\n5 star restaurant']
+}
+", width = 900, height = 550)
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```
+
+## Thinking Like a Bayesian
+
+- Bayesian analysis involves updating beliefs based on observed data.
+
+```{r}
+#| echo: false
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = rectangle, style = rounded, fontname = 'EB Garamond',
+      color = '#2e2e2e', fontcolor = '#2e2e2e', width = 2.5, height = 0.8,
+      fontsize = 18]
+  edge [color = '#2e2e2e']
+  
+  A [label = 'Incoming information:\n5 star restaurant']
+  B [label = 'Data:\nsoggy noodles']
+  C [label = 'Updated information:\n3 star restaurant']
+  
+  A -> C
+  B -> C
+}
+", width = 900, height = 550)
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```
+
+## Thinking Like a Bayesian
+
+- Bayesian analysis involves updating beliefs based on observed data.
+
+```{r}
+#| echo: false
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = rectangle, style = rounded, fontname = 'EB Garamond',
+      color = '#2e2e2e', fontcolor = '#2e2e2e', width = 2.5, height = 0.8,
+      fontsize = 18]
+  edge [color = '#2e2e2e']
+  
+  A [label = 'Incoming information:\n5 star restaurant']
+  B [label = 'Data:\nsoggy noodles']
+  C [label = 'Updated information:\n3 star restaurant']
+  D [label = 'New data:\ntasty alfredo']
+  E [label = 'Updated information:\n4 star restaurant']
+  
+  A -> C
+  B -> C
+  C -> E
+  D -> E
+}
+", width = 900, height = 550)
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```
+
+## Thinking Like a Bayesian
+
+- Bayesian analysis involves updating beliefs based on observed data.
+
+```{r}
+#| echo: false
+
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = rectangle, style = rounded, fontname = 'EB Garamond',
+      color = '#2e2e2e', fontcolor = '#2e2e2e', width = 2.5, height = 0.8,
+      fontsize = 18]
+  edge [color = '#2e2e2e']
+  
+  A [label = 'Incoming information:\n5 star restaurant']
+  B [label = 'Data:\nsoggy noodles']
+  C [label = 'Updated information:\n3 star restaurant']
+  D [label = 'New data:\ntasty alfredo']
+  E [label = 'Updated information:\n4 star restaurant']
+  F [label = 'New data:\nso-so salad']
+  G [label = '...', shape = plaintext]
+  
+  A -> C
+  B -> C
+  C -> E
+  D -> E
+  E -> G [style = dashed]
+  F -> G [style = dashed]
+}
+", width = 900, height = 550)
+
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```
+
+## Thinking Like a Bayesian
+
+- This is the natural Bayesian knowledge-building process of:
+    - acknowledging your preconceptions (prior distribution),
+    
+```{r}
+#| echo: false
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = ellipse, fontname = 'EB Garamond',
+      color = '#2e2e2e', fontcolor = '#2e2e2e',
+      fontsize = 18]
+  edge [color = '#2e2e2e']
+  
+  A [label = 'Prior']
+  
+  A 
+}
+")
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```  
+    
+## Thinking Like a Bayesian
+
+- This is the natural Bayesian knowledge-building process of:
+    - acknowledging your preconceptions (prior distribution),
+    - using data (data distribution) to update your knowledge (posterior distribution), 
+
+```{r}
+#| echo: false
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = ellipse, fontname = 'EB Garamond',
+      color = '#2e2e2e', fontcolor = '#2e2e2e',
+      fontsize = 18]
+  edge [color = '#2e2e2e']
+  
+  A [label = 'Prior']
+  B [label = 'Data']
+  C [label = 'Posterior']
+  
+  A -> C
+  B -> C
+}
+")
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```    
+    
+
+## Thinking Like a Bayesian
+
+- This is the natural Bayesian knowledge-building process of:
+    - acknowledging your preconceptions (prior distribution),
+    - using data (data distribution) to update your knowledge (posterior distribution), and 
+    - repeating (posterior distribution $\to$ new prior distribution)
+
+```{r}
+#| echo: false
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = ellipse, fontname = 'EB Garamond',
+      color = '#2e2e2e', fontcolor = '#2e2e2e',
+      fontsize = 18]
+  edge [color = '#2e2e2e']
+  
+  A [label = 'Prior']
+  B [label = 'Data']
+  C [label = 'Posterior']
+  D [label = 'New data']
+  E [label = 'Posterior']
+  F [label = 'New data']
+  G [label = '', shape = point, width = 0.01]
+  
+  A -> C
+  B -> C
+  C -> E
+  D -> E
+  E -> G [style = dashed]
+  F -> G [style = dashed]
+}
+")
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```
+
+## Thinking Like a Bayesian 
+
+- Bayesian and frequentist analyses share a common goal: to learn from data about the world around us. 
+    - Both Bayesian and frequentist analyses use data to fit models, make predictions, and evaluate hypotheses. 
+    - When working with the same data, they will typically produce a similar set of conclusions. 
+    
+- Statisticians typically identify as either a "Bayesian" or "frequentist" ...
+    - We are not going to "take sides." 
+    - We will see these as tools in our toolbox.
+
+## Thinking Like a Bayesian
+    
+- **Bayesian probability:** the relative plausibility of an event. This considers prior belief.
+
+```{r}
+#| echo: false
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = ellipse, fontname = 'EB Garamond',
+      color = '#2e2e2e', fontcolor = '#2e2e2e',
+      fontsize = 18]
+  edge [color = '#2e2e2e']
+  
+  A [label = 'Prior']
+  B [label = 'Data']
+  C [label = 'Posterior']
+  
+  A -> C
+  B -> C
+}
+", width = 900, height = 550)
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```
+    
+## Thinking Like a Bayesian
+
+- **Frequentist probability:** the long-run relative frequency of a repeatable event. This does not consider prior belief.   
+
+```{r}
+#| echo: false
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = ellipse, fontname = 'EB Garamond',
+      color = '#2e2e2e', fontcolor = '#2e2e2e',
+      fontsize = 18]
+  edge [color = '#2e2e2e']
+  
+  A [label = 'Data']
+}
+", width = 900, height = 550)
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```
+
+## Thinking Like a Bayesian
+
+- The Bayesian framework depends upon prior information, data, and the balance between them.
+
+    - The balance between the prior information and data is determined by the relative strength of each.
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 3
+#| fig-align: 'center'
+#| warning: false
+
+trees <- tibble(
+  tree   = 1:3,
+  cx     = c(1.5, 4.0, 6.5),
+  tilt   = c(-0.08, 0.0, 0.08),
+  half_w = 0.8
+)
+
+bars <- trees |>
+  mutate(
+    x_prior = cx - half_w, y_prior = 0.8 - tilt,
+    x_data  = cx + half_w, y_data  = 0.8 + tilt,
+    y_mid   = 0.8
+  )
+
+# stem goes from BOTTOM up to bar
+stems <- bars |>
+  mutate(x = cx, xend = cx, y = 0.1, yend = y_mid)
+
+drops <- bars |>
+  select(tree, cx, x_prior, x_data, y_prior, y_data) |>
+  pivot_longer(
+    cols = c(x_prior, x_data, y_prior, y_data),
+    names_to = c(".value", "side"),
+    names_pattern = "(x|y)_(prior|data)"
+  ) |>
+  mutate(
+    xend  = x,
+    yend  = y - 0.35,
+    label = side
+  )
+
+ggplot() +
+  # stem up from bottom
+  geom_segment(data = stems,
+               aes(x = x, y = y, xend = xend, yend = yend),
+               color = "#2e2e2e", linewidth = 1.2) +
+  # bar on top
+  geom_segment(data = bars,
+               aes(x = x_prior, y = y_prior, xend = x_data, yend = y_data),
+               color = "#2e2e2e", linewidth = 1.2) +
+  # drops hanging down from bar ends
+  geom_segment(data = drops,
+               aes(x = x, y = y, xend = xend, yend = yend),
+               color = "#2e2e2e", linewidth = 1.2) +
+  # labels
+  geom_label(data = drops |> distinct(x, label, .keep_all = TRUE),
+             aes(x = xend, y = yend, label = label),
+             family = "EB Garamond", size = 6,
+             color = "#2e2e2e", fill = "#f5f3ee",
+             label.padding = unit(0.4, "lines")) +
+  scale_x_continuous(limits = c(0.3, 7.7)) +
+  scale_y_continuous(limits = c(-0.1, 1.1)) +
+  theme_void() +
+  theme(plot.background = element_rect(fill = "#f5f3ee", color = NA))
+```
+
+
+
+- When we have little data, our posterior can rely more on prior knowledge. 
+
+- As we collect more data, the prior can lose its influence.
+
+## Thinking Like a Bayesian
+
+- We can also use this approach to combine analysis results.
+
+```{r}
+#| echo: false
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = ellipse, fontname = 'EB Garamond',
+        color = '#2e2e2e', fontcolor = '#2e2e2e', fontsize = 20]
+  edge [color = '#2e2e2e']
+
+  A [label = 'Your prior']
+  B [label = 'Your data']
+  C [label = 'Your posterior']
+  D [label = 'Your new data']
+  E [label = 'Your new posterior']
+  F [label = 'My prior']
+  G [label = 'My data']
+  H [label = 'My posterior']
+  I [label = 'My new data']
+  J [label = 'My new posterior']
+  K [label = 'Our posterior']
+
+  A -> C
+  B -> C
+  C -> E
+  D -> E
+  F -> H
+  G -> H
+  H -> J
+  I -> J
+  E -> K [style = dashed]
+  J -> K [style = dashed]
+}
+", width = 900, height = 550)
+
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```
+
+## Thinking Like a Bayesian
+
+- We will use an example to work through Bayesian logic.
+
+- The Collins Dictionary named "fake news" the 2017 term of the year. 
+
+    - Fake, misleading, and biased news has proliferated along with online news and social media platforms which allow users to post articles with little quality control. 
+    
+- We want to flag articles as "real" or "fake." 
+
+- We'll examine a sample of 150 articles which were posted on Facebook and fact checked by five BuzzFeed journalists (Shu et al. 2017). 
+
+## Thinking Like a Bayesian
+
+- Information about each article is stored in the `fake_news` dataset in the `bayesrules` package. 
+
+```{r}
+fake_news <- bayesrules::fake_news
+print(colnames(fake_news))
+```
+
+
+## Thinking Like a Bayesian
+
+- Suppose that the most recent article posted to a social media platform is titled: *The president has a funny secret!*
+    - Some features of this title probably set off some red flags. 
+    - For example, the usage of an exclamation point might seem like an odd choice for a real news article. 
+
+- In the dataset, what is the split of real and fake articles?
+
+```{r}
+#| eval: false
+fake_news %>% tabyl(type)
+```
+
+## Thinking Like a Bayesian
+
+- In the dataset, what is the split of real and fake articles?
+
+```{r}
+fake_news %>% tabyl(type)
+```
+
+## Thinking Like a Bayesian
+
+- What does the data say?
+
+```{r}
+#| eval: false
+fake_news %>% tabyl(title_has_excl, type) %>%
+  adorn_percentages("col") %>%
+  adorn_pct_formatting(digits = 2) %>%
+  adorn_ns()
+```
+
+## Thinking Like a Bayesian
+
+- What does the data say?
+
+```{r}
+fake_news %>% tabyl(title_has_excl, type) %>%
+  adorn_percentages("col") %>%
+  adorn_pct_formatting(digits = 2) %>%
+  adorn_ns()
+```
+    
+- 26.67% of fake news titles use ! vs 2.22% of real news titles use !
+    
+## Thinking Like a Bayesian
+
+- We now have two pieces of contradictory information. 
+    - Our prior information suggested that incoming articles are most likely real. 
+    - However, the exclamation point data is more consistent with fake news. 
+
+```{r}
+#| echo: false
+
+g <- grViz("
+digraph {
+  graph [layout = dot, rankdir = TB, bgcolor = '#f5f3ee', fontname = 'EB Garamond']
+  node [shape = ellipse, fontname = 'EB Garamond',
+        color = '#2e2e2e', fontcolor = '#2e2e2e', fontsize = 22]
+  edge [color = '#2e2e2e']
+
+  A [label = 'Prior:\n40% of articles are fake.']
+  B [label = 'Data:\n! more common among fake news.']
+  C [label = 'Posterior:\nUmmmmmm....']
+
+  A -> C
+  B -> C
+}
+", width = 900, height = 550)
+
+div(style = "display: flex; justify-content: center; align-items: center;", g)
+```
+
+## Building a Bayesian Model
+
+- Thinking like Bayesians, we know that balancing both pieces of information is important in developing a posterior understanding of whether the article is fake.
+
+- Our fake news analysis studies two variables: 
+    - an article's fake vs real status and 
+    - its use of exclamation points. 
+    
+- We can represent the randomness in these variables using probability models. 
+
+## Building a Bayesian Model
+
+- Let's now formalize our prior understanding of whether the new article is fake. 
+
+- Based on our data, we saw that 40% of articles are fake and 60% are real.
+
+    - Before reading the new article, there’s a 0.4 *prior* probability that it's fake.
+    
+$$P\left[B\right] = 0.40 \text{ and } P\left[B^c\right] = 0.60$$    
+
+- Remember that a valid probability model must: 
+
+    1. account for all possible events 
+    2. assign prior probabilities to each event
+    3. have probabilities that sum to 1
+    
+## Building a Bayesian Model
+
+- Revisiting the contingency table for conditional probabilities,
+    
+```{r}
+#| echo: false
+fake_news %>% tabyl(title_has_excl, type) %>%
+  adorn_percentages("col") %>%
+  adorn_pct_formatting(digits = 1) %>%
+  adorn_ns() 
+```       
+
+- If an article is fake ($B$), what is the probability that it uses exclamation points in the title?  <br><br><br><br>
+
+- If an article is real ($B^c$), what is the probability that it uses exclamation points in the title?
+    
+## Building a Bayesian Model
+
+- We have the following conditional probabilities:
+    - If an article is fake, then there is about a 27% chance it uses exclamation points in the title.
+        - $P[A|B]=0.2667$
+    - If an article is real, then there is only a 2% chance it uses exclamation points in the title. 
+        - $P[A|B^c]=0.0222$
+
+- Exclamation point usage is much more likely among fake news than real news.
+    - We have evidence that the article is fake.    
+    
+## Building a Bayesian Model
+
+- Note that we know that the incoming article used exclamation points ($A$), but we do not actually know if the article is fake ($B$ or $B^c$).
+
+- In this case, we compared $P[A|B]$ and $P[A|B^c]$ to ascertain the **relative likelihood** of observing $A$ under different scenarios. That is,
+    - $L\left[B|A\right] = P\left[A|B\right]$ $\to$ the likelihood of fake given !
+    - $L\left[B^c|A\right] = P\left[A|B^c\right]$ $\to$ the likelihood of real given !
+
+## Building a Bayesian Model
+
+| Event | *B* | *B^c^* | Total |
+|--|:--:|:--:|:--:|
+| Prior Probability | 0.4 | 0.6 | 1.0 |
+| Likelihood | 0.2667 | 0.0222 | 0.2889 |
+
+$$L\left[B|A\right] = P\left[A|B\right] \text{ and } L\left[B^c|A\right] = P\left[A|B^c\right]$$
+
+- It is important for us to note that the likelihood function is *not* a probability function.
+    - This is a framework to determine the relative compatibility of our exclamation point data with $B$ and $B^c$.
+
+## Building a Bayesian Model
+
+| Event | *B* (fake) | *B^c^* (real) | Total |
+|--|:--:|:--:|:--:|
+| Prior Probability | 0.4 | 0.6 | 1.0 |
+| Likelihood | 0.2667 | 0.0222 | 0.2889 |
+
+- The prior evidence suggested the article is most likely real,
+
+$$P[B] = 0.4 < P[B^c] = 0.6$$
+
+- The data, however, is more consistent with the article being fake,
+
+$$L[B|A] = 0.2667 > L[B^c|A] = 0.0222$$
+
+## Building a Bayesian Model
+
+- We can summarize our probabilities in a table, 
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       |     |       |       |
+| $A^c$     |     |       |       |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- As found earlier, $P[A|B] = 0.2667$ and $P[A|B^c]=0.0222$.
+
+- Find $P[A \cap B]$.
+
+## Building a Bayesian Model
+
+- We can summarize our probabilities in a table, 
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       |     |       |       |
+| $A^c$     |     |       |       |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- As found earlier, $P[A|B] = 0.2667$ and $P[A|B^c]=0.0222$.
+
+$$
+\begin{align*}
+P[A \cap B] &= P[A|B] \times P[B] \\
+&= 0.2667 \times 0.4 \\
+&= 0.1067
+\end{align*}
+$$
+
+
+## Building a Bayesian Model
+
+- Here's what we know,
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       | 0.1067    |       |       |
+| $A^c$     |     |       |       |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- As found earlier, $P[A|B] = 0.2667$ and $P[A|B^c]=0.0222$.
+
+- Find $P[A^c \cap B]$.
+
+## Building a Bayesian Model
+
+- Here's what we know,
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       | 0.1067    |       |       |
+| $A^c$     |     |       |       |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- As found earlier, $P[A|B] = 0.2667$ and $P[A|B^c]=0.0222$.
+
+$$
+\begin{align*}
+P[A^c \cap B] &= P[A^c|B] \times P[B]  \\
+&= \left(1-P[A|B]\right) \times P[B] \\
+&= (1-0.2667) \times 0.4 \\
+&= 0.2933
+\end{align*}
+$$
+
+## Building a Bayesian Model
+
+- Here's what we know,
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       | 0.1067 |       |       |
+| $A^c$     | 0.2933 |       |       |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- As found earlier, $P[A|B] = 0.2667$ and $P[A|B^c]=0.0222$.
+
+- Find $P[A \cap B^c]$.
+
+## Building a Bayesian Model
+
+- Here's what we know,
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       | 0.1067 |       |       |
+| $A^c$     | 0.2933 |       |       |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- As found earlier, $P[A|B] = 0.2667$ and $P[A|B^c]=0.0222$.
+
+$$
+\begin{align*}
+P[A \cap B^c] &= P[A|B^c] \times P[B^c]  \\
+&= 0.0222 \times 0.6 \\
+&= 0.0133
+\end{align*}
+$$
+
+## Building a Bayesian Model
+
+- Here's what we know,
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       | 0.1067 | 0.0133 |       |
+| $A^c$     | 0.2933 |       |       |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- As found earlier, $P[A|B] = 0.2667$ and $P[A|B^c]=0.0222$.
+
+ - Find $P[A^c \cap B^c]$.
+ 
+## Building a Bayesian Model
+
+- Here's what we know,
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       | 0.1067 | 0.0133 |       |
+| $A^c$     | 0.2933 |       |       |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- As found earlier, $P[A|B] = 0.2667$ and $P[A|B^c]=0.0222$.
+
+$$
+\begin{align*}
+P[A^c \cap B^c] &= P[A^c|B^c] \times P[B^c]  \\
+&= 0.9778 \times 0.6 \\
+&= 0.5867
+\end{align*}
+$$
+
+## Building a Bayesian Model
+
+- Here's what we know,
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       | 0.1067 | 0.0133 |       |
+| $A^c$     | 0.2933 | 0.5867 |       |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- Finally,
+
+$$
+\begin{align*}
+&P[A] = 0.1067 + 0.0133 = 0.12 \\
+&P[A^c] = 0.2933 + 0.5867 = 0.88
+\end{align*}
+$$
+
+## Building a Bayesian Model
+
+- Using rules of probability, we have completed the table.
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       | 0.1067 | 0.0133 | 0.12 |
+| $A^c$     | 0.2933 | 0.5867 | 0.88 |
+| **Total** | 0.4 | 0.6   | 1     |
+
+## Building a Bayesian Model
+
+- With more information, we can finally find the probability that the latest article is fake.
+
+- We will use the posterior probability, $P[B|A]$, which is found using Bayes' Rule.
+
+- **Bayes' Rule**: For events $A$ and $B$, 
+
+$$P[B|A] = \frac{P[A \cap B]}{P[A]} = \frac{P[B] \times L[B|A]}{P[A]}$$
+
+- But really, we can think about it like this,
+
+$$\text{posterior} = \frac{\text{prior} \times \text{likelihood}}{\text{normalizing constant}}$$
+
+## Building a Bayesian Model
+
+- Let's now apply Bayes' Rule to our fake news example.
+
+|           | $B$ | $B^c$ | Total |
+|-----------|:---:|:-----:|:-----:|
+| $A$       | 0.1067 | 0.0133 | 0.12 |
+| $A^c$     | 0.2933 | 0.5867 | 0.88 |
+| **Total** | 0.4 | 0.6   | 1     |
+
+- Find $P[B|A]$.
+
+## Building a Bayesian Model
+
+- Applying Bayes' Rule to our fake news example,
+
+$$P[B|A] = \frac{P[A \cap B]}{P[A]} = \frac{0.1067}{0.12} = 0.889$$
+
+- There is an 88.9% posterior probability that the article is fake given that it uses an exclamation point in the title.
+
+## Building a Bayesian Model
+
+- Comparing our prior and posterior probabilities,
+    - **Prior:** $P[B] = 0.40$, i.e., before seeing the title, 40% chance the article is fake.
+    - **Posterior:** $P[B|A] = 0.889$, i.e., after seeing the exclamation point in the title, 88.9% chance the article is fake.
+
+- The exclamation point adds strong evidence to the article being fake. 
+    - Our posterior is much higher than our prior.
+    
+## Example 2: Building a Model    
+
+- Suppose you're watching the pilot of a new TV show. Before learning anything about the main character, we can use information from the U.S. Census: the Midwest (M), Northeast (N), South (S), or West (W).
+
+| Region | M | N | S | W | Total |
+|--------|:--:|:--:|:--:|:--:|:--:|
+| Probability | 0.21 | 0.17 | 0.38 | 0.24 | 1 |
+
+- What is the probability that the main character is from the South? 
+
+## Example 2: Building a Model  
+
+- Suppose you're watching the pilot of a new TV show. Before learning anything about the main character, we can use information from the U.S. Census: the Midwest (M), Northeast (N), South (S), or West (W).
+
+| Region | M | N | S | W | Total |
+|--------|:--:|:--:|:--:|:--:|:--:|
+| Probability | 0.21 | 0.17 | 0.38 | 0.24 | 1 |
+
+- During the opening scene, the main character asks someone if they would like a "Pop". 
+
+- What is the probability that the main character is from the South? 
+
+## Example 2: Building a Model    
+
+- Suppose you're watching the pilot of a new TV show. Before learning anything about the main character, we can use information from the U.S. Census: the Midwest (M), Northeast (N), South (S), or West (W).
+
+| Region | M | N | S | W | Total |
+|--------|:--:|:--:|:--:|:--:|:--:|
+| Probability | 0.21 | 0.17 | 0.38 | 0.24 | 1 |
+
+- During the opening scene, the main character asks someone if they would like a "Coke". 
+
+- What is the probability that the main character is from the South? 
+
+## Example 2: Building a Model
+
+- Let's use the `pop_vs_soda` dataset to explore the relationship between region (*region*) and whether people say "pop" or "soda" when referring to carbonated beverages (*pop*). 
+
+```{r}
+#| eval: false
+data(pop_vs_soda)
+pop_vs_soda %>% 
+  tabyl(pop, region) %>% 
+  adorn_percentages("col") %>%
+  round(4)
+```
+
+## Example 2: Building a Model
+
+- Let's use the `pop_vs_soda` dataset to explore the relationship between region (*region*) and whether people say "pop" or "soda" when referring to carbonated beverages (*pop*). 
+
+```{r}
+#| echo: false
+data(pop_vs_soda)
+pop_vs_soda %>% 
+  tabyl(pop, region) %>% 
+  adorn_percentages("col") %>%
+  round(4)
+```
+
+- Let $A$ be the event that a person uses the word "pop". Rewrite the table as regional likelihoods.
+    - $L[M|A] =$ 
+    - $L[N|A] =$ 
+    - $L[S|A] =$
+    - $L[W|A] =$
+    
+## Example 2: Building a Model
+
+- Let $A$ be the event that a person uses the word "pop". Rewrite the table as regional likelihoods.
+    - $L[M|A] = P[A|M] = 0.6447$ -- 64.5% of Midwesterners say "pop"
+    - $L[N|A] = P[A|N] = 0.2734$ -- 27.3% of Northeasterners say "pop"
+    - $L[S|A] = P[A|S] = 0.0792$ -- 7.9% of Southerners say "pop"
+    - $L[W|A] = P[A|W] = 0.2943$ -- 29.4% of Westerners say "pop"
+    
+- If the main character says "pop", we can use the likelihoods to update our prior beliefs about where they are from.
+
+## Example 2: Building a Model
+
+- Let's now formally find the posterior probabilities for the main character being from any of the areas. Complete the following table:
+
+| Region | M | N | S | W | Total |
+|:----------------------|:---|:---|:---|:---|:---:|
+| Prior probability | 0.21 | 0.17 | 0.38 | 0.24 | 1 |
+| Posterior probability | | | | | | 
+
+
+## Example 2: Building a Model
+
+- Posterior probability for the midwest:
+
+## Example 2: Building a Model
+
+- Posterior probability for the northeast:
+
+## Example 2: Building a Model
+
+- Posterior probability for the south:
+
+## Example 2: Building a Model
+
+- Posterior probability for the west:
+
+## Example 2: Building a Model
+
+- Thus, our table is
+
+| Region | M | N | S | W | Total |
+|:----------------------|:---|:---|:---|:---|:---:|
+| Prior probability | 0.21 | 0.17 | 0.38 | 0.24 | 1 |
+| Posterior probability | 0.4791 | 0.1645 | 0.1065 | 0.2499 | 1 |
+
+- After we hear the main character say "pop," we now think it's most likely that they live in the Midwest.
+    - Even though the South has the highest proportion of people in the survey, it is least likely that the main character lives in the South.
+
+## {background-color="#003A6B"}
+
+```{=html}
+<div style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:75vh; gap:1.25rem;">
+  <p style="font-family:'EB Garamond',Georgia,serif; font-size:64px; font-weight:400; color:#ffffff !important; margin:0; letter-spacing:0.01em;">Take a break!</p>
+  <div style="width:56px; height:3px; background:#97D200; border-radius:2px;"></div>
+  <p style="font-family:'EB Garamond',Georgia,serif; font-size:36px; font-weight:300; color:#8DC8E8 !important; margin:0; font-style:italic;">Back in 10 minutes.</p>
+</div>
+```
+
+## Example 3: Building a Model
+
+- In 1996, Gary Kasparov played a six-game chess match against the IBM supercomputer Deep Blue. 
+    - Of the six games, Kasparov won three, drew two, and lost one. 
+    - Thus, Kasparov won the overall match. 
+
+- Kasparov and Deep Blue were to meet again for a six-game match in 1997. 
+
+- Let $\pi$ denote Kasparov's chances of winning any particular game in the re-match.
+    - Thus, $\pi$ is a measure of his overall skill relative to Deep Blue. 
+    - Given the complexity of chess, machines, and humans, $\pi$ is unknown and can vary over time.
+        - i.e., $\pi$ is a *random variable*.
+
+## Example 3: Building a Model
+
+- Our first step is to start with a prior model. This model
+    - Identifies what values $\pi$ can take,
+    - assigns a prior weight or probability to each, and
+    - these probabilities sum to 1.
+
+- Based on what we were told, the prior model for $\pi$ in our example,
+
+| $\pi$    | 0.2  | 0.5  | 0.8  | Total |
+|----------|:----:|:----:|:----:|:----:|
+| $f(\pi)$ | 0.10 | 0.25 | 0.65 | 1     |
+
+## Example 3: Building a Model
+
+- Based on what we were told, the prior model for $\pi$ in our example,
+
+| $\pi$    | 0.2  | 0.5  | 0.8  | Total |
+|----------|:----:|:----:|:----:|:----:|
+| $f(\pi)$ | 0.10 | 0.25 | 0.65 | 1     |
+
+- Note that this is an incredibly simple model.
+    - The win probability can technically be any number $\in [0, 1]$.
+    - However, this prior assumes that $\pi$ has a discrete set of possibilities: 20%, 50%, or 80%.
+
+## Example 3: Building a Model
+
+- In the second step of our analysis, we collect and process data which can inform our understanding of  $\pi$.
+ 
+- Here, $Y$ = the number of the six games in the 1997 re-match that Kasparov wins.
+    - As chess match outcome isn’t predetermined, $Y$ is a random variable that can take any value in $\{0, 1, 2, 3, 4, 5, 6\}$.
+    
+- Note that $Y$ inherently depends upon $\pi$.
+    - If $\pi = 0.80$, $Y$ would also be high (on average).
+    - If $\pi = 0.20$, $Y$ would also be low (on average).
+    
+- Thus, we must model this dependence of $Y$ on $\pi$ using a conditional probability model.
+
+## Binomial Data Model
+
+- We must make two assumptions about the chess match:
+    - Games are independent (the outcome of one game does not influence the outcome of another).
+    - Kasparov has an equal probability of winning any game in the match.
+        - i.e., probability of winning does not increase or decrease as the match goes on.
+
+- We will use a binomial model for this problem.
+    - In our case,
+
+$$Y|\pi \sim \text{Bin}(6, \pi)$$
+
+## Binomial Data Model
+
+- Let's assume $\pi = 0.8$.
+
+- The probability that he would win all 6 games is approximately 26%.
+
+$$f(y=6|\pi=0.8) = {6 \choose 6} 0.8^6 (1-0.8)^{6-6}, $$  
+
+```{r}
+dbinom(6, 6, 0.8)
+```
+
+## Binomial Data Model
+
+- Let's assume $\pi = 0.8$.
+
+- The probability that he would win none of the games is approximately 0%.
+
+$$f(y=0|\pi=0.8) = {6 \choose 0} 0.8^0 (1-0.8)^{6-0}, $$  
+
+```{r}
+dbinom(0, 6, 0.8)
+```
+
+
+## Binomial Data Model
+
+- Visually,
+
+![](images/fig2-5.png){fig-align="center" width="80%"} 
+
+## Binomial Data Model
+
+- Note that the Binomial gives us the *theoretical* model of the data we might observe. 
+
+    - Kasparov only won one of the six games against Deep Blue in 1997 ($Y=1$).
+    
+- Next, we determine how compatible this particular data is with the various possible values of $\pi$.
+
+    - What is the likelihood of Kasparov winning $Y=1$ game under each possible $\pi$?
+    
+- Recall, $f(y|\pi) = L(\pi|Y=y)$. When $Y=1$,
+
+$$
+\begin{align*}
+L(\pi | y = 1) &= f(y=1|\pi) \\
+&= {6 \choose 1} \pi^1 (1-\pi)^{6-1} \\
+&= 6\pi(1-\pi)^5
+\end{align*}
+$$
+
+- Note that <u>we do not expect all likelihoods to sum to 1</u>.
+    
+## Binomial Data Model
+
+- Use your results from earlier to tell me the resulting likelihood values.
+
+| $\pi$        | 0.2    | 0.5    | 0.8 |
+|--------------|:------:|:------:|:----:|
+| $L(\pi|y=1)$ | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
+
+## Binomial Data Model
+
+- Use your results from earlier to tell me the resulting likelihood values.
+    
+| $\pi$        | 0.2    | 0.5    | 0.8    |
+|--------------|:------:|:------:|:----:|
+| $L(\pi|y=1)$ | 0.3932 | 0.0938 | 0.0015 |
+
+- As we can see, the likelihoods do not sum to 1.
+
+## Normalizing Constant
+
+- Bayes' Rule requires three pieces of information:
+    - Prior
+    - Likelihood
+    - Normalizing constant
+    
+- **Normalizing constant**: ensures that the sum of all probabilities is equal to 1.
+    - It can be a scalar or a function.
+    - Every probability distribution that does not sum to 1 will have a normalizing constant.
+    
+## Normalizing Constant
+    
+- We now must determine the total probability that Kasparov would win $Y=1$ games across all possible win probabilities $\pi$, $f(y=1)$.
+
+$$
+\begin{align*}
+f(y=1) =& \sum_{\pi} L(\pi |y=1)f(\pi) \\
+=& L(\pi=0.2|y=1)f(\pi=0.2) + L(\pi=0.5|y=1)f(\pi=0.5) + \\ 
+ & L(\pi=0.8|y=1)f(\pi=0.8) 
+\end{align*}
+$$
+
+- Work with your group to find the normalizing constant.
+
+## Normalizing Constant
+    
+- We now must determine the total probability that Kasparov would win $Y=1$ games across all possible win probabilities $\pi$, $f(y=1)$.
+
+$$
+\begin{align*}
+f(y=1) =& \sum_{\pi} L(\pi |y=1)f(\pi) \\
+=& L(\pi=0.2|y=1)f(\pi=0.2) + L(\pi=0.5|y=1)f(\pi=0.5) + \\ 
+& L(\pi=0.8|y=1)f(\pi=0.8) \\
+\approx& 0.3932 \cdot 0.10 + 0.0938 \cdot 0.25 + 0.0015 \cdot 0.65 \\
+\approx& 0.0637
+\end{align*}
+$$
+
+- Across all possible values of $\pi$, there is about a 6% chance that Kasparov would have won only one game.
+
+## Posterior Probability Model
+
+- Now recall,
+
+$$\text{posterior} = \frac{\text{prior} \times \text{likelihood}}{\text{normalizing constant}}$$
+
+- In our example, where $y = 1$,
+
+$$f(\pi | y=1) = \frac{f(\pi) L(\pi | y = 1)}{f(y=1)} \  \text{for} \ \pi \in \{ 0.2, 0.5, 0.8\}$$
+
+- Work with your group to find the posterior probabilities.
+
+    - You will have one posterior probability for each value of $\pi$.
+
+## Posterior Probability Model
+
+- Note!! We do not have to calculate the normalizing constant!
+
+- We can treat $f(Y=y)$ as a constant with respect to $\pi$.
+
+- Then, we say that 
+
+$$
+\begin{align*}
+f(\pi | y) &= \frac{f(\pi) L(\pi|y)}{f(y)} \\
+& \propto  f(\pi) L(\pi|y) \\
+\\
+\text{posterior} &\propto \text{prior} \cdot \text{likelihood}
+\end{align*}
+$$
+
+## Wrap Up
+
+- Today we learned how to, in general, approach Bayesian analysis.
+    
+- You now are ready to work on Assignment 2: Thinking Like a Bayesian.
+    - .qmd file is available to download on Canvas.
+    
+- Next week: conjugate families and one sample inference
+    - Beta-binomial
+    - Gamma-Poisson
+    - Normal Normal
+

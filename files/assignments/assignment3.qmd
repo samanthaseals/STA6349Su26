@@ -1,0 +1,102 @@
+---
+title: "Assignment 3: Conjugate Families"
+author: "Your Name Here"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format: 
+  html:
+    df-print: kable
+    self-contained: true
+    html-math-method: katex
+    code-fold: false
+    code-tools: false
+    incremental: false
+editor: source
+---
+
+**Scenario 1: Every night, the same thing happens: Brain concocts an elaborate scheme to take over the world, and somehow it never quite works out. Whether it's Pinky's blundering, an unexpected plot twist, or the Warner siblings' interference, Brain's plans have a way of falling apart at the last moment.**
+
+**The Warner siblings — [Yakko, Wakko, and Dot](https://en.wikipedia.org/wiki/Yakko,_Wakko,_and_Dot) — have each been keeping tabs on Brain's success (or lack thereof) while atop the Warners' water tower. Each sibling has been independently tracking whether Brain's plan was foiled on any given day, and each comes into the analysis with the same prior belief: a Beta(2, 5) distribution for $\pi$, the probability that Brain's plan gets foiled on any given day. This prior reflects a shared suspicion that Brain usually gets pretty far with his plans, but not always.**
+
+**The current issue is that each sibling has been watching for a different stretch of time, and they don't always agree on what they saw. For each sibling, you'll update the Beta(2, 5) prior with their observed data and summarize the resulting posterior distribution.**
+
+**a. After carefully observing Brain's schemes over 50 days, Dot recorded that 18 of Brain's plans were successfully foiled. Summarize Dot's analysis using the functions demonstrated in lecture.**
+
+```{r}
+
+```
+
+**b. Yakko has been keeping his own records from a different observation period. In his records, Brain's plans were foiled 12 out of 25 days. Summarize Yakko's analysis using the functions demonstrated in lecture.**
+
+```{r}
+
+```
+
+**c. In Wakko's records, Brain's plans were foiled 18 out of 25 days. Summarize Wakko's analysis using the functions demonstrated in lecture.**
+
+```{r}
+
+```
+
+**d. How do Dot, Yakko, and Wakko's posterior models compare to one another?**
+
+
+
+
+
+
+**Scenario 2: Yakko, Wakko, and Dot have a long-standing rivalry with the [Goodfeathers, Bobby, Squit, and Pesto](https://animaniacs.fandom.com/wiki/Goodfeathers), who are always pecking around the WB studio lot. The siblings suspect the Goodfeathers show up at an annoyingly high rate throughout the day, and Dot has decided to model this formally. Let $\lambda$ represent the rate at which the Goodfeathers appear per hour on the studio lot.**
+
+**a. Dot believes the Goodfeathers show up about 8 times per hour on average, with a standard deviation of 0.5 appearances. Tune and plot an appropriate Gamma(s, r) prior model for λ.**
+
+```{r}
+
+```
+
+
+**b. Yakko and Wakko help out by each staking out different parts of the lot. Across 8 hours of observation, they recorded the following Goodfeather appearances: $\{3,9,7,11,8,6,10, 9\}$. Update Dot's prior model with this data to find the posterior model for $\lambda$.**
+
+```{r}
+
+```
+
+**c. Comment on how the siblings' understanding of $\lambda$ changed from the prior to the posterior based on their observations. Did the Goodfeathers show up as often as Dot feared?**
+
+
+
+
+
+
+**Scenario 3: Brain has abandoned his usual schemes and pivoted to high finance. His latest plan for world domination involves cornering the market on Acme Corp stock — the same company that supplies every single product on the WB studio lot. Pinky is thrilled. Brain is focused. Let μ represent the average dollar amount that Acme Corp stock goes up or down in a one-day period.**
+
+**a. Brain has reviewed Acme Corp's historical performance. He believes the stock increases by an average of 7.2 dollars per day, with a standard deviation of 2.6 dollars. Tune and plot an appropriate Normal prior model for $\mu$.**
+
+```{r}
+
+```
+
+**b. According to your plot, does it seem plausible that Acme Corp stock would increase by an average of 7.6 dollars in a day? Why or why not?**
+
+
+
+**c. Does it seem plausible that the stock would increase by an average of 4 dollars in a day? Why or why not?**
+
+
+
+
+**d. Pinky recorded the following daily changes over a random sample of 4 days: $\{−0.7,1.2,4.5,−4.0\}$. Update Brain's prior model with this data to find the posterior model for $\mu$.**
+
+```{r}
+
+```
+
+
+**e. Comment on how Brain's understanding of μ evolved from the prior to the posterior based on Pinky's observed data. Did the stock perform as well as Brain had hoped?**
+
+
+
+
+
