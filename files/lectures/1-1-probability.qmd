@@ -7,7 +7,7 @@ execute:
 format:
   revealjs:
     theme: simple
-    css: mlp22.css
+    css: style_lecture.css
     include-after-body: headers.html
     self-contained: true
     slide-number: true
