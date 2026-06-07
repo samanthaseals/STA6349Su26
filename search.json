@@ -511,6 +511,377 @@
     "text": "Wrap Up\n\nToday we learned how to, in general, approach Bayesian analysis.\nYou now are ready to work on Assignment 2: Thinking Like a Bayesian.\n\n.qmd file is available to download on Canvas.\n\nNext week: conjugate families and one sample inference\n\nBeta-binomial\nGamma-Poisson\nNormal Normal"
   },
   {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#introduction",
+    "href": "files/lectures/2-2-bayesian-inference.html#introduction",
+    "title": "Bayesian Statistical Inference",
+    "section": "Introduction",
+    "text": "Introduction\n\nNow that we know how to find posterior distributions, we will discuss how to use them to make inference.\nHere are the packages we need today:\n\n\nlibrary(bayesrules)\nlibrary(tidyverse)\nlibrary(rstan)\nlibrary(bayesplot)\nlibrary(broom.mixed)\nlibrary(janitor)\ndata(\"moma_sample\")"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#working-example",
+    "href": "files/lectures/2-2-bayesian-inference.html#working-example",
+    "title": "Bayesian Statistical Inference",
+    "section": "Working Example",
+    "text": "Working Example\n\nImagine you find yourself standing at the Museum of Modern Art (MoMA) in New York City, captivated by the artwork in front of you.\n\nWhat are the chances that this modern artist is Gen X or even younger, i.e., born in 1965 or later?\n\nLet \\pi denote the proportion of artists represented in major U.S. modern art museums that are Gen X or younger.\n\nLet’s let the Beta(4,6) prior model for \\pi reflect our prior assumption that major modern art museums disproportionately display artists born before 1965, i.e., \\pi most likely falls below 0.5.\nRationale: “modern art” dates back to the 1880s and it can take a while to gain recognition as an artist."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#working-example-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Working Example",
+    "text": "Working Example\n\nThe Beta(4,6) prior model for \\pi:"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#working-example-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Working Example",
+    "text": "Working Example\n\nLet’s consider the following dataset:\n\n\nhead(moma_sample)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nartist\ncountry\nbirth\ndeath\nalive\ngenx\ngender\ncount\nyear_acquired_min\nyear_acquired_max\n\n\n\n\nAd Gerritsen\ndutch\n1940\n2015\nFALSE\nFALSE\nmale\n1\n1981\n1981\n\n\nKirstine Roepstorff\ndanish\n1972\nNA\nTRUE\nTRUE\nfemale\n3\n2005\n2005\n\n\nLisa Baumgardner\namerican\n1958\n2015\nFALSE\nFALSE\nfemale\n2\n2016\n2016\n\n\nDavid Bates\namerican\n1952\nNA\nTRUE\nFALSE\nmale\n1\n2001\n2001\n\n\nSimon Levy\namerican\n1946\nNA\nTRUE\nFALSE\nmale\n1\n2012\n2012\n\n\nPierre Mercure\ncanadian\n1927\n1966\nFALSE\nFALSE\nmale\n8\n2008\n2008"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#working-example-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Working Example",
+    "text": "Working Example\n\nCounting the number of Generation X and younger,\n\n\nmoma_sample %&gt;% \n  group_by(genx) %&gt;% \n  tally()\n\n\n\n\n\ngenx\nn\n\n\n\n\nFALSE\n86\n\n\nTRUE\n14"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-4",
+    "href": "files/lectures/2-2-bayesian-inference.html#working-example-4",
+    "title": "Bayesian Statistical Inference",
+    "section": "Working Example",
+    "text": "Working Example\n\nOur modeling is as follows,\n\n\n\\begin{align*}\nY|\\pi &\\sim \\text{Bin}(100,\\pi) \\\\\n\\pi &\\sim \\text{Beta}(4,6) \\\\\n\\pi | (Y = 14) &\\sim \\text{Beta(18,92)}\n\\end{align*}\n\n\n\n\n\n\n\nmodel\nalpha\nbeta\nmean\nmode\nvar\nsd\n\n\n\n\nprior\n4\n6\n0.4000000\n0.3750000\n0.0218182\n0.1477098\n\n\nposterior\n18\n92\n0.1636364\n0.1574074\n0.0012330\n0.0351137"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-5",
+    "href": "files/lectures/2-2-bayesian-inference.html#working-example-5",
+    "title": "Bayesian Statistical Inference",
+    "section": "Working Example",
+    "text": "Working Example"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-6",
+    "href": "files/lectures/2-2-bayesian-inference.html#working-example-6",
+    "title": "Bayesian Statistical Inference",
+    "section": "Working Example",
+    "text": "Working Example\n\nThere are three common tasks in posterior analysis:\n\nestimation,\nhypothesis testing, and\nprediction.\n\nFor example,\n\nWhat’s our estimate of \\pi?\nDoes our model support the claim that fewer than 20% of museum artists are Gen X or younger?\nIf we sample 20 more museum artists, how many do we predict will be Gen X or younger?"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-estimation",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-estimation",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Estimation",
+    "text": "Posterior Estimation\n\nWe can construct posterior credible intervals.\n\nA posterior credible interval (CI) provides a range of posterior plausible values of \\theta, and thus a summary of both posterior central tendency and variability.\nA middle 95% CI is constructed by the 2.5th and 97.5th posterior percentiles, \\left( \\theta_{0.025}, \\theta_{0.975} \\right), and there is a 95% posterior probability that \\theta is in this range,\n\n\nP\\left[ \\theta \\in (\\theta_{0.025}, \\theta_{0.975})|Y=y \\right] = \\int_{\\theta_{0.025}}^{\\theta_{0.975}} f(\\theta|y) d\\theta = 0.95"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-estimation-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-estimation-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Estimation",
+    "text": "Posterior Estimation\n\nRecall the Beta(18, 92) posterior model for \\pi, the proportion of modern art museum artists that are Gen X or younger.\n\n\nqbeta(c(0.025, 0.975), 18, 92) # 95% CI\n\n[1] 0.1009084 0.2379286\n\n\n\nThere is a 95% posterior probability that somewhere between 10% and 24% of museum artists are Gen X or younger."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-estimation-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-estimation-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Estimation",
+    "text": "Posterior Estimation\n\nRecall the Beta(18, 92) posterior model for \\pi, the proportion of modern art museum artists that are Gen X or younger.\n\n\nqbeta(c(0.25, 0.75), 18, 92) # 50% CI\n\n[1] 0.1388414 0.1862197\n\n\n\nThere is a 50% posterior probability that somewhere between 14% and 19% of museum artists are Gen X or younger."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-estimation-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-estimation-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Estimation",
+    "text": "Posterior Estimation\n\n95% is a common choice, however, note that it is somewhat arbitrary and used because of decades of tradition.\n\n\n\n\n\nThere is no one right credible interval.\n\nIt will just depend on the context of the analysis."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nSuppose we read an article claiming that fewer than 20% of museum artists are Gen X or younger.\n\n\n\n\n\nHow plausible is it that \\pi &lt; 0.2?\n\n\nP\\left[ \\pi &lt; 0.2 | Y = 14 \\right] = \\int_0^{0.2} f(\\pi|y = 14) d\\pi"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nPosterior Probability\n\n\nP\\left[ \\pi &lt; 0.2 | Y = 14 \\right] = \\int_0^{0.2} f(\\pi|y = 14) d\\pi\n\n\nWe can find this probability by using the pbeta() function:\n\n\npbeta(0.20, 18, 92)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nWe can find this probability by using the pbeta() function:\n\n\npbeta(0.20, 18, 92)\n\n[1] 0.8489856\n\n\n\nThus,\n\n\nP\\left[ \\pi &lt; 0.2 | Y = 14 \\right] = 0.849\n\n\nThere is approximately an 84.9% posterior chance that Gen Xers account for fewer than 20% of modern art museum artists."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nPrior Probability\n\n\nP\\left[ \\pi &lt; 0.2 \\right] = \\int_0^{0.2} f(\\pi) d\\pi\n\n\nWe can find this probability by using the pbeta() function:\n\n\npbeta(0.20, 4, 6)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-4",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-4",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nWe can find this probability by using the pbeta() function:\n\n\npbeta(0.20, 4, 6)\n\n[1] 0.08564173\n\n\n\nThus,\n\n\nP\\left[ \\pi &lt; 0.2 \\right] = 0.086\n\n\nThere is approximately an 8.6% prior chance that Gen Xers account for fewer than 20% of modern art museum artists."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-5",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-5",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nWe can create a table of information we will use to make inferences:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-6",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-6",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nLet’s find the posterior odds in favor of H_1:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849\n\n\n\n\n\n\n\\begin{align*}\n\\text{posterior odds} &= \\frac{P\\left[ H_1 | Y = 14 \\right]}{P\\left[ H_0 | Y = 14 \\right]} \\\\\n&= \\frac{0.849}{0.151} \\\\\n&\\approx 5.62\n\\end{align*}\n\n\nOur posterior assessment, after considering data collected, suggests that \\pi is 5.62 times more likely to be below 0.2 rather than being above 0.2."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-7",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-7",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nLet’s find the prior odds in favor of H_1:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849\n\n\n\n\n\n\n\\begin{align*}\n\\text{prior odds} &= \\frac{P\\left[ H_1 \\right]}{P\\left[ H_0 \\right]} \\\\\n&= \\frac{0.086}{0.914} \\\\\n&\\approx 0.093\n\\end{align*}\n\n\nOur prior assessment, before considering the data collected, suggests that \\pi is 0.093 times more likely to be below 0.2 rather than being above 0.2."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-8",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-8",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nBayes Factor\n\nWhen we are comparing two competing hypotheses, H_0 vs. H_1, the Bayes Factor is an odds ratio for H_1.\ni.e., the Bayes Factor as a measure of evidence in favor of H_1.\n\n\n\n\\text{Bayes Factor} = \\frac{\\text{posterior odds}}{\\text{prior odds}} = \\frac{P\\left[H_1 | Y\\right] / P\\left[H_0 | Y\\right]}{P\\left[H_1\\right] / P\\left[H_0\\right]}\n\n\nThis will be our alternative to the p-value."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-9",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-9",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nBayes Factor\n\n\n\\text{Bayes Factor} = \\frac{\\text{posterior odds}}{\\text{prior odds}} = \\frac{P\\left[H_1 | Y\\right] / P\\left[H_0 | Y\\right]}{P\\left[H_1\\right] / P\\left[H_0\\right]}\n\n\nWe will compare the BF to 1.\n\nBF = 1: The plausibility of H_1 did not change in light of the observed data.\nBF &gt; 1: The plausibility of H_1 increased in light of the observed data.\n\nThe greater the Bayes Factor, the more convincing the evidence for H_1.\n\nBF &lt; 1: The plausibilty of H_1 decreased in light of the observed data."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-10",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-10",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nLet’s now find the Bayes Factor:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849\n\n\n\n\n\n\n\\begin{align*}\n\\text{Bayes Factor} &= \\frac{\\text{posterior odds}}{\\text{prior odds}} = \\frac{P\\left[H_1 | Y\\right] / P\\left[H_0 | Y\\right]}{P\\left[H_1\\right] / P\\left[H_0\\right]} \\\\\n&= \\frac{5.62}{0.09} \\\\\n&\\approx 62.44\n\\end{align*}"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-11",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-11",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nLet’s now find the Bayes Factor:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849\n\n\n\n\n\n\n\nprior_odds &lt;- pbeta(0.20, 4, 6)/(1-pbeta(0.20, 4, 6))\npost_odds &lt;- pbeta(0.20, 18, 92)/(1-pbeta(0.20, 18, 92))\n(BF &lt;- post_odds/prior_odds)\n\n[1] 60.02232"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-12",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-12",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nIt’s time to draw a conclusion!\n\nPosterior probability: 0.85\nBayes factor: 60\n\nWe have fairly convincing evidence in factor of the claim that fewer than 20% of artists at major modern art museums are Gen X or younger.\nThis gives us more information - we have a holistic measure of the level of uncertainty about the claim.\n\nThis should help us inform our next steps."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-13",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-13",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nWe now want to test whether or not 30% of major museum artists are Gen X or younger.\n\n\n\\begin{align*}\nH_0&: \\ \\pi = 0.3 \\\\\nH_1&: \\ \\pi \\ne 0.3\n\\end{align*}\n\n\nWhy is this an issue?"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-14",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-14",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nWe now want to test whether or not 30% of major museum artists are Gen X or younger.\n\n\n\\begin{align*}\nH_0&: \\ \\pi = 0.3 \\\\\nH_1&: \\ \\pi \\ne 0.3\n\\end{align*}\n\n\nWhy is this an issue? The posterior probability of a point hypothesis is always 0!\n\n\nP\\left[ \\pi =0.3 | Y = 14 \\right] = \\int_{0.3}^{0.3} f(\\pi|y = 14) d\\pi = 0"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-15",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-15",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nThe posterior probability of a point hypothesis is always 0!\n\n\nP\\left[ \\pi =0.3 | Y = 14 \\right] = \\int_{0.3}^{0.3} f(\\pi|y = 14) d\\pi = 0\n\n\n…. meaning:\n\n\n\\text{posterior odds}  = \\frac{P\\left[ H_1 | Y = 14 \\right]}{P\\left[ H_0 | Y = 14 \\right]} = \\frac{1}{0}"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-16",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-16",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nWelp.\nLet’s think about the 95% posterior credible interval for \\pi: (0.10, 0.24).\n\nDo we think that 0.3 is a plausible value?"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-17",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-17",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nLet’s reframe our hypotheses:\n\n\n\\begin{align*}\nH_0&: \\ \\pi \\in (0.25, 0.35) \\\\\nH_1&: \\ \\pi \\not\\in (0.25, 0.35)\n\\end{align*}\n\n\nNow, we can more rigorously claim belief in H_1.\n\nThe entire hypothesized range is above the 95% CI.\n\nThis also allows us a way to construct our hypothesis test with posterior probability and Bayes Factor."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\nIn addition to estimating the posterior and using the posterior distribution for hypothesis testing, we may be interested in predicting the outcome in a new dataset.\nSuppose we get our hands on data for 20 more artworks displayed at the museum.\nBased on the posterior understanding of \\pi that we’ve developed throughout this chapter, what number would you predict are done by artists that are Gen X or younger?"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\nSuppose we get our hands on data for 20 more artworks displayed at the museum.\nBased on the posterior understanding of \\pi that we’ve developed throughout this chapter, what number would you predict are done by artists that are Gen X or younger?\n\nLogical response:\n\nposterior guess was 16%\nn = 20\nn \\hat{\\pi} = 20(0.16) = 3.2"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\nSuppose we get our hands on data for 20 more artworks displayed at the museum. What number would you predict are done by artists that are Gen X or younger?\n\nTwo sources of variability in prediction:\n\nSampling variability: we do not expect n \\hat{\\pi} to be an integer.\nPosterior variability in \\pi: we know that 0.16 is not the only plausible \\pi.\n\n95% credible interval for \\pi: (0.10, 0.24)\nWhat do we expect to see under each possible \\pi?"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\nLet’s look at combining the sampling variability in our new Y and posterior variability in \\pi.\n\nLet Y' = y' be the (unknown) number of the 20 new artwork that are done by Gen X or younger artists.\n\ny' \\in \\{0, 1, ..., 20\\}.\n\nConditioned on \\pi, the sampling variability in Y' can be modeled\n\n\n\nY'|\\pi \\sim \\text{Bin}(20, \\pi)\n\n\nf(y'|\\pi) = P[Y' = y'|\\pi] = {20\\choose{y'}} \\pi^{y'} (1-\\pi)^{20-y'}"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-4",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-4",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\nWe can weight f(y'|\\pi) by the posterior pdf, f(\\pi|y=14).\n\nThis captures the chance of observing Y' = y' Gen Xers for a given \\pi\nAt the same time, this accounts for the posterior plausibility of \\pi.\n\n\nf(y'|\\pi) f(\\pi|y=14)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-5",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-5",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\nThis leads us to the posterior predictive model of Y'.\n\n\nf(y'|y) = \\int f(y'|\\pi) f(\\pi|y) \\ d \\pi\n\n\nThe overall chance of observing Y' = y' weights the chance of observing this outcome under any possible \\pi by the posterior plausibility of \\pi.\n\nChance of observing this outcome under any \\pi: f(y'|\\pi).\nPosterior plausibility of \\pi: f(\\pi|y)."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-6",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-6",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\n# STEP 1: DEFINE the model\nart_model &lt;- \"\n  data {\n    int&lt;lower = 0, upper = 100&gt; Y;\n  }\n  parameters {\n    real&lt;lower = 0, upper = 1&gt; pi;\n  }\n  model {\n    Y ~ binomial(100, pi);\n    pi ~ beta(4, 6);\n  }\n\""
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-7",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-7",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\n# STEP 2: SIMULATE the posterior\nart_sim &lt;- stan(model_code = art_model, \n                data = list(Y = 14),  \n                chains = 4, \n                iter = 5000*2, \n                seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 2e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.02 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 1:                0.01 seconds (Sampling)\nChain 1:                0.02 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 1e-06 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 2:                0.011 seconds (Sampling)\nChain 2:                0.021 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 3:                0.01 seconds (Sampling)\nChain 3:                0.02 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 0 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 4:                0.01 seconds (Sampling)\nChain 4:                0.02 seconds (Total)\nChain 4:"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-8",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-8",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\n\n# Parallel trace plot\nmcmc_trace(art_sim, pars = \"pi\", size = 0.5) + xlab(\"iteration\")"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-9",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-9",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\n\n# Density plot\nmcmc_dens_overlay(art_sim, pars = \"pi\")"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-10",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-10",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\n\n# Autocorrelation plot\nmcmc_acf(art_sim, pars = \"pi\")"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-11",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-11",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\nAs we saw previously, the posterior was Beta(18, 92).\nWe will use the tidy() function from the broom.mixed package.\n\n\nlibrary(broom.mixed)\ntidy(art_sim, conf.int = TRUE, conf.level = 0.95)\n\n\n\n\n\nterm\nestimate\nstd.error\nconf.low\nconf.high\n\n\n\n\npi\n0.1635453\n0.0353673\n0.1000882\n0.2391218\n\n\n\n\n\n\n\nThe approximate middle 95% CI for \\pi is (0.100, 0.239).\nOur approximation of the actual posterior median is 0.162."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-12",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-12",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Prediction",
+    "text": "Posterior Prediction\n\nWe can use the mcmc_areas() function from the bayesrules package to get a corresponding graph,\n\n\n\nmcmc_areas(art_sim, pars = \"pi\", prob = 0.95)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-simulation",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-simulation",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Simulation",
+    "text": "Posterior Simulation\n\nUnfortunately, tidy() does not give everything we may be interested in.\n\nWe can save the Markov chain values to a dataset and analyze.\n\n\n\n# Store the 4 chains in 1 data frame\nart_chains_df &lt;- as.data.frame(art_sim, pars = \"lp__\", include = FALSE)\ndim(art_chains_df)\n\n[1] 20000     1\n\nhead(art_chains_df, n=3)\n\n\n\n\n\npi\n\n\n\n\n0.1300701\n\n\n0.1755285\n\n\n0.2214175"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-simulation-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-simulation-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Simulation",
+    "text": "Posterior Simulation\n\nWe can then summarize the Markov chain values,\n\n\nart_chains_df %&gt;% \n  summarize(post_mean = mean(pi), \n            post_median = median(pi),\n            post_mode = sample_mode(pi),\n            lower_95 = quantile(pi, 0.025),\n            upper_95 = quantile(pi, 0.975))\n\n\n\n\n\npost_mean\npost_median\npost_mode\nlower_95\nupper_95\n\n\n\n\n0.1635453\n0.1615222\n0.1583033\n0.1000882\n0.2391218\n\n\n\n\n\n\n\nWe have reproduced/verified the results from tidy() (and then some!)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-simulation-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-simulation-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Simulation",
+    "text": "Posterior Simulation\n\nNow that we have saved the Markov chain values, we can use them to answer questions about the data.\nRecall, we were interested in testing the claim that fewer than 20% of major museum artists are Gen X.\n\n\nart_chains_df %&gt;% \n  mutate(exceeds = pi &lt; 0.20) %&gt;% \n  tabyl(exceeds)\n\n\n\n\n\nexceeds\nn\npercent\n\n\n\n\nFALSE\n3061\n0.15305\n\n\nTRUE\n16939\n0.84695\n\n\n\n\n\n\n\nBy the posterior, there is an 84.6% chance that Gen X artist representation is under 20%."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-simulation-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-simulation-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Simulation",
+    "text": "Posterior Simulation\n\nLet us compare the results between using conjugate family knowledge and MCMC.\n\n\n\n\n\nFrom this, we can see that MCMC gave us an accurate approximation.\nWe should use this as “proof” that the approximations are “reliable” for non-conjugate families.\n\nAlways look at diagnostics!"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#homework-practice",
+    "href": "files/lectures/2-2-bayesian-inference.html#homework-practice",
+    "title": "Bayesian Statistical Inference",
+    "section": "Homework / Practice",
+    "text": "Homework / Practice\n\nFrom the Bayes Rules! textbook:\n\n8.4\n8.8\n8.9\n8.10\n8.14\n8.15\n8.16"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#one-sample-proportions",
+    "href": "files/lectures/2-2-bayesian-inference.html#one-sample-proportions",
+    "title": "Bayesian Statistical Inference",
+    "section": "One Sample Proportions",
+    "text": "One Sample Proportions\nA Bayesian Beta-Binomial analysis is often viewed as the Bayesian counterpart to a frequentist one-sample proportion test.\nThe Bayesian Beta-Binomial model is conceptually closer to the exact binomial test, because both use the exact binomial likelihood rather than a normal approximation.\nThe inferential question is essentially the same (“Is the true proportion different from 0.50?”), but the evidence is summarized differently."
+  },
+  {
+    "objectID": "files/assignments/assignment2.html",
+    "href": "files/assignments/assignment2.html",
+    "title": "Assignment 2: Thinking Like a Bayesian",
+    "section": "",
+    "text": "1. Think of a recent situation in which you changed your mind. As with the restaurant example in class, make a diagram that includes your prior information, your new data that helped you change your mind, and your posterior conclusion.\n\n2. Odie is trying to convince Jon that Garfield stole the lasagna. Jon thinks there is a 0.10 probability that Garfield would steal the lasagna. Jon also believes that the probability Garfield raids the fridge given that he’s in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield stole the lasagna?\n\n3. Arlene, Garfield’s on-again-off-again girlfriend, has two dispositions toward Garfield: happy or annoyed. In general, Arlene is happy with Garfield 55% of the time. You’ve noticed, however, that her disposition is related to how many times Garfield ignored her the day before. If Arlene is happy with Garfield today, there’s a 60% chance Garfield ignored her 0 times, a 35% chance he ignored her between 1 and 3 times, and a 5% chance he ignored her more than 3 times yesterday. If Arlene is annoyed with Garfield today, there’s a 10% chance Garfield ignored her 0 times, a 55% chance he ignored her between 1 and 3 times, and a 35% chance he ignored her more than 3 times yesterday.\na. Use the given information to complete the following table:\n\n\n\nIgnores yesterday\nP(ignores\nhappy)\n\n\n\n\n0 times\n\n\n\n\n1–3 times\n\n\n\n\nMore than 3 times\n\n\n\n\n\nb. Today’s a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what’s the probability that Arlene is happy with Garfield? What part of the Bayes’ Rule equation is this: the prior, likelihood, normalizing constant, or posterior?\nc. You’ve been spying on Garfield all day and have tallied that he ignored Arlene a whopping 5 times yesterday. How likely is Arlene to have been ignored 4 times if she’s happy with Garfield today? What part of the Bayes’ Rule equation is this?\nd. What is the posterior probability that Arlene is happy with Garfield today, given that Garfield ignored her 4 times yesterday?"
+  },
+  {
+    "objectID": "files/assignments/assignment1.html",
+    "href": "files/assignments/assignment1.html",
+    "title": "Assignment 1: Probability Distributions",
+    "section": "",
+    "text": "Note: do not read too much into the following scenarios. The purpose is to get comfortable identifying distributions and finding corresponding probabilities.\nScenario 1: Walter is known for his intense personality during bowling league nights. Whether it’s a foot foul, a scoring dispute, or just general frustration with life, he frequently loses his temper and yells loudly at his teammates or opponents. Based on observations over several league nights, it has been determined that Walter loses his temper at an average rate of 4 outbursts per hour. His outbursts are unpredictable and can happen at any point during the game, but they seem to occur independently of each other.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Walter will not have an outburst at all?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Walter has more than 10 outbursts during league night?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 2: Donny often struggles to find parking near the bowling alley, especially on busy league nights. Sometimes he gets lucky and finds a spot fairly quickly, but other times he ends up circling the block several times before he can finally park. His parking times are generally right-skewed as it is much more common for it to take a shorter amount of time… but every now and then it can take quite a while. Over time, his friends have noticed a pattern: it usually takes him a few minutes, but there is a decent chance it could take significantly longer.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this scenario, \\alpha=3 and \\beta=4.\nReplace with your answer\nd. What is the probability that Donny will take more than 15 minutes to find a spot?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Donny will find a parking space quickly – i.e., that he parks within 5 minutes of arriving?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 3: Maude is famous for her avant-garde dance performances that leave audiences both puzzled and mesmerized. Her performances at the local art venue are known for their spontaneity and lack of strict timing. Observers have noted that the duration of her performances can last anywhere between 15 and 30 minutes, with any length within this interval being equally likely. There’s no predicting exactly how long Maude will choose to perform on any given night… sometimes it’s a brief expression and sometimes it stretches to the edge of the audience’s patience.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Maude’s performance will be on the shorter end – i.e., it lasts somewhere between 15 and 16 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Maude’s performance will be on the longer end – i.e., it lasts somewhere between 25 and 30 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 4. The Dude always orders a White Russian when he’s at the bowling alley. However, the bowling alley bar is not always well-stocked. Each time The Dude places an order, there is only a 60% chance that the bartender has all the necessary ingredients on hand to make the drink (they are frequently out of cream). Throughout one particularly long evening of bowling and philosophical debates, The Dude orders 8 White Russians. He hopes that most of them will be successfully made.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that at least 5 drinks will be successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that all 8 drinks are successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 5: The Dude’s bowling games tend to last around 45 minutes, give or take. While the exact length can vary from game to game, it’s rare for his games to be extremely short or unusually long. Most of the time, his game lengths cluster fairly tightly around that 45-minute mark, though occasionally he’ll have a quicker match or one that drags on a little longer if the vibe calls for it, to the tune of \\pm 5 minutes.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that the game will last exactly 45 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\ne. What is the probability that the game will really drag on – that it lasts somewhere between 50 and 60 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\nScenario 6: After many laid-back bowling sessions (and several White Russians), The Dude has started keeping track of how often he lands a strike. He knows he’s not perfect, but he’s developed a pretty good feel for his overall strike success rate. It seems like his strike percentage tends to hang out somewhere between 60% and 80% most nights, though there’s still some uncertainty. Sometimes he’s on fire, sometimes he’s a little off, but overall he’s confident his long-term strike rate leans more toward success than failure.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this example, they are 7 and 3 (in that order)).\nReplace with your answer\nd. What is the probability that The Dude’s strike success rate is less than 50%?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that The Dude’s strike success rate is above 80%?\nReplace with your answer (i.e., don’t just show me R output here :))"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Applied Bayesian Analysis - Summer 2026",
+    "section": "",
+    "text": "Welcome to Applied Bayesian Analysis for Summer 2026!\nThe initial development of this course was supported by the 2023 BATS program, funded by NSF IUSE: EHR program with award numbers 2215879, 2215920, and 2215709."
+  },
+  {
+    "objectID": "files/assignments/assignment3.html",
+    "href": "files/assignments/assignment3.html",
+    "title": "Assignment 3: Conjugate Families",
+    "section": "",
+    "text": "Scenario 1: Every night, the same thing happens: Brain concocts an elaborate scheme to take over the world, and somehow it never quite works out. Whether it’s Pinky’s blundering, an unexpected plot twist, or the Warner siblings’ interference, Brain’s plans have a way of falling apart at the last moment.\nThe Warner siblings — Yakko, Wakko, and Dot — have each been keeping tabs on Brain’s success (or lack thereof) while atop the Warners’ water tower. Each sibling has been independently tracking whether Brain’s plan was foiled on any given day, and each comes into the analysis with the same prior belief: a Beta(2, 5) distribution for \\pi, the probability that Brain’s plan gets foiled on any given day. This prior reflects a shared suspicion that Brain usually gets pretty far with his plans, but not always.\nThe current issue is that each sibling has been watching for a different stretch of time, and they don’t always agree on what they saw. For each sibling, you’ll update the Beta(2, 5) prior with their observed data and summarize the resulting posterior distribution.\na. After carefully observing Brain’s schemes over 50 days, Dot recorded that 18 of Brain’s plans were successfully foiled. Summarize Dot’s analysis using the functions demonstrated in lecture.\nb. Yakko has been keeping his own records from a different observation period. In his records, Brain’s plans were foiled 12 out of 25 days. Summarize Yakko’s analysis using the functions demonstrated in lecture.\nc. In Wakko’s records, Brain’s plans were foiled 18 out of 25 days. Summarize Wakko’s analysis using the functions demonstrated in lecture.\nd. How do Dot, Yakko, and Wakko’s posterior models compare to one another?\nScenario 2: Yakko, Wakko, and Dot have a long-standing rivalry with the Goodfeathers, Bobby, Squit, and Pesto, who are always pecking around the WB studio lot. The siblings suspect the Goodfeathers show up at an annoyingly high rate throughout the day, and Dot has decided to model this formally. Let \\lambda represent the rate at which the Goodfeathers appear per hour on the studio lot.\na. Dot believes the Goodfeathers show up about 8 times per hour on average, with a standard deviation of 0.5 appearances. Tune and plot an appropriate Gamma(s, r) prior model for λ.\nb. Yakko and Wakko help out by each staking out different parts of the lot. Across 8 hours of observation, they recorded the following Goodfeather appearances: \\{3,9,7,11,8,6,10, 9\\}. Update Dot’s prior model with this data to find the posterior model for \\lambda.\nc. Comment on how the siblings’ understanding of \\lambda changed from the prior to the posterior based on their observations. Did the Goodfeathers show up as often as Dot feared?\nScenario 3: Brain has abandoned his usual schemes and pivoted to high finance. His latest plan for world domination involves cornering the market on Acme Corp stock — the same company that supplies every single product on the WB studio lot. Pinky is thrilled. Brain is focused. Let μ represent the average dollar amount that Acme Corp stock goes up or down in a one-day period.\na. Brain has reviewed Acme Corp’s historical performance. He believes the stock increases by an average of 7.2 dollars per day, with a standard deviation of 2.6 dollars. Tune and plot an appropriate Normal prior model for \\mu.\nb. According to your plot, does it seem plausible that Acme Corp stock would increase by an average of 7.6 dollars in a day? Why or why not?\nc. Does it seem plausible that the stock would increase by an average of 4 dollars in a day? Why or why not?\nd. Pinky recorded the following daily changes over a random sample of 4 days: \\{−0.7,1.2,4.5,−4.0\\}. Update Brain’s prior model with this data to find the posterior model for \\mu.\ne. Comment on how Brain’s understanding of μ evolved from the prior to the posterior based on Pinky’s observed data. Did the stock perform as well as Brain had hoped?"
+  },
+  {
     "objectID": "files/lectures/2-1-conjugate-families.html#introduction-beta-binomial-model",
     "href": "files/lectures/2-1-conjugate-families.html#introduction-beta-binomial-model",
     "title": "Conjugate Families",
@@ -1146,34 +1517,6 @@
     "title": "Conjugate Families",
     "section": "Wrap Up",
     "text": "Wrap Up\n\nToday we covered the main conjugate families.\n\nBeta-Binomial: binary outcomes\nGamma-Poisson: count outcomes\nNormal-Normal: continuous outcomes\n\nYou now are ready to work on Assignment 3: Conjugate Families.\n\n.qmd file is available to download on Canvas.\n\nWednesday: how do we draw conclusions using the posterior distribution?"
-  },
-  {
-    "objectID": "files/assignments/assignment3.html",
-    "href": "files/assignments/assignment3.html",
-    "title": "Assignment 3: Conjugate Families",
-    "section": "",
-    "text": "Scenario 1: Every night, the same thing happens: Brain concocts an elaborate scheme to take over the world, and somehow it never quite works out. Whether it’s Pinky’s blundering, an unexpected plot twist, or the Warner siblings’ interference, Brain’s plans have a way of falling apart at the last moment.\nThe Warner siblings — Yakko, Wakko, and Dot — have each been keeping tabs on Brain’s success (or lack thereof) while atop the Warners’ water tower. Each sibling has been independently tracking whether Brain’s plan was foiled on any given day, and each comes into the analysis with the same prior belief: a Beta(2, 5) distribution for \\pi, the probability that Brain’s plan gets foiled on any given day. This prior reflects a shared suspicion that Brain usually gets pretty far with his plans, but not always.\nThe current issue is that each sibling has been watching for a different stretch of time, and they don’t always agree on what they saw. For each sibling, you’ll update the Beta(2, 5) prior with their observed data and summarize the resulting posterior distribution.\na. After carefully observing Brain’s schemes over 50 days, Dot recorded that 18 of Brain’s plans were successfully foiled. Summarize Dot’s analysis using the functions demonstrated in lecture.\nb. Yakko has been keeping his own records from a different observation period. In his records, Brain’s plans were foiled 12 out of 25 days. Summarize Yakko’s analysis using the functions demonstrated in lecture.\nc. In Wakko’s records, Brain’s plans were foiled 18 out of 25 days. Summarize Wakko’s analysis using the functions demonstrated in lecture.\nd. How do Dot, Yakko, and Wakko’s posterior models compare to one another?\nScenario 2: Yakko, Wakko, and Dot have a long-standing rivalry with the Goodfeathers, Bobby, Squit, and Pesto, who are always pecking around the WB studio lot. The siblings suspect the Goodfeathers show up at an annoyingly high rate throughout the day, and Dot has decided to model this formally. Let \\lambda represent the rate at which the Goodfeathers appear per hour on the studio lot.\na. Dot believes the Goodfeathers show up about 8 times per hour on average, with a standard deviation of 0.5 appearances. Tune and plot an appropriate Gamma(s, r) prior model for λ.\nb. Yakko and Wakko help out by each staking out different parts of the lot. Across 8 hours of observation, they recorded the following Goodfeather appearances: \\{3,9,7,11,8,6,10, 9\\}. Update Dot’s prior model with this data to find the posterior model for \\lambda.\nc. Comment on how the siblings’ understanding of \\lambda changed from the prior to the posterior based on their observations. Did the Goodfeathers show up as often as Dot feared?\nScenario 3: Brain has abandoned his usual schemes and pivoted to high finance. His latest plan for world domination involves cornering the market on Acme Corp stock — the same company that supplies every single product on the WB studio lot. Pinky is thrilled. Brain is focused. Let μ represent the average dollar amount that Acme Corp stock goes up or down in a one-day period.\na. Brain has reviewed Acme Corp’s historical performance. He believes the stock increases by an average of 7.2 dollars per day, with a standard deviation of 2.6 dollars. Tune and plot an appropriate Normal prior model for \\mu.\nb. According to your plot, does it seem plausible that Acme Corp stock would increase by an average of 7.6 dollars in a day? Why or why not?\nc. Does it seem plausible that the stock would increase by an average of 4 dollars in a day? Why or why not?\nd. Pinky recorded the following daily changes over a random sample of 4 days: \\{−0.7,1.2,4.5,−4.0\\}. Update Brain’s prior model with this data to find the posterior model for \\mu.\ne. Comment on how Brain’s understanding of μ evolved from the prior to the posterior based on Pinky’s observed data. Did the stock perform as well as Brain had hoped?"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Applied Bayesian Analysis - Summer 2026",
-    "section": "",
-    "text": "Welcome to Applied Bayesian Analysis for Summer 2026!\nThe initial development of this course was supported by the 2023 BATS program, funded by NSF IUSE: EHR program with award numbers 2215879, 2215920, and 2215709."
-  },
-  {
-    "objectID": "files/assignments/assignment1.html",
-    "href": "files/assignments/assignment1.html",
-    "title": "Assignment 1: Probability Distributions",
-    "section": "",
-    "text": "Note: do not read too much into the following scenarios. The purpose is to get comfortable identifying distributions and finding corresponding probabilities.\nScenario 1: Walter is known for his intense personality during bowling league nights. Whether it’s a foot foul, a scoring dispute, or just general frustration with life, he frequently loses his temper and yells loudly at his teammates or opponents. Based on observations over several league nights, it has been determined that Walter loses his temper at an average rate of 4 outbursts per hour. His outbursts are unpredictable and can happen at any point during the game, but they seem to occur independently of each other.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Walter will not have an outburst at all?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Walter has more than 10 outbursts during league night?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 2: Donny often struggles to find parking near the bowling alley, especially on busy league nights. Sometimes he gets lucky and finds a spot fairly quickly, but other times he ends up circling the block several times before he can finally park. His parking times are generally right-skewed as it is much more common for it to take a shorter amount of time… but every now and then it can take quite a while. Over time, his friends have noticed a pattern: it usually takes him a few minutes, but there is a decent chance it could take significantly longer.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this scenario, \\alpha=3 and \\beta=4.\nReplace with your answer\nd. What is the probability that Donny will take more than 15 minutes to find a spot?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Donny will find a parking space quickly – i.e., that he parks within 5 minutes of arriving?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 3: Maude is famous for her avant-garde dance performances that leave audiences both puzzled and mesmerized. Her performances at the local art venue are known for their spontaneity and lack of strict timing. Observers have noted that the duration of her performances can last anywhere between 15 and 30 minutes, with any length within this interval being equally likely. There’s no predicting exactly how long Maude will choose to perform on any given night… sometimes it’s a brief expression and sometimes it stretches to the edge of the audience’s patience.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Maude’s performance will be on the shorter end – i.e., it lasts somewhere between 15 and 16 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Maude’s performance will be on the longer end – i.e., it lasts somewhere between 25 and 30 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 4. The Dude always orders a White Russian when he’s at the bowling alley. However, the bowling alley bar is not always well-stocked. Each time The Dude places an order, there is only a 60% chance that the bartender has all the necessary ingredients on hand to make the drink (they are frequently out of cream). Throughout one particularly long evening of bowling and philosophical debates, The Dude orders 8 White Russians. He hopes that most of them will be successfully made.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that at least 5 drinks will be successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that all 8 drinks are successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 5: The Dude’s bowling games tend to last around 45 minutes, give or take. While the exact length can vary from game to game, it’s rare for his games to be extremely short or unusually long. Most of the time, his game lengths cluster fairly tightly around that 45-minute mark, though occasionally he’ll have a quicker match or one that drags on a little longer if the vibe calls for it, to the tune of \\pm 5 minutes.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that the game will last exactly 45 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\ne. What is the probability that the game will really drag on – that it lasts somewhere between 50 and 60 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\nScenario 6: After many laid-back bowling sessions (and several White Russians), The Dude has started keeping track of how often he lands a strike. He knows he’s not perfect, but he’s developed a pretty good feel for his overall strike success rate. It seems like his strike percentage tends to hang out somewhere between 60% and 80% most nights, though there’s still some uncertainty. Sometimes he’s on fire, sometimes he’s a little off, but overall he’s confident his long-term strike rate leans more toward success than failure.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this example, they are 7 and 3 (in that order)).\nReplace with your answer\nd. What is the probability that The Dude’s strike success rate is less than 50%?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that The Dude’s strike success rate is above 80%?\nReplace with your answer (i.e., don’t just show me R output here :))"
-  },
-  {
-    "objectID": "files/assignments/assignment2.html",
-    "href": "files/assignments/assignment2.html",
-    "title": "Assignment 2: Thinking Like a Bayesian",
-    "section": "",
-    "text": "1. Think of a recent situation in which you changed your mind. As with the restaurant example in class, make a diagram that includes your prior information, your new data that helped you change your mind, and your posterior conclusion.\n\n2. Odie is trying to convince Jon that Garfield stole the lasagna. Jon thinks there is a 0.10 probability that Garfield would steal the lasagna. Jon also believes that the probability Garfield raids the fridge given that he’s in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield stole the lasagna?\n\n3. Arlene, Garfield’s on-again-off-again girlfriend, has two dispositions toward Garfield: happy or annoyed. In general, Arlene is happy with Garfield 55% of the time. You’ve noticed, however, that her disposition is related to how many times Garfield ignored her the day before. If Arlene is happy with Garfield today, there’s a 60% chance Garfield ignored her 0 times, a 35% chance he ignored her between 1 and 3 times, and a 5% chance he ignored her more than 3 times yesterday. If Arlene is annoyed with Garfield today, there’s a 10% chance Garfield ignored her 0 times, a 55% chance he ignored her between 1 and 3 times, and a 35% chance he ignored her more than 3 times yesterday.\na. Use the given information to complete the following table:\n\n\n\nIgnores yesterday\nP(ignores\nhappy)\n\n\n\n\n0 times\n\n\n\n\n1–3 times\n\n\n\n\nMore than 3 times\n\n\n\n\n\nb. Today’s a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what’s the probability that Arlene is happy with Garfield? What part of the Bayes’ Rule equation is this: the prior, likelihood, normalizing constant, or posterior?\nc. You’ve been spying on Garfield all day and have tallied that he ignored Arlene a whopping 5 times yesterday. How likely is Arlene to have been ignored 4 times if she’s happy with Garfield today? What part of the Bayes’ Rule equation is this?\nd. What is the posterior probability that Arlene is happy with Garfield today, given that Garfield ignored her 4 times yesterday?"
   },
   {
     "objectID": "files/lectures/1-1-probability.html#introduction",
@@ -1852,6 +2195,6 @@
     "href": "syllabus.html",
     "title": "Abbreviated Syllabus",
     "section": "",
-    "text": "Note: this is an abbreviated syllabus. The full syllabus is available through Classmate and/or Canvas.\n\nInstructor Information\n\nDr. Samantha Seals\nOffice: 4/344\n\n\n\nMeeting Times and Location\n\nMW 4:00 pm–5:15 pm\nPhysical classroom: 4/406\nZoom classroom: see Canvas or full syllabus for link\n\n\n\nOffice Hours\n\nMonday: 9:00 am-11:00 am\nTuesday: 2:00 pm-4:00 pm\nWednesday: 9:00 am-11:00 am\nOther times by appointment\n\n\n\nGrading and Evaluation\nThe course grade will be determined as follows:\n\nAssignments (25%): Every module will finish with an assignment to demonstrate the knowledge gained. TThe resulting .html file should be submitted to the designated Assignment on Canvas by 11:59 pm on the specified date (see Canvas).\nProject (50%): Students in this course will be collaborating with students in GEO6118 - Research Design. The final research project will be submitted along with smaller pieces throughout the semester.\nFinal Exam (25%): The final exam will be a take home final.\n\n\n\nLate Policy\nAssigments have due dates, however, the dropboxes will not close until the end of the semester. All students are automatically granted “extensions” without question.\nNote that if there is not a submission when I go to grade (after the initial deadline), I will assign a zero (0) and request that you submit the assignment when you are able to. This is only for record keeping purposes. There is no penalty for submitting late and a full grade will be given upon review of your submission.\nExtensions are not available for project pieces or the final exam."
+    "text": "Note: this is an abbreviated syllabus. The full syllabus is available through Classmate and/or Canvas.\n\nInstructor Information\n\nDr. Samantha Seals\nOffice: 4/344\n\n\n\nMeeting Times and Location\n\nMW 6:00 pm–8:40 pm\nPhysical classroom: 11/121\nZoom classroom: see Canvas for link\n\n\n\nOffice Hours\n\nMonday: 2:00-4:00 pm\nWednesday: 2:00-4:00 pm\nOther times by appointment\n\n\n\nGrading and Evaluation\nThe course grade will be determined as follows:\n\nAssignments (25%): Every module will finish with an assignment to demonstrate the knowledge gained. The resulting .html file should be submitted to the designated Assignment on Canvas by 11:59 pm on the specified date (see Canvas).\nMidterm (25%): The midterm will be a take home midterm. The resulting .html file should be submitted to the designated Assignment on Canvas by 11:59 pm on the specified date (see Canvas).\nProject (25%): Students will complete a project which will be presented in class the last week of classes.\nFinal Exam (25%): The final exam will be a take home final. The resulting .html file should be submitted to the designated Assignment on Canvas by 11:59 pm on the specified date (see Canvas).\n\n\n\nLate Policy\nAssigments have due dates, however, the dropboxes will not close until the end of the semester. All students are automatically granted “extensions” without question.\nNote that if there is not a submission when I go to grade (after the initial deadline), I will assign a zero (0) and request that you submit the assignment when you are able to. This is only for record keeping purposes. There is no penalty for submitting late and a full grade will be given upon review of your submission.\nExtensions are not available for the project, midterm, or final exam."
   }
 ]
