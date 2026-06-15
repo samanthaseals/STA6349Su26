@@ -326,7 +326,7 @@
     "href": "files/lectures/1-2-bayes-thinking.html#example-2-building-a-model-3",
     "title": "Thinking Like a Bayesian",
     "section": "Example 2: Building a Model",
-    "text": "Example 2: Building a Model\n\nLet’s use the pop_vs_soda dataset to explore the relationship between region (region) and whether people say “pop” or “soda” when referring to carbonated beverages (pop).\n\n\ndata(pop_vs_soda)\npop_vs_soda %&gt;% \n  tabyl(pop, region) %&gt;% \n  adorn_percentages(\"col\") %&gt;%\n  round(4)"
+    "text": "Example 2: Building a Model\n\nLet’s use the pop_vs_soda dataset to explore the relationship between region (region) and whether people say “pop” or “soda” when referring to carbonated beverages (pop).\n\n\ndata(pop_vs_soda)\npop_vs_soda %&gt;% \n  tabyl(pop, region) %&gt;% \n  adorn_percentages(\"col\") %&gt;%\n  round(4)\n\npop_vs_soda %&gt;% tabyl(pop)"
   },
   {
     "objectID": "files/lectures/1-2-bayes-thinking.html#example-2-building-a-model-4",
@@ -515,53 +515,410 @@
     "href": "files/lectures/2-2-bayesian-inference.html#introduction",
     "title": "Bayesian Statistical Inference",
     "section": "Introduction",
-    "text": "Introduction\n\nNow that we know how to find posterior distributions, we will discuss how to use them to make inference.\nHere are the packages we need today:\n\n\nlibrary(bayesrules)\nlibrary(tidyverse)\nlibrary(rstan)\nlibrary(bayesplot)\nlibrary(broom.mixed)\nlibrary(janitor)\ndata(\"moma_sample\")"
+    "text": "Introduction\n\nWe have learned how to think like a Bayesian:\n\nPrior distribution\nData distribution\nPosterior distribution\n\nWe have learned three conjugate families:\n\nBeta-Binomial (binary outcomes)\nGamma-Poisson (count outcomes)\nNormal-Normal (continuous outcomes)\n\nOnce we have a posterior model, we must be able to apply the results.\n\nPosterior estimation\nHypothesis testing\nPrediction"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#r-packages-needed",
+    "href": "files/lectures/2-2-bayesian-inference.html#r-packages-needed",
+    "title": "Bayesian Statistical Inference",
+    "section": "R Packages Needed",
+    "text": "R Packages Needed\n\nTo follow today’s lecture, please load the following packages:\n\n\nlibrary(tidyverse)\nlibrary(janitor)\nlibrary(rstan)\nlibrary(bayesrules)\nlibrary(bayesplot)\nlibrary(broom.mixed)\nlibrary(ggpubr)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#introduction-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#introduction-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Introduction",
+    "text": "Introduction\n\nRecall, we have the posterior pdf,\n\nf(\\theta|y) = \\frac{f(\\theta) L(\\theta|y)}{f(y)} \\propto f(\\theta)L(\\theta|y)\n\nNow, in the denominator, we need to remember,\n\nf(y) = \\int_{\\theta_1} \\int_{\\theta_2} \\cdot \\cdot \\cdot \\int_{\\theta_k} f(\\theta) L(\\theta|y) d\\theta_k \\cdot \\cdot \\cdot d\\theta_2 d\\theta_1\n\nBecause this is … not fun … we will approximate the posterior via simulation."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#introduction-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#introduction-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Introduction",
+    "text": "Introduction\n\nWe are going to explore two simulation techniques:\n\ngrid approximation\nMarkov chain Monte Carlo (MCMC)\n\nEither method will produce a sample of N values for \\theta.\n\n\\left \\{ \\theta^{(1)}, \\theta^{(2)}, ..., \\theta^{(N)} \\right \\}\n\nThese \\theta_i will have properties that reflect those of the posterior model for \\theta.\nTo help us, we will apply these simulation techniques to Beta-Binomial and Gamma-Poisson models.\n\nNote that these models do not require simulation! We know their posteriors!\nThat’s why we are starting there – we can link the concepts to what we know. :)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\n\nSuppose there is an image that you can’t view in its entirety.\nWe can see snippets along a grid that sweeps from left to right across the image.\nThe finer the grid, the clearer the image; if the grid is fine enough, the result is a good approximation."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\n\nThis is the general idea behind Bayesian grid approximation.\nOur target image is the posterior pdf, f(\\theta|y).\n\nIt is not necessary to observe all possible f(\\theta|y) \\ \\forall \\theta for us to understand its structure.\nInstead, we evaluate f(\\theta|y) at a finite, discrete grid of possible \\theta values.\nThen, we take random samples from this discretized pdf to approximate the full posterior pdf."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nGrid approximation produces a sample of N independent \\theta values,\n\n\\left\\{ \\theta^{(1)}, \\theta^{(2)}, ..., \\theta^{(N)} \\right\\},\nfrom a discretized approximation of the posterior pdf, f(\\theta|y)."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nAlgorithm:\n\nDefine a discrete grid of possible \\theta values.\nEvaluate the prior pdf, f(\\theta), and the likelihood function, L(\\theta|y) at each \\theta grid value.\nObtain a discrete approximation of the posterior pdf, f(\\theta|y) by:\n\nCalculating the product f(\\theta) L(\\theta|y) at each \\theta grid value,\nNormalize the products from (a) to sum to 1 across all \\theta.\n\nRandomly sample N \\theta grid values with respect to their corresponding normalized posterior probabilities."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-4",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-4",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nWe will use the following Beta-Binomial model to learn how to do grid approximation:\n\n\n\\begin{align*}\nY|\\pi &\\sim \\text{Bin}(10, \\pi) \\\\\n\\pi &\\sim \\text{Beta}(2, 2)\n\\end{align*}\n\n\nNote that\n\nY is the number of successes in 10 independent trials.\nEvery trial has probability of success, \\pi.\nOur prior understanding about \\pi is captured by a \\text{Beta}(2,2) model."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-5",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-5",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nIf we observe Y = 9 successes, we know that the updated posterior model for \\pi is \\text{Beta}(11, 3).\n\nY + \\alpha = 9+2\nn - Y + \\beta = 10-9+2\n\nThus,\n\n\n\\begin{align*}\nY|\\pi &\\sim \\text{Bin}(10, \\pi) \\\\\n\\pi &\\sim \\text{Beta}(2, 2) \\\\\n\\pi | Y &\\sim \\text{Beta}(11, 3)\n\\end{align*}"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-6",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-6",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nInstead of using the posterior we know, let’s approximate it using grid approximation.\nFirst step: define a discrete grid of possible \\theta values.\n\nSo, let’s consider \\pi \\in \\{0, 0.2, 0.4, 0.6, 0.8, 1\\}.\n\n\n\ngrid_data &lt;- tibble(pi_grid = seq(from = 0, to = 1, length = 6))\nhead(grid_data)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-7",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-7",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nInstead of using the posterior we know, let’s approximate it using grid approximation.\nFirst step: define a discrete grid of possible \\theta values.\n\nSo, let’s consider \\pi \\in \\{0, 0.2, 0.4, 0.6, 0.8, 1\\}.\n\n\n\n\n\n\n\n\npi_grid\n\n\n\n\n0.0\n\n\n0.2\n\n\n0.4\n\n\n0.6\n\n\n0.8\n\n\n1.0"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-8",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-8",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nInstead of using the posterior we know, let’s approximate it using grid approximation.\nSecond step: evaluate the prior pdf, f(\\theta), and the likelihood function, L(\\theta|y) at each \\theta grid value.\n\nWe will use dbeta() and dbinom() to evaluate the \\text{Beta}(2,2) prior and \\text{Bin}(10, \\pi) likelihood with Y=9 at each \\pi in pi_grid.\n\n\n\ngrid_data &lt;- grid_data %&gt;%\n  mutate(prior = dbeta(pi_grid, 2, 2),\n         likelihood = dbinom(9, 10, pi_grid))\nhead(grid_data)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-9",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-9",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nInstead of using the posterior we know, let’s approximate it using grid approximation.\nSecond step: evaluate the prior pdf, f(\\theta), and the likelihood function, L(\\theta|y) at each \\theta grid value.\n\nWe will use dbeta() and dbinom() to evaluate the \\text{Beta}(2,2) prior and \\text{Bin}(10, \\pi) likelihood with Y=9 at each \\pi in pi_grid.\n\n\n\n\n\n\n\n\npi_grid\nprior\nlikelihood\n\n\n\n\n0.0\n0.00\n0.0000000\n\n\n0.2\n0.96\n0.0000041\n\n\n0.4\n1.44\n0.0015729\n\n\n0.6\n1.44\n0.0403108\n\n\n0.8\n0.96\n0.2684355\n\n\n1.0\n0.00\n0.0000000"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-10",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-10",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nInstead of using the posterior we know, let’s approximate it using grid approximation.\nThird step: obtain a discrete approximation of the posterior pdf, f(\\theta|y) by calculating the product f(\\theta) L(\\theta|y) at each \\theta grid value and normalizing the products to sum to 1 across all \\theta.\n\n\ngrid_data &lt;- grid_data %&gt;%\n  mutate(unnormalized = likelihood*prior,\n         posterior = unnormalized / sum(unnormalized))\nhead(grid_data)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-11",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-11",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nInstead of using the posterior we know, let’s approximate it using grid approximation.\nThird step: obtain a discrete approximation of the posterior pdf, f(\\theta|y) by calculating the product f(\\theta) L(\\theta|y) at each \\theta grid value and normalizing the products to sum to 1 across all \\theta."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-12",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-12",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nInstead of using the posterior we know, let’s approximate it using grid approximation.\nThird step: obtain a discrete approximation of the posterior pdf, f(\\theta|y) by calculating the product f(\\theta) L(\\theta|y) at each \\theta grid value and normalizing the products to sum to 1 across all \\theta.\nVerifying our calculations,\n\n\ngrid_data %&gt;%\n  summarize(sum(unnormalized), sum(posterior))"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-13",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-13",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nInstead of using the posterior we know, let’s approximate it using grid approximation.\nThird step: obtain a discrete approximation of the posterior pdf, f(\\theta|y) by calculating the product f(\\theta) L(\\theta|y) at each \\theta grid value and normalizing the products to sum to 1 across all \\theta.\nVerifying our calculations,\n\n\n\n\n\n\n\nsum(unnormalized)\nsum(posterior)\n\n\n\n\n0.3180144\n1"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-14",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-14",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nInstead of using the posterior we know, let’s approximate it using grid approximation.\nWe now have a glimpse into the actual posterior pdf.\n\nWe can plot it to see what it looks like,"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#grid-approximation-15",
+    "href": "files/lectures/2-2-bayesian-inference.html#grid-approximation-15",
+    "title": "Bayesian Statistical Inference",
+    "section": "Grid Approximation",
+    "text": "Grid Approximation\n\nAs we increase the number of possible \\theta values, the better we can “see” the resulting posterior.\nWhat happens if we try the following: n=50, n=100, n=500, n=1000?"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#markov-chain-monte-carlo-mcmc",
+    "href": "files/lectures/2-2-bayesian-inference.html#markov-chain-monte-carlo-mcmc",
+    "title": "Bayesian Statistical Inference",
+    "section": "Markov chain Monte Carlo (MCMC)",
+    "text": "Markov chain Monte Carlo (MCMC)\n\nMarkov chain Monte Carlo (MCMC) is an application of Markov chains to simulate probability models.\nMCMC samples are not taken directly from the posterior pdf, f(\\theta | y)… and they are not independent.\n\nEach subsequent value depends on the previous value.\n\nSuppose we have an N-length MCMC sample, \\left\\{ \\theta^{(1)}, \\theta^{(2)}, \\theta^{(3)}, ..., \\theta^{(N)} \\right\\}\n\n\\theta^{(2)} is drawn from a model that depends on \\theta^{(1)}.\n\\theta^{(3)} is drawn from a model that depends on \\theta^{(2)}.\netc."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#markov-chain-monte-carlo-mcmc-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#markov-chain-monte-carlo-mcmc-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Markov chain Monte Carlo (MCMC)",
+    "text": "Markov chain Monte Carlo (MCMC)\n\nThe (i+1)st chain value, \\theta^{(i+1)} is drawn from a model that depends on data y and the previous chain value, \\theta^{(i)}.\n\nf\\left( \\theta^{(i+1)} | \\theta^{(i)}, y \\right)\n\nIt is important for us to note that the pdf from which a Markov chain is simulated is not equivalent to the posterior pdf!\n\nf\\left( \\theta^{(i+1)} | \\theta^{(i)}, y  \\right) \\ne f\\left(\\theta^{(i+1)}|y \\right)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#using-rstan",
+    "href": "files/lectures/2-2-bayesian-inference.html#using-rstan",
+    "title": "Bayesian Statistical Inference",
+    "section": "Using rstan",
+    "text": "Using rstan\n\nWe will use rstan:\n\ndefine the Bayesian model structure in rstan notation\nsimulate the posterior\n\nAgain, we will use the Beta-Binomial model from earlier.\n\ndata: in our example, Y is the observed number of successes in 10 trials.\n\nWe need to tell rstan that Y is an integer between 0 and 10.\n\nparameters: in our example, our model depends on \\pi.\n\nWe need to tell rstan that \\pi can be any real number between 0 and 1.\n\nmodel: in our example, we need to specify Y \\sim \\text{Bin}(10, \\pi) and \\pi \\sim \\text{Beta}(2,2)."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#using-rstan-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#using-rstan-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Using rstan",
+    "text": "Using rstan\n\n# STEP 1: DEFINE the model\nbb_model &lt;- \"\n  data {\n    int&lt;lower = 0, upper = 10&gt; Y;\n  }\n  parameters {\n    real&lt;lower = 0, upper = 1&gt; pi;\n  }\n  model {\n    Y ~ binomial(10, pi);\n    pi ~ beta(2, 2);\n  }\n\""
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#using-rstan-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#using-rstan-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Using rstan",
+    "text": "Using rstan\n\nThen, when we go to simulate, we first put in the model information\n\nmodel code: the character string defining the model (in our case, bb_model).\ndata: a list of the observed data.\n\nIn this example, we are using Y = 9 - a single data point.\n\n\nThen, we put in the Markov chain information,\n\nchains: how many parallel Markov chains to run.\n\nThis will be the number of distinct \\theta values we want.\n\niter: desired number of iterations, or length of Markov chain.\n\nHalf are thrown out as “burn in” samples.\n\n“burn in”? Think: pancakes!\n\n\nseed: used to set the seed of the RNG."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#using-rstan-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#using-rstan-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Using rstan",
+    "text": "Using rstan\n\n# STEP 2: simulate the posterior\nbb_sim &lt;- stan(model_code = bb_model, data = list(Y = 9), \n               chains = 4, iter = 5000*2, seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 3e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 1:                0.011 seconds (Sampling)\nChain 1:                0.021 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 2:                0.012 seconds (Sampling)\nChain 2:                0.022 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 3:                0.01 seconds (Sampling)\nChain 3:                0.02 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 1e-06 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 4:                0.011 seconds (Sampling)\nChain 4:                0.021 seconds (Total)\nChain 4:"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#using-rstan-4",
+    "href": "files/lectures/2-2-bayesian-inference.html#using-rstan-4",
+    "title": "Bayesian Statistical Inference",
+    "section": "Using rstan",
+    "text": "Using rstan\n\nNow, we need to extract the values,\n\n\nas.array(bb_sim, pars = \"pi\") %&gt;% head(4)\n\n, , parameters = pi\n\n          chains\niterations   chain:1   chain:2   chain:3   chain:4\n      [1,] 0.8278040 0.7523560 0.6386998 0.9627572\n      [2,] 0.9087546 0.8922386 0.6254761 0.9413518\n      [3,] 0.6143859 0.8682356 0.7222360 0.9489624\n      [4,] 0.8462156 0.8792812 0.8100192 0.9413812\n\n\n\nRemember, these are not a random sample from the posterior!\nThey are also not independent!\nEach chain forms a dependent 5,000 length Markov chain of \\left\\{ \\pi^{(1)}, \\pi^{(2)}, ..., \\pi^{(5000)}\\right\\}\n\nEach chain will move along the sample space of plausible values for \\pi."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#using-rstan-5",
+    "href": "files/lectures/2-2-bayesian-inference.html#using-rstan-5",
+    "title": "Bayesian Statistical Inference",
+    "section": "Using rstan",
+    "text": "Using rstan\n\nWe will look at the trace plot (using mcmc_trace() from bayesplot package) to see what the values did longitudinally.\n\n\n\nmcmc_trace(bb_sim, pars = \"pi\", size = 0.1)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#using-rstan-6",
+    "href": "files/lectures/2-2-bayesian-inference.html#using-rstan-6",
+    "title": "Bayesian Statistical Inference",
+    "section": "Using rstan",
+    "text": "Using rstan\n\nWe can also look at the mcmc_hist() and mcmc_dens() functions,"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#diagnostics",
+    "href": "files/lectures/2-2-bayesian-inference.html#diagnostics",
+    "title": "Bayesian Statistical Inference",
+    "section": "Diagnostics",
+    "text": "Diagnostics\n\nSimulations are not perfect…\n\nWhat does a good Markov chain look like?\nHow can we tell if the Markov chain sample produces a reasonable approximation of the posterior?\nHow big should our Markov chain sample size be?\n\nUnfortunately there is no one answer here.\n\nYou will learn through experience, much like other nuanced areas of statistics."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#diagnostics-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#diagnostics-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Diagnostics",
+    "text": "Diagnostics\n\nLet’s now discuss diagnostic tools.\n\nTrace plots\nParallel chains\nEffective sample size\nAutocorrelation\n\\hat{R}"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#trace-plots",
+    "href": "files/lectures/2-2-bayesian-inference.html#trace-plots",
+    "title": "Bayesian Statistical Inference",
+    "section": "Trace Plots",
+    "text": "Trace Plots\n\n\n\n\nChain A has not stabilized after 5000 iterations.\n\nIt has not “found” or does not know how to explore the range of posterior plausible \\pi values.\nThe downward trend also hints against independent noise."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#trace-plots-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#trace-plots-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Trace Plots",
+    "text": "Trace Plots\n\n\n\n\nWe say that Chain A is mixing slowly.\n\nThe more Markov chains behave like fast mixing (noisy) independent samples, the smaller the error in the resulting posterior approximation."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#trace-plots-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#trace-plots-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Trace Plots",
+    "text": "Trace Plots\n\n\n\n\nChain B is not great, either – it gets stuck when looking at a smaller value of \\pi."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#trace-plots-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#trace-plots-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Trace Plots",
+    "text": "Trace Plots\n\nRealistically, we are only going to do simulations when we can’t specify the posterior and must approximate\n\ni.e., we won’t be able to compare the simulation results to the “true” results.\n\nIf we see bad trace plots:\n\nCheck the model (… or your code). Are the assumed prior and data models appropriate?\nRun the chain for more iterations. Sometimes we just need a longer run to iron out issues."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#parallel-chains",
+    "href": "files/lectures/2-2-bayesian-inference.html#parallel-chains",
+    "title": "Bayesian Statistical Inference",
+    "section": "Parallel Chains",
+    "text": "Parallel Chains\n\nLet’s now consider a smaller simulation, where n=50 (recall, overall n=100, but half is for burn-in).\nRun the following code:\n\n\nbb_sim_short &lt;- stan(model_code = bb_model, data = list(Y = 9), \n                     chains = 4, iter = 50*2, seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 1e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: WARNING: There aren't enough warmup iterations to fit the\nChain 1:          three stages of adaptation as currently configured.\nChain 1:          Reducing each adaptation stage to 15%/75%/10% of\nChain 1:          the given number of warmup iterations:\nChain 1:            init_buffer = 7\nChain 1:            adapt_window = 38\nChain 1:            term_buffer = 5\nChain 1: \nChain 1: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 1: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 1: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 1: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 1: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 1: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 1: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 1: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 1: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 1: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 1: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 1: Iteration: 100 / 100 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0 seconds (Warm-up)\nChain 1:                0 seconds (Sampling)\nChain 1:                0 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: WARNING: There aren't enough warmup iterations to fit the\nChain 2:          three stages of adaptation as currently configured.\nChain 2:          Reducing each adaptation stage to 15%/75%/10% of\nChain 2:          the given number of warmup iterations:\nChain 2:            init_buffer = 7\nChain 2:            adapt_window = 38\nChain 2:            term_buffer = 5\nChain 2: \nChain 2: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 2: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 2: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 2: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 2: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 2: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 2: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 2: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 2: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 2: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 2: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 2: Iteration: 100 / 100 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0 seconds (Warm-up)\nChain 2:                0 seconds (Sampling)\nChain 2:                0 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: WARNING: There aren't enough warmup iterations to fit the\nChain 3:          three stages of adaptation as currently configured.\nChain 3:          Reducing each adaptation stage to 15%/75%/10% of\nChain 3:          the given number of warmup iterations:\nChain 3:            init_buffer = 7\nChain 3:            adapt_window = 38\nChain 3:            term_buffer = 5\nChain 3: \nChain 3: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 3: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 3: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 3: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 3: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 3: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 3: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 3: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 3: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 3: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 3: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 3: Iteration: 100 / 100 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0 seconds (Warm-up)\nChain 3:                0 seconds (Sampling)\nChain 3:                0 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 0 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: WARNING: There aren't enough warmup iterations to fit the\nChain 4:          three stages of adaptation as currently configured.\nChain 4:          Reducing each adaptation stage to 15%/75%/10% of\nChain 4:          the given number of warmup iterations:\nChain 4:            init_buffer = 7\nChain 4:            adapt_window = 38\nChain 4:            term_buffer = 5\nChain 4: \nChain 4: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 4: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 4: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 4: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 4: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 4: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 4: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 4: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 4: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 4: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 4: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 4: Iteration: 100 / 100 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0 seconds (Warm-up)\nChain 4:                0 seconds (Sampling)\nChain 4:                0 seconds (Total)\nChain 4:"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#parallel-chains-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#parallel-chains-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Parallel Chains",
+    "text": "Parallel Chains\n\nLet’s now generate the trace and density plots for the smaller simulation:\n\n\nggarrange(mcmc_trace(bb_sim_short, pars = \"pi\") + \n            ggtitle(\"trace\") +\n            theme_minimal() + \n            theme(legend.position=\"none\"),\n          mcmc_dens_overlay(bb_sim_short, pars = \"pi\") + ylab(\"density\") + \n            ggtitle(\"density\") + \n            theme_minimal(),\n          ncol=2, nrow=1)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#parallel-chains-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#parallel-chains-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Parallel Chains",
+    "text": "Parallel Chains"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#parallel-chains-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#parallel-chains-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Parallel Chains",
+    "text": "Parallel Chains\n\nNow you try 10,000 iterations. Update the following code:\n\n\nbb_sim_full &lt;- stan(model_code = bb_model, \n                    data = list(Y = 9), \n                    chains = 4, \n                    iter = 50*2, \n                    seed = 84735)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#parallel-chains-4",
+    "href": "files/lectures/2-2-bayesian-inference.html#parallel-chains-4",
+    "title": "Bayesian Statistical Inference",
+    "section": "Parallel Chains",
+    "text": "Parallel Chains\n\nCreate the trace and density plots. Recall the code,\n\n\nggarrange(mcmc_trace(bb_sim_short, pars = \"pi\") + \n            ggtitle(\"trace\") +\n            theme_minimal() + \n            theme(legend.position=\"none\"),\n          mcmc_dens_overlay(bb_sim_short, pars = \"pi\") + ylab(\"density\") + \n            ggtitle(\"density\") + \n            theme_minimal(),\n          ncol=2, nrow=1)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#parallel-chains-5",
+    "href": "files/lectures/2-2-bayesian-inference.html#parallel-chains-5",
+    "title": "Bayesian Statistical Inference",
+    "section": "Parallel Chains",
+    "text": "Parallel Chains"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#effective-sample-size",
+    "href": "files/lectures/2-2-bayesian-inference.html#effective-sample-size",
+    "title": "Bayesian Statistical Inference",
+    "section": "Effective Sample Size",
+    "text": "Effective Sample Size\n\nThe more a dependent Markov chain behaves like an independent sample, the smaller the error in the resulting posterior approximation.\n\nPlots are great, but numerical assessment can provide more nuanced information.\n\nEffective sample size (N_{\\text{eff}}): the number of independent sample values it would take to produce an equivalently accurate posterior approximation.\nEffective sample size ratio:\n\n\\frac{N_{\\text{eff}}}{N}\n\nGenerally, we look for the effective sample size, N_{\\text{eff}}, to be greater than 10% of the actual sample size, N."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#effective-sample-size-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#effective-sample-size-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Effective Sample Size",
+    "text": "Effective Sample Size\n\nWe will use the neff_ratio() function to find this ratio.\nIn our example data,\n\n\n# Calculate the effective sample size ratio - N = 50\nneff_ratio(bb_sim, pars = c(\"pi\"))\n\n[1] 0.3462257\n\n# Calculate the effective sample size ratio - N = 10000\nneff_ratio(bb_sim_short, pars = c(\"pi\"))\n\n[1] 0.4950171\n\n\n\nBecause the N_{\\text{eff}} is over 10%, we are not concerned and can proceed."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#autocorrelation",
+    "href": "files/lectures/2-2-bayesian-inference.html#autocorrelation",
+    "title": "Bayesian Statistical Inference",
+    "section": "Autocorrelation",
+    "text": "Autocorrelation\n\nAutocorrelation allows us to evaluate if our Markov chain sufficiently mimics the behavior of an independent sample.\nAutocorrelation:\n\nLag 1 autocorrelation measures the correlation between pairs of Markov chain values that are one “step” apart (e.g., \\pi_i and \\pi_{(i-1)}; e.g., \\pi_4 and \\pi_3).\nLag 2 autocorrelation measures the correlation between pairs of Markov chain values that are two “steps apart (e.g., \\pi_i and \\pi_{(i-2)}; e.g., \\pi_4 and \\pi_2).\nLag k autocorrelation measures the correlation between pairs of Markov chain values that are k “steps” apart (e.g., \\pi_i and \\pi_{(i-k)}; e.g., \\pi_4 and \\pi_{(4-k)})."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#autocorrelation-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#autocorrelation-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "Autocorrelation",
+    "text": "Autocorrelation\n\nAutocorrelation allows us to evaluate if our Markov chain sufficiently mimics the behavior of an independent sample.\nStrong autocorrelation or dependence is a bad thing.\n\nIt goes hand in hand with small effective sample size ratios.\nThese provide a warning sign that our resulting posterior approximations might be unreliable."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#autocorrelation-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#autocorrelation-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "Autocorrelation",
+    "text": "Autocorrelation\n\n\n\n\nNo obvious patterns in the trace plot; dependence is relatively weak.\nAutocorrelation plot quickly drops off and is effectively 0 by lag 5.\nConfirmation that our Markov chain is mixing quickly.\n\ni.e., quickly moving around the range of posterior plausible \\pi values\ni.e., at least mimicking an independent sample."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#autocorrelation-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#autocorrelation-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Autocorrelation",
+    "text": "Autocorrelation\n\n\n\n\nThis is an “unhealthy” Markov chain.\nTrace plot shows strong trends \\to autocorrelation in the Markov chain values.\nSlow decrease in autocorrelation plot indicates that the dependence between chain values does not quickly fade away.\n\nAt lag 20, the autocorrelation is still \\sim 90%."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#fast-vs.-slow-mixing-markov-chains",
+    "href": "files/lectures/2-2-bayesian-inference.html#fast-vs.-slow-mixing-markov-chains",
+    "title": "Bayesian Statistical Inference",
+    "section": "Fast vs. Slow Mixing Markov Chains",
+    "text": "Fast vs. Slow Mixing Markov Chains\n\nFast mixing chains:\n\nThe chains move “quickly” around the range of posterior plausible values\nThe autocorrelation among the chain values drops off quickly.\nThe effective sample size ratio is reasonably large.\n\nSlow mixing chains:\n\nThe chains move “slowly” around the range of posterior plauslbe values.\nThe autocorrelation among the chainv alues drops off very slowly.\nThe effective sample size ratio is small.\n\nWhat do we do if we have a slow mixing chain?\n\nIncrease the chain size :)"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#hatr",
+    "href": "files/lectures/2-2-bayesian-inference.html#hatr",
+    "title": "Bayesian Statistical Inference",
+    "section": "\\hat{R}",
+    "text": "\\hat{R}\n\n\\hat{R} compares the variability in sampled \\theta values across all chains combined with the variability within each individual change.\n\n\\hat{R} \\approx \\sqrt{\\frac{\\text{var}_{\\text{combined}}}{\\text{var}_{\\text{within}}}}\n\nwhere\n\n\\text{var}_{\\text{combined}} is the variability in \\theta across all chains combined.\n\\text{var}_{\\text{within}} is the typical variability within any individual chain."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#hatr-1",
+    "href": "files/lectures/2-2-bayesian-inference.html#hatr-1",
+    "title": "Bayesian Statistical Inference",
+    "section": "\\hat{R}",
+    "text": "\\hat{R}\n\n\\hat{R} compares the variability in sampled \\theta values across all chains combined with the variability within each individual change.\n\n\\hat{R} \\approx \\sqrt{\\frac{\\text{var}_{\\text{combined}}}{\\text{var}_{\\text{within}}}}\n\nIdeally, \\hat{R} \\approx 1, showing stability across chains.\n\n\\hat{R} &gt; 1 indicates instability with the variability in the combined chains larger than that of the variability within the chains.\n\\hat{R} &gt; 1.05 raises red flags about the stability of the simulation."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#hatr-2",
+    "href": "files/lectures/2-2-bayesian-inference.html#hatr-2",
+    "title": "Bayesian Statistical Inference",
+    "section": "\\hat{R}",
+    "text": "\\hat{R}\n\nWe can use the rhat() function from the bayesplot package to find \\hat{R}.\n\n\nrhat(bb_sim, pars = \"pi\")\n\n[1] 1.000245\n\n\n\nWe can see that our simulation is stable.\nIf we were to find \\hat{R} for the other (obviously bad) simulation, it would be 5.35 😱"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#section",
+    "href": "files/lectures/2-2-bayesian-inference.html#section",
+    "title": "Bayesian Statistical Inference",
+    "section": "",
+    "text": "Take a break!\n  \n  Back in 10 minutes."
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#introduction-3",
+    "href": "files/lectures/2-2-bayesian-inference.html#introduction-3",
+    "title": "Bayesian Statistical Inference",
+    "section": "Introduction",
+    "text": "Introduction\n\nNow that we know how to find posterior distributions, we will discuss how to use them to make inference.\nImagine you find yourself standing at the Museum of Modern Art (MoMA) in New York City, captivated by the artwork in front of you.\n\nWhat are the chances that this modern artist is Gen X or even younger, i.e., born in 1965 or later?\n\nLet \\pi denote the proportion of artists represented in major U.S. modern art museums that are Gen X or younger.\n\nLet’s let the Beta(4,6) prior model for \\pi reflect our prior assumption that major modern art museums disproportionately display artists born before 1965, i.e., \\pi most likely falls below 0.5.\nRationale: “modern art” dates back to the 1880s and it can take a while to gain recognition as an artist."
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#working-example",
     "href": "files/lectures/2-2-bayesian-inference.html#working-example",
     "title": "Bayesian Statistical Inference",
     "section": "Working Example",
-    "text": "Working Example\n\nImagine you find yourself standing at the Museum of Modern Art (MoMA) in New York City, captivated by the artwork in front of you.\n\nWhat are the chances that this modern artist is Gen X or even younger, i.e., born in 1965 or later?\n\nLet \\pi denote the proportion of artists represented in major U.S. modern art museums that are Gen X or younger.\n\nLet’s let the Beta(4,6) prior model for \\pi reflect our prior assumption that major modern art museums disproportionately display artists born before 1965, i.e., \\pi most likely falls below 0.5.\nRationale: “modern art” dates back to the 1880s and it can take a while to gain recognition as an artist."
+    "text": "Working Example\n\nThe Beta(4,6) prior model for \\pi:"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-1",
     "href": "files/lectures/2-2-bayesian-inference.html#working-example-1",
     "title": "Bayesian Statistical Inference",
     "section": "Working Example",
-    "text": "Working Example\n\nThe Beta(4,6) prior model for \\pi:"
+    "text": "Working Example\n\nLet’s consider the following dataset:\n\n\ndata(moma_sample)\nhead(moma_sample)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nartist\ncountry\nbirth\ndeath\nalive\ngenx\ngender\ncount\nyear_acquired_min\nyear_acquired_max\n\n\n\n\nAd Gerritsen\ndutch\n1940\n2015\nFALSE\nFALSE\nmale\n1\n1981\n1981\n\n\nKirstine Roepstorff\ndanish\n1972\nNA\nTRUE\nTRUE\nfemale\n3\n2005\n2005\n\n\nLisa Baumgardner\namerican\n1958\n2015\nFALSE\nFALSE\nfemale\n2\n2016\n2016\n\n\nDavid Bates\namerican\n1952\nNA\nTRUE\nFALSE\nmale\n1\n2001\n2001\n\n\nSimon Levy\namerican\n1946\nNA\nTRUE\nFALSE\nmale\n1\n2012\n2012\n\n\nPierre Mercure\ncanadian\n1927\n1966\nFALSE\nFALSE\nmale\n8\n2008\n2008"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-2",
     "href": "files/lectures/2-2-bayesian-inference.html#working-example-2",
     "title": "Bayesian Statistical Inference",
     "section": "Working Example",
-    "text": "Working Example\n\nLet’s consider the following dataset:\n\n\nhead(moma_sample)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nartist\ncountry\nbirth\ndeath\nalive\ngenx\ngender\ncount\nyear_acquired_min\nyear_acquired_max\n\n\n\n\nAd Gerritsen\ndutch\n1940\n2015\nFALSE\nFALSE\nmale\n1\n1981\n1981\n\n\nKirstine Roepstorff\ndanish\n1972\nNA\nTRUE\nTRUE\nfemale\n3\n2005\n2005\n\n\nLisa Baumgardner\namerican\n1958\n2015\nFALSE\nFALSE\nfemale\n2\n2016\n2016\n\n\nDavid Bates\namerican\n1952\nNA\nTRUE\nFALSE\nmale\n1\n2001\n2001\n\n\nSimon Levy\namerican\n1946\nNA\nTRUE\nFALSE\nmale\n1\n2012\n2012\n\n\nPierre Mercure\ncanadian\n1927\n1966\nFALSE\nFALSE\nmale\n8\n2008\n2008"
+    "text": "Working Example\n\nCounting the number of Generation X and younger,\n\n\nmoma_sample %&gt;% \n  count(genx) \n\n\n\n\n\ngenx\nn\n\n\n\n\nFALSE\n86\n\n\nTRUE\n14"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-3",
     "href": "files/lectures/2-2-bayesian-inference.html#working-example-3",
     "title": "Bayesian Statistical Inference",
     "section": "Working Example",
-    "text": "Working Example\n\nCounting the number of Generation X and younger,\n\n\nmoma_sample %&gt;% \n  group_by(genx) %&gt;% \n  tally()\n\n\n\n\n\ngenx\nn\n\n\n\n\nFALSE\n86\n\n\nTRUE\n14"
+    "text": "Working Example\n\nOur modeling is as follows,\n\n\n\\begin{align*}\nY|\\pi &\\sim \\text{Bin}(100,\\pi) \\\\\n\\pi &\\sim \\text{Beta}(4,6) \\\\\n\\pi | (Y = 14) &\\sim \\text{Beta(18,92)}\n\\end{align*}\n\n\n\n\n\n\n\nmodel\nalpha\nbeta\nmean\nmode\nvar\nsd\n\n\n\n\nprior\n4\n6\n0.4000000\n0.3750000\n0.0218182\n0.1477098\n\n\nposterior\n18\n92\n0.1636364\n0.1574074\n0.0012330\n0.0351137"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-4",
     "href": "files/lectures/2-2-bayesian-inference.html#working-example-4",
     "title": "Bayesian Statistical Inference",
     "section": "Working Example",
-    "text": "Working Example\n\nOur modeling is as follows,\n\n\n\\begin{align*}\nY|\\pi &\\sim \\text{Bin}(100,\\pi) \\\\\n\\pi &\\sim \\text{Beta}(4,6) \\\\\n\\pi | (Y = 14) &\\sim \\text{Beta(18,92)}\n\\end{align*}\n\n\n\n\n\n\n\nmodel\nalpha\nbeta\nmean\nmode\nvar\nsd\n\n\n\n\nprior\n4\n6\n0.4000000\n0.3750000\n0.0218182\n0.1477098\n\n\nposterior\n18\n92\n0.1636364\n0.1574074\n0.0012330\n0.0351137"
+    "text": "Working Example"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-5",
     "href": "files/lectures/2-2-bayesian-inference.html#working-example-5",
-    "title": "Bayesian Statistical Inference",
-    "section": "Working Example",
-    "text": "Working Example"
-  },
-  {
-    "objectID": "files/lectures/2-2-bayesian-inference.html#working-example-6",
-    "href": "files/lectures/2-2-bayesian-inference.html#working-example-6",
     "title": "Bayesian Statistical Inference",
     "section": "Working Example",
     "text": "Working Example\n\nThere are three common tasks in posterior analysis:\n\nestimation,\nhypothesis testing, and\nprediction.\n\nFor example,\n\nWhat’s our estimate of \\pi?\nDoes our model support the claim that fewer than 20% of museum artists are Gen X or younger?\nIf we sample 20 more museum artists, how many do we predict will be Gen X or younger?"
@@ -634,88 +991,102 @@
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-5",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nWe can create a table of information we will use to make inferences:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849"
+    "text": "Posterior Hypothesis Testing\n\nWe can create a table of information we will use to make inferences:\n\n\n\n\nHypotheses\nPrior Probability\nPosterior Probability\n\n\n\n\nH_0: \\pi \\ge 0.2\nP[H_0] = 0.914\nP[H_0 \\mid Y = 14] = 0.151\n\n\nH_1: \\pi &lt; 0.2\nP[H_1] = 0.086\nP[H_1 \\mid Y = 14] = 0.849\n\n\n\n\nWe want to find the odds in favor of H_1 under both the prior and posterior distributions.\n\n\n\\text{posterior odds} = \\frac{P\\left[ H_1 | Y = y \\right]}{P\\left[ H_0 | Y = y \\right]}, \\ \\ \\ \\ \\ \\ \\ \\text{prior odds} = \\frac{P\\left[ H_1  \\right]}{P\\left[ H_0  \\right]}"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-6",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-6",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nLet’s find the posterior odds in favor of H_1:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849\n\n\n\n\n\n\n\\begin{align*}\n\\text{posterior odds} &= \\frac{P\\left[ H_1 | Y = 14 \\right]}{P\\left[ H_0 | Y = 14 \\right]} \\\\\n&= \\frac{0.849}{0.151} \\\\\n&\\approx 5.62\n\\end{align*}\n\n\nOur posterior assessment, after considering data collected, suggests that \\pi is 5.62 times more likely to be below 0.2 rather than being above 0.2."
+    "text": "Posterior Hypothesis Testing\n\nLet’s find the posterior odds in favor of H_1:\n\n\n\n\nHypotheses\nPrior Probability\nPosterior Probability\n\n\n\n\nH_0: \\pi \\ge 0.2\nP[H_0] = 0.914\nP[H_0 \\mid Y = 14] = 0.151\n\n\nH_1: \\pi &lt; 0.2\nP[H_1] = 0.086\nP[H_1 \\mid Y = 14] = 0.849\n\n\n\n\n\\begin{align*}\n\\text{posterior odds} &= \\frac{P\\left[ H_1 | Y = 14 \\right]}{P\\left[ H_0 | Y = 14 \\right]} \\\\\n&= \\frac{0.849}{0.151} \\\\\n&\\approx 5.62\n\\end{align*}"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-7",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-7",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nLet’s find the prior odds in favor of H_1:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849\n\n\n\n\n\n\n\\begin{align*}\n\\text{prior odds} &= \\frac{P\\left[ H_1 \\right]}{P\\left[ H_0 \\right]} \\\\\n&= \\frac{0.086}{0.914} \\\\\n&\\approx 0.093\n\\end{align*}\n\n\nOur prior assessment, before considering the data collected, suggests that \\pi is 0.093 times more likely to be below 0.2 rather than being above 0.2."
+    "text": "Posterior Hypothesis Testing\n\nLet’s find the posterior odds in favor of H_1:\n\n\n\\begin{align*}\n\\text{posterior odds} &= \\frac{P\\left[ H_1 | Y = 14 \\right]}{P\\left[ H_0 | Y = 14 \\right]} \\\\\n&= \\frac{0.849}{0.151} \\\\\n&\\approx 5.62\n\\end{align*}\n\n\nOur posterior assessment, after considering data collected, suggests that \\pi is 5.62 times more likely to be below 0.2 rather than being above 0.2."
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-8",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-8",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nBayes Factor\n\nWhen we are comparing two competing hypotheses, H_0 vs. H_1, the Bayes Factor is an odds ratio for H_1.\ni.e., the Bayes Factor as a measure of evidence in favor of H_1.\n\n\n\n\\text{Bayes Factor} = \\frac{\\text{posterior odds}}{\\text{prior odds}} = \\frac{P\\left[H_1 | Y\\right] / P\\left[H_0 | Y\\right]}{P\\left[H_1\\right] / P\\left[H_0\\right]}\n\n\nThis will be our alternative to the p-value."
+    "text": "Posterior Hypothesis Testing\n\nLet’s find the prior odds in favor of H_1:\n\n\n\n\nHypotheses\nPrior Probability\nPosterior Probability\n\n\n\n\nH_0: \\pi \\ge 0.2\nP[H_0] = 0.914\nP[H_0 \\mid Y = 14] = 0.151\n\n\nH_1: \\pi &lt; 0.2\nP[H_1] = 0.086\nP[H_1 \\mid Y = 14] = 0.849\n\n\n\n\n\\begin{align*}\n\\text{prior odds} &= \\frac{P\\left[ H_1 \\right]}{P\\left[ H_0 \\right]} \\\\\n&= \\frac{0.086}{0.914} \\\\\n&\\approx 0.093\n\\end{align*}"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-9",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-9",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nBayes Factor\n\n\n\\text{Bayes Factor} = \\frac{\\text{posterior odds}}{\\text{prior odds}} = \\frac{P\\left[H_1 | Y\\right] / P\\left[H_0 | Y\\right]}{P\\left[H_1\\right] / P\\left[H_0\\right]}\n\n\nWe will compare the BF to 1.\n\nBF = 1: The plausibility of H_1 did not change in light of the observed data.\nBF &gt; 1: The plausibility of H_1 increased in light of the observed data.\n\nThe greater the Bayes Factor, the more convincing the evidence for H_1.\n\nBF &lt; 1: The plausibilty of H_1 decreased in light of the observed data."
+    "text": "Posterior Hypothesis Testing\n\nLet’s find the prior odds in favor of H_1:\n\n\n\\begin{align*}\n\\text{prior odds} &= \\frac{P\\left[ H_1 \\right]}{P\\left[ H_0 \\right]} \\\\\n&= \\frac{0.086}{0.914} \\\\\n&\\approx 0.093\n\\end{align*}\n\n\nOur prior assessment, before considering the data collected, suggests that \\pi is 0.093 times more likely to be below 0.2 rather than being above 0.2."
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-10",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-10",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nLet’s now find the Bayes Factor:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849\n\n\n\n\n\n\n\\begin{align*}\n\\text{Bayes Factor} &= \\frac{\\text{posterior odds}}{\\text{prior odds}} = \\frac{P\\left[H_1 | Y\\right] / P\\left[H_0 | Y\\right]}{P\\left[H_1\\right] / P\\left[H_0\\right]} \\\\\n&= \\frac{5.62}{0.09} \\\\\n&\\approx 62.44\n\\end{align*}"
+    "text": "Posterior Hypothesis Testing\n\nBayes Factor\n\nWhen we are comparing two competing hypotheses, H_0 vs. H_1, the Bayes Factor is an odds ratio for H_1.\ni.e., the Bayes Factor as a measure of evidence in favor of H_1.\n\n\n\n\\text{Bayes Factor} = \\frac{\\text{posterior odds}}{\\text{prior odds}} = \\frac{P\\left[H_1 | Y\\right] / P\\left[H_0 | Y\\right]}{P\\left[H_1\\right] / P\\left[H_0\\right]}\n\n\nThis will be our alternative to the p-value."
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-11",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-11",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nLet’s now find the Bayes Factor:\n\n\n\n\n\n\n\n\nHypotheses\n\n\n\n\n\n\nPrior Probability\n\n\n\n\n\n\nPosterior Probability\n\n\n\n\n\n\nH_0: \\pi \\ge 0.2\n\n\nP[H_0] = 0.914\n\n\nP[H_0 | Y= 14] = 0.151\n\n\n\n\nH_1: \\pi &lt; 0.2\n\n\nP[H_1] = 0.086\n\n\nP[H_1 | Y = 14] = 0.849\n\n\n\n\n\n\n\nprior_odds &lt;- pbeta(0.20, 4, 6)/(1-pbeta(0.20, 4, 6))\npost_odds &lt;- pbeta(0.20, 18, 92)/(1-pbeta(0.20, 18, 92))\n(BF &lt;- post_odds/prior_odds)\n\n[1] 60.02232"
+    "text": "Posterior Hypothesis Testing\n\nBayes Factor\n\n\n\\text{Bayes Factor} = \\frac{\\text{posterior odds}}{\\text{prior odds}} = \\frac{P\\left[H_1 | Y\\right] / P\\left[H_0 | Y\\right]}{P\\left[H_1\\right] / P\\left[H_0\\right]}\n\n\nWe will compare the BF to 1.\n\nBF = 1: The plausibility of H_1 did not change in light of the observed data.\nBF &gt; 1: The plausibility of H_1 increased in light of the observed data.\n\nThe greater the Bayes Factor, the more convincing the evidence for H_1.\n\nBF &lt; 1: The plausibilty of H_1 decreased in light of the observed data."
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-12",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-12",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nIt’s time to draw a conclusion!\n\nPosterior probability: 0.85\nBayes factor: 60\n\nWe have fairly convincing evidence in factor of the claim that fewer than 20% of artists at major modern art museums are Gen X or younger.\nThis gives us more information - we have a holistic measure of the level of uncertainty about the claim.\n\nThis should help us inform our next steps."
+    "text": "Posterior Hypothesis Testing\n\nLet’s now find the Bayes Factor:\n\n\n\n\nHypotheses\nPrior Probability\nPosterior Probability\n\n\n\n\nH_0: \\pi \\ge 0.2\nP[H_0] = 0.914\nP[H_0 \\mid Y = 14] = 0.151\n\n\nH_1: \\pi &lt; 0.2\nP[H_1] = 0.086\nP[H_1 \\mid Y = 14] = 0.849\n\n\n\n\n\\begin{align*}\n\\text{Bayes Factor} &= \\frac{\\text{posterior odds}}{\\text{prior odds}} = \\frac{P\\left[H_1 | Y\\right] / P\\left[H_0 | Y\\right]}{P\\left[H_1\\right] / P\\left[H_0\\right]} \\\\\n&= \\frac{5.62}{0.09} \\\\\n&\\approx 62.44\n\\end{align*}"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-13",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-13",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nWe now want to test whether or not 30% of major museum artists are Gen X or younger.\n\n\n\\begin{align*}\nH_0&: \\ \\pi = 0.3 \\\\\nH_1&: \\ \\pi \\ne 0.3\n\\end{align*}\n\n\nWhy is this an issue?"
+    "text": "Posterior Hypothesis Testing\n\nLet’s now find the Bayes Factor:\n\n\n\n\nHypotheses\nPrior Probability\nPosterior Probability\n\n\n\n\nH_0: \\pi \\ge 0.2\nP[H_0] = 0.914\nP[H_0 \\mid Y = 14] = 0.151\n\n\nH_1: \\pi &lt; 0.2\nP[H_1] = 0.086\nP[H_1 \\mid Y = 14] = 0.849\n\n\n\n\nprior_odds &lt;- pbeta(0.20, 4, 6)/(1-pbeta(0.20, 4, 6))\npost_odds &lt;- pbeta(0.20, 18, 92)/(1-pbeta(0.20, 18, 92))\n(BF &lt;- post_odds/prior_odds)\n\n[1] 60.02232"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-14",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-14",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nWe now want to test whether or not 30% of major museum artists are Gen X or younger.\n\n\n\\begin{align*}\nH_0&: \\ \\pi = 0.3 \\\\\nH_1&: \\ \\pi \\ne 0.3\n\\end{align*}\n\n\nWhy is this an issue? The posterior probability of a point hypothesis is always 0!\n\n\nP\\left[ \\pi =0.3 | Y = 14 \\right] = \\int_{0.3}^{0.3} f(\\pi|y = 14) d\\pi = 0"
+    "text": "Posterior Hypothesis Testing\n\nIt’s time to draw a conclusion!\nHypotheses:\n\nH_0: \\pi \\ge 0.2\nH_1: \\pi &lt; 0.2\n\nEvidence:\n\nPosterior probability: 0.85\nBayes factor: 60\n\nConclusion:\n\nWe have fairly convincing evidence in factor of the claim that fewer than 20% of artists at major modern art museums are Gen X or younger."
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-15",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-15",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nThe posterior probability of a point hypothesis is always 0!\n\n\nP\\left[ \\pi =0.3 | Y = 14 \\right] = \\int_{0.3}^{0.3} f(\\pi|y = 14) d\\pi = 0\n\n\n…. meaning:\n\n\n\\text{posterior odds}  = \\frac{P\\left[ H_1 | Y = 14 \\right]}{P\\left[ H_0 | Y = 14 \\right]} = \\frac{1}{0}"
+    "text": "Posterior Hypothesis Testing\n\nWe now want to test whether or not 30% of major museum artists are Gen X or younger.\n\n\n\\begin{align*}\nH_0&: \\ \\pi = 0.3 \\\\\nH_1&: \\ \\pi \\ne 0.3\n\\end{align*}\n\n\nWhy is this an issue?"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-16",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-16",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
-    "text": "Posterior Hypothesis Testing\n\nWelp.\nLet’s think about the 95% posterior credible interval for \\pi: (0.10, 0.24).\n\nDo we think that 0.3 is a plausible value?"
+    "text": "Posterior Hypothesis Testing\n\nWe now want to test whether or not 30% of major museum artists are Gen X or younger.\n\n\n\\begin{align*}\nH_0&: \\ \\pi = 0.3 \\\\\nH_1&: \\ \\pi \\ne 0.3\n\\end{align*}\n\n\nWhy is this an issue? The posterior probability of a point hypothesis is always 0!\n\n\nP\\left[ \\pi =0.3 | Y = 14 \\right] = \\int_{0.3}^{0.3} f(\\pi|y = 14) d\\pi = 0"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-17",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-17",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nThe posterior probability of a point hypothesis is always 0!\n\n\nP\\left[ \\pi =0.3 | Y = 14 \\right] = \\int_{0.3}^{0.3} f(\\pi|y = 14) d\\pi = 0\n\n\n…. meaning:\n\n\n\\text{posterior odds}  = \\frac{P\\left[ H_1 | Y = 14 \\right]}{P\\left[ H_0 | Y = 14 \\right]} = \\frac{1}{0}"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-18",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-18",
+    "title": "Bayesian Statistical Inference",
+    "section": "Posterior Hypothesis Testing",
+    "text": "Posterior Hypothesis Testing\n\nWelp.\nLet’s think about the 95% posterior credible interval for \\pi: (0.10, 0.24).\n\nDo we think that 0.3 is a plausible value?"
+  },
+  {
+    "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-19",
+    "href": "files/lectures/2-2-bayesian-inference.html#posterior-hypothesis-testing-19",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Hypothesis Testing",
     "text": "Posterior Hypothesis Testing\n\nLet’s reframe our hypotheses:\n\n\n\\begin{align*}\nH_0&: \\ \\pi \\in (0.25, 0.35) \\\\\nH_1&: \\ \\pi \\not\\in (0.25, 0.35)\n\\end{align*}\n\n\nNow, we can more rigorously claim belief in H_1.\n\nThe entire hypothesized range is above the 95% CI.\n\nThis also allows us a way to construct our hypothesis test with posterior probability and Bayes Factor."
@@ -774,42 +1145,42 @@
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-7",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Prediction",
-    "text": "Posterior Prediction\n\n# STEP 2: SIMULATE the posterior\nart_sim &lt;- stan(model_code = art_model, \n                data = list(Y = 14),  \n                chains = 4, \n                iter = 5000*2, \n                seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 2e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.02 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 1:                0.01 seconds (Sampling)\nChain 1:                0.02 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 1e-06 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 2:                0.011 seconds (Sampling)\nChain 2:                0.021 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 3:                0.01 seconds (Sampling)\nChain 3:                0.02 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 0 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 4:                0.01 seconds (Sampling)\nChain 4:                0.02 seconds (Total)\nChain 4:"
+    "text": "Posterior Prediction\n\n# STEP 2: SIMULATE the posterior\nart_sim &lt;- stan(model_code = art_model, \n                data = list(Y = 14),  \n                chains = 4, \n                iter = 5000*2, \n                seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 1e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 1:                0.01 seconds (Sampling)\nChain 1:                0.02 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 2:                0.011 seconds (Sampling)\nChain 2:                0.021 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 3:                0.01 seconds (Sampling)\nChain 3:                0.02 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 0 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 4:                0.01 seconds (Sampling)\nChain 4:                0.02 seconds (Total)\nChain 4:"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-8",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-8",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Prediction",
-    "text": "Posterior Prediction\n\n\n# Parallel trace plot\nmcmc_trace(art_sim, pars = \"pi\", size = 0.5) + xlab(\"iteration\")"
+    "text": "Posterior Prediction"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-9",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-9",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Prediction",
-    "text": "Posterior Prediction\n\n\n# Density plot\nmcmc_dens_overlay(art_sim, pars = \"pi\")"
+    "text": "Posterior Prediction"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-10",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-10",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Prediction",
-    "text": "Posterior Prediction\n\n\n# Autocorrelation plot\nmcmc_acf(art_sim, pars = \"pi\")"
+    "text": "Posterior Prediction"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-11",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-11",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Prediction",
-    "text": "Posterior Prediction\n\nAs we saw previously, the posterior was Beta(18, 92).\nWe will use the tidy() function from the broom.mixed package.\n\n\nlibrary(broom.mixed)\ntidy(art_sim, conf.int = TRUE, conf.level = 0.95)\n\n\n\n\n\nterm\nestimate\nstd.error\nconf.low\nconf.high\n\n\n\n\npi\n0.1635453\n0.0353673\n0.1000882\n0.2391218\n\n\n\n\n\n\n\nThe approximate middle 95% CI for \\pi is (0.100, 0.239).\nOur approximation of the actual posterior median is 0.162."
+    "text": "Posterior Prediction\n\nAs we saw previously, the posterior was Beta(18, 92).\nWe will use the tidy() function from the broom.mixed package.\n\n\ntidy(art_sim, conf.int = TRUE, conf.level = 0.95)\n\n\n\n\n\nterm\nestimate\nstd.error\nconf.low\nconf.high\n\n\n\n\npi\n0.1635453\n0.0353673\n0.1000882\n0.2391218\n\n\n\n\n\n\n\nThe approximate middle 95% CI for \\pi is (0.100, 0.239).\nOur approximation of the actual posterior median is 0.162."
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-12",
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-12",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Prediction",
-    "text": "Posterior Prediction\n\nWe can use the mcmc_areas() function from the bayesrules package to get a corresponding graph,\n\n\n\nmcmc_areas(art_sim, pars = \"pi\", prob = 0.95)"
+    "text": "Posterior Prediction\n\nWe can use the mcmc_areas() function from the bayesrules package to get a corresponding graph,"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-simulation",
@@ -840,32 +1211,25 @@
     "text": "Posterior Simulation\n\nLet us compare the results between using conjugate family knowledge and MCMC.\n\n\n\n\n\nFrom this, we can see that MCMC gave us an accurate approximation.\nWe should use this as “proof” that the approximations are “reliable” for non-conjugate families.\n\nAlways look at diagnostics!"
   },
   {
-    "objectID": "files/lectures/2-2-bayesian-inference.html#homework-practice",
-    "href": "files/lectures/2-2-bayesian-inference.html#homework-practice",
+    "objectID": "files/lectures/2-2-bayesian-inference.html#wrap-up",
+    "href": "files/lectures/2-2-bayesian-inference.html#wrap-up",
     "title": "Bayesian Statistical Inference",
-    "section": "Homework / Practice",
-    "text": "Homework / Practice\n\nFrom the Bayes Rules! textbook:\n\n8.4\n8.8\n8.9\n8.10\n8.14\n8.15\n8.16"
+    "section": "Wrap Up",
+    "text": "Wrap Up\n\nToday we learned the basics of Bayesian inference:\n\nMCMC \\to find posterior distributions\nHow to use the posterior distribution for estimation, hypothesis testing, and prediction.\n\nYou now are ready to work on Assignment 4: Introduction to Bayesian Inference.\n\n.qmd file is available to download on Canvas.\n\nNext week: formal hypothesis testing cases."
   },
   {
-    "objectID": "files/lectures/2-2-bayesian-inference.html#one-sample-proportions",
-    "href": "files/lectures/2-2-bayesian-inference.html#one-sample-proportions",
-    "title": "Bayesian Statistical Inference",
-    "section": "One Sample Proportions",
-    "text": "One Sample Proportions\nA Bayesian Beta-Binomial analysis is often viewed as the Bayesian counterpart to a frequentist one-sample proportion test.\nThe Bayesian Beta-Binomial model is conceptually closer to the exact binomial test, because both use the exact binomial likelihood rather than a normal approximation.\nThe inferential question is essentially the same (“Is the true proportion different from 0.50?”), but the evidence is summarized differently."
-  },
-  {
-    "objectID": "files/assignments/assignment2.html",
-    "href": "files/assignments/assignment2.html",
-    "title": "Assignment 2: Thinking Like a Bayesian",
+    "objectID": "files/assignments/assignment4.html",
+    "href": "files/assignments/assignment4.html",
+    "title": "Assignment 4: Bayesian Statistical Inference",
     "section": "",
-    "text": "1. Think of a recent situation in which you changed your mind. As with the restaurant example in class, make a diagram that includes your prior information, your new data that helped you change your mind, and your posterior conclusion.\n\n2. Odie is trying to convince Jon that Garfield stole the lasagna. Jon thinks there is a 0.10 probability that Garfield would steal the lasagna. Jon also believes that the probability Garfield raids the fridge given that he’s in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield stole the lasagna?\n\n3. Arlene, Garfield’s on-again-off-again girlfriend, has two dispositions toward Garfield: happy or annoyed. In general, Arlene is happy with Garfield 55% of the time. You’ve noticed, however, that her disposition is related to how many times Garfield ignored her the day before. If Arlene is happy with Garfield today, there’s a 60% chance Garfield ignored her 0 times, a 35% chance he ignored her between 1 and 3 times, and a 5% chance he ignored her more than 3 times yesterday. If Arlene is annoyed with Garfield today, there’s a 10% chance Garfield ignored her 0 times, a 55% chance he ignored her between 1 and 3 times, and a 35% chance he ignored her more than 3 times yesterday.\na. Use the given information to complete the following table:\n\n\n\nIgnores yesterday\nP(ignores\nhappy)\n\n\n\n\n0 times\n\n\n\n\n1–3 times\n\n\n\n\nMore than 3 times\n\n\n\n\n\nb. Today’s a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what’s the probability that Arlene is happy with Garfield? What part of the Bayes’ Rule equation is this: the prior, likelihood, normalizing constant, or posterior?\nc. You’ve been spying on Garfield all day and have tallied that he ignored Arlene a whopping 5 times yesterday. How likely is Arlene to have been ignored 4 times if she’s happy with Garfield today? What part of the Bayes’ Rule equation is this?\nd. What is the posterior probability that Arlene is happy with Garfield today, given that Garfield ignored her 4 times yesterday?"
+    "text": "1. Consider the Beta-Binomial model for \\pi with Y|\\pi \\sim \\text{Bin}(n, \\pi) and \\pi \\sim \\text{Beta}(3, 8). Suppose that in n=10 independent trials, you observe Y=2 successes.\na. Simulate the posterior model of \\pi with RStan using 4 chains and 10000 iterations per chain.\nb. Produce trace and density plots for each of the four chains.\nc. Create a density plot of the values for each of the four chains.\nd. Use what we know about conjugate families to find the posterior distribution.\n\ne. Overlay the true posterior distribution on the density plot of the simulated posterior distribution. Do they match?\n\nf. What do you think the most likely value of \\pi is? Why?\n2. Consider the Gamma-Poisson model for \\lambda with Y|\\lambda \\sim \\text{Poi}(\\lambda) and \\lambda \\sim \\text{Gamma}(20, 5). Suppose you observe n=3 independent data points, \\left(Y_1, Y_2, Y_3\\right) = (0, 1, 0).\na. Simulate the posterior model of \\lambda with RStan using 4 chains and 10000 iterations per chain.\nb. Produce trace and density plots for each of the four chains.\nc. Create a density plot of the values for each of the four chains.\nd. Use what we know about conjugate families to find the posterior distribution.\n\ne. Overlay the true posterior distribution on the density plot of the simulated posterior distribution. Do they match?\n\nf. What do you think the most likely value of \\lambda is? Why?\n3. Consider the Normal-Normal model for \\mu with Y|\\mu \\sim \\text{N}(\\mu, 1.3^2) and \\mu \\sim \\text{N}(10, 1.2^2). Suppose you observe n=4 independent data points, \\left(Y_1, Y_2, Y_3, Y_4\\right) = (7.1, 8.9, 8.4, 8.6).\na. Simulate the posterior model of \\mu with RStan using 4 chains and 10000 iterations per chain.\nb. Produce trace and density plots for each of the four chains.\nc. Create a density plot of the values for each of the four chains.\nd. Use what we know about conjugate families to find the posterior distribution.\n\ne. Overlay the true posterior distribution on the density plot of the simulated posterior distribution. Do they match?\n\nf. What do you think the most likely value of \\mu is? Why?"
   },
   {
-    "objectID": "files/assignments/assignment1.html",
-    "href": "files/assignments/assignment1.html",
-    "title": "Assignment 1: Probability Distributions",
+    "objectID": "files/assignments/assignment3.html",
+    "href": "files/assignments/assignment3.html",
+    "title": "Assignment 3: Conjugate Families",
     "section": "",
-    "text": "Note: do not read too much into the following scenarios. The purpose is to get comfortable identifying distributions and finding corresponding probabilities.\nScenario 1: Walter is known for his intense personality during bowling league nights. Whether it’s a foot foul, a scoring dispute, or just general frustration with life, he frequently loses his temper and yells loudly at his teammates or opponents. Based on observations over several league nights, it has been determined that Walter loses his temper at an average rate of 4 outbursts per hour. His outbursts are unpredictable and can happen at any point during the game, but they seem to occur independently of each other.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Walter will not have an outburst at all?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Walter has more than 10 outbursts during league night?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 2: Donny often struggles to find parking near the bowling alley, especially on busy league nights. Sometimes he gets lucky and finds a spot fairly quickly, but other times he ends up circling the block several times before he can finally park. His parking times are generally right-skewed as it is much more common for it to take a shorter amount of time… but every now and then it can take quite a while. Over time, his friends have noticed a pattern: it usually takes him a few minutes, but there is a decent chance it could take significantly longer.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this scenario, \\alpha=3 and \\beta=4.\nReplace with your answer\nd. What is the probability that Donny will take more than 15 minutes to find a spot?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Donny will find a parking space quickly – i.e., that he parks within 5 minutes of arriving?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 3: Maude is famous for her avant-garde dance performances that leave audiences both puzzled and mesmerized. Her performances at the local art venue are known for their spontaneity and lack of strict timing. Observers have noted that the duration of her performances can last anywhere between 15 and 30 minutes, with any length within this interval being equally likely. There’s no predicting exactly how long Maude will choose to perform on any given night… sometimes it’s a brief expression and sometimes it stretches to the edge of the audience’s patience.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Maude’s performance will be on the shorter end – i.e., it lasts somewhere between 15 and 16 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Maude’s performance will be on the longer end – i.e., it lasts somewhere between 25 and 30 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 4. The Dude always orders a White Russian when he’s at the bowling alley. However, the bowling alley bar is not always well-stocked. Each time The Dude places an order, there is only a 60% chance that the bartender has all the necessary ingredients on hand to make the drink (they are frequently out of cream). Throughout one particularly long evening of bowling and philosophical debates, The Dude orders 8 White Russians. He hopes that most of them will be successfully made.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that at least 5 drinks will be successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that all 8 drinks are successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 5: The Dude’s bowling games tend to last around 45 minutes, give or take. While the exact length can vary from game to game, it’s rare for his games to be extremely short or unusually long. Most of the time, his game lengths cluster fairly tightly around that 45-minute mark, though occasionally he’ll have a quicker match or one that drags on a little longer if the vibe calls for it, to the tune of \\pm 5 minutes.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that the game will last exactly 45 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\ne. What is the probability that the game will really drag on – that it lasts somewhere between 50 and 60 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\nScenario 6: After many laid-back bowling sessions (and several White Russians), The Dude has started keeping track of how often he lands a strike. He knows he’s not perfect, but he’s developed a pretty good feel for his overall strike success rate. It seems like his strike percentage tends to hang out somewhere between 60% and 80% most nights, though there’s still some uncertainty. Sometimes he’s on fire, sometimes he’s a little off, but overall he’s confident his long-term strike rate leans more toward success than failure.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this example, they are 7 and 3 (in that order)).\nReplace with your answer\nd. What is the probability that The Dude’s strike success rate is less than 50%?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that The Dude’s strike success rate is above 80%?\nReplace with your answer (i.e., don’t just show me R output here :))"
+    "text": "Scenario 1: Every night, the same thing happens: Brain concocts an elaborate scheme to take over the world, and somehow it never quite works out. Whether it’s Pinky’s blundering, an unexpected plot twist, or the Warner siblings’ interference, Brain’s plans have a way of falling apart at the last moment.\nThe Warner siblings — Yakko, Wakko, and Dot — have each been keeping tabs on Brain’s success (or lack thereof) while atop the Warners’ water tower. Each sibling has been independently tracking whether Brain’s plan was foiled on any given day, and each comes into the analysis with the same prior belief: a Beta(2, 5) distribution for \\pi, the probability that Brain’s plan gets foiled on any given day. This prior reflects a shared suspicion that Brain usually gets pretty far with his plans, but not always.\nThe current issue is that each sibling has been watching for a different stretch of time, and they don’t always agree on what they saw. For each sibling, you’ll update the Beta(2, 5) prior with their observed data and summarize the resulting posterior distribution.\na. After carefully observing Brain’s schemes over 50 days, Dot recorded that 18 of Brain’s plans were successfully foiled. Summarize Dot’s analysis using the functions demonstrated in lecture.\nb. Yakko has been keeping his own records from a different observation period. In his records, Brain’s plans were foiled 12 out of 25 days. Summarize Yakko’s analysis using the functions demonstrated in lecture.\nc. In Wakko’s records, Brain’s plans were foiled 18 out of 25 days. Summarize Wakko’s analysis using the functions demonstrated in lecture.\nd. How do Dot, Yakko, and Wakko’s posterior models compare to one another?\nScenario 2: Yakko, Wakko, and Dot have a long-standing rivalry with the Goodfeathers, Bobby, Squit, and Pesto, who are always pecking around the WB studio lot. The siblings suspect the Goodfeathers show up at an annoyingly high rate throughout the day, and Dot has decided to model this formally. Let \\lambda represent the rate at which the Goodfeathers appear per hour on the studio lot.\na. Dot believes the Goodfeathers show up about 8 times per hour on average, with a standard deviation of 0.5 appearances. Tune and plot an appropriate Gamma(s, r) prior model for λ.\nb. Yakko and Wakko help out by each staking out different parts of the lot. Across 8 hours of observation, they recorded the following Goodfeather appearances: \\{3,9,7,11,8,6,10, 9\\}. Update Dot’s prior model with this data to find the posterior model for \\lambda.\nc. Comment on how the siblings’ understanding of \\lambda changed from the prior to the posterior based on their observations. Did the Goodfeathers show up as often as Dot feared?\nScenario 3: Brain has abandoned his usual schemes and pivoted to high finance. His latest plan for world domination involves cornering the market on Acme Corp stock — the same company that supplies every single product on the WB studio lot. Pinky is thrilled. Brain is focused. Let μ represent the average dollar amount that Acme Corp stock goes up or down in a one-day period.\na. Brain has reviewed Acme Corp’s historical performance. He believes the stock increases by an average of 7.2 dollars per day, with a standard deviation of 2.6 dollars. Tune and plot an appropriate Normal prior model for \\mu.\nb. According to your plot, does it seem plausible that Acme Corp stock would increase by an average of 7.6 dollars in a day? Why or why not?\nc. Does it seem plausible that the stock would increase by an average of 4 dollars in a day? Why or why not?\nd. Pinky recorded the following daily changes over a random sample of 4 days: \\{−0.7,1.2,4.5,−4.0\\}. Update Brain’s prior model with this data to find the posterior model for \\mu.\ne. Comment on how Brain’s understanding of μ evolved from the prior to the posterior based on Pinky’s observed data. Did the stock perform as well as Brain had hoped?"
   },
   {
     "objectID": "index.html",
@@ -875,11 +1239,18 @@
     "text": "Welcome to Applied Bayesian Analysis for Summer 2026!\nThe initial development of this course was supported by the 2023 BATS program, funded by NSF IUSE: EHR program with award numbers 2215879, 2215920, and 2215709."
   },
   {
-    "objectID": "files/assignments/assignment3.html",
-    "href": "files/assignments/assignment3.html",
-    "title": "Assignment 3: Conjugate Families",
+    "objectID": "files/assignments/assignment1.html",
+    "href": "files/assignments/assignment1.html",
+    "title": "Assignment 1: Probability Distributions",
     "section": "",
-    "text": "Scenario 1: Every night, the same thing happens: Brain concocts an elaborate scheme to take over the world, and somehow it never quite works out. Whether it’s Pinky’s blundering, an unexpected plot twist, or the Warner siblings’ interference, Brain’s plans have a way of falling apart at the last moment.\nThe Warner siblings — Yakko, Wakko, and Dot — have each been keeping tabs on Brain’s success (or lack thereof) while atop the Warners’ water tower. Each sibling has been independently tracking whether Brain’s plan was foiled on any given day, and each comes into the analysis with the same prior belief: a Beta(2, 5) distribution for \\pi, the probability that Brain’s plan gets foiled on any given day. This prior reflects a shared suspicion that Brain usually gets pretty far with his plans, but not always.\nThe current issue is that each sibling has been watching for a different stretch of time, and they don’t always agree on what they saw. For each sibling, you’ll update the Beta(2, 5) prior with their observed data and summarize the resulting posterior distribution.\na. After carefully observing Brain’s schemes over 50 days, Dot recorded that 18 of Brain’s plans were successfully foiled. Summarize Dot’s analysis using the functions demonstrated in lecture.\nb. Yakko has been keeping his own records from a different observation period. In his records, Brain’s plans were foiled 12 out of 25 days. Summarize Yakko’s analysis using the functions demonstrated in lecture.\nc. In Wakko’s records, Brain’s plans were foiled 18 out of 25 days. Summarize Wakko’s analysis using the functions demonstrated in lecture.\nd. How do Dot, Yakko, and Wakko’s posterior models compare to one another?\nScenario 2: Yakko, Wakko, and Dot have a long-standing rivalry with the Goodfeathers, Bobby, Squit, and Pesto, who are always pecking around the WB studio lot. The siblings suspect the Goodfeathers show up at an annoyingly high rate throughout the day, and Dot has decided to model this formally. Let \\lambda represent the rate at which the Goodfeathers appear per hour on the studio lot.\na. Dot believes the Goodfeathers show up about 8 times per hour on average, with a standard deviation of 0.5 appearances. Tune and plot an appropriate Gamma(s, r) prior model for λ.\nb. Yakko and Wakko help out by each staking out different parts of the lot. Across 8 hours of observation, they recorded the following Goodfeather appearances: \\{3,9,7,11,8,6,10, 9\\}. Update Dot’s prior model with this data to find the posterior model for \\lambda.\nc. Comment on how the siblings’ understanding of \\lambda changed from the prior to the posterior based on their observations. Did the Goodfeathers show up as often as Dot feared?\nScenario 3: Brain has abandoned his usual schemes and pivoted to high finance. His latest plan for world domination involves cornering the market on Acme Corp stock — the same company that supplies every single product on the WB studio lot. Pinky is thrilled. Brain is focused. Let μ represent the average dollar amount that Acme Corp stock goes up or down in a one-day period.\na. Brain has reviewed Acme Corp’s historical performance. He believes the stock increases by an average of 7.2 dollars per day, with a standard deviation of 2.6 dollars. Tune and plot an appropriate Normal prior model for \\mu.\nb. According to your plot, does it seem plausible that Acme Corp stock would increase by an average of 7.6 dollars in a day? Why or why not?\nc. Does it seem plausible that the stock would increase by an average of 4 dollars in a day? Why or why not?\nd. Pinky recorded the following daily changes over a random sample of 4 days: \\{−0.7,1.2,4.5,−4.0\\}. Update Brain’s prior model with this data to find the posterior model for \\mu.\ne. Comment on how Brain’s understanding of μ evolved from the prior to the posterior based on Pinky’s observed data. Did the stock perform as well as Brain had hoped?"
+    "text": "Note: do not read too much into the following scenarios. The purpose is to get comfortable identifying distributions and finding corresponding probabilities.\nScenario 1: Walter is known for his intense personality during bowling league nights. Whether it’s a foot foul, a scoring dispute, or just general frustration with life, he frequently loses his temper and yells loudly at his teammates or opponents. Based on observations over several league nights, it has been determined that Walter loses his temper at an average rate of 4 outbursts per hour. His outbursts are unpredictable and can happen at any point during the game, but they seem to occur independently of each other.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Walter will not have an outburst at all?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Walter has more than 10 outbursts during league night?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 2: Donny often struggles to find parking near the bowling alley, especially on busy league nights. Sometimes he gets lucky and finds a spot fairly quickly, but other times he ends up circling the block several times before he can finally park. His parking times are generally right-skewed as it is much more common for it to take a shorter amount of time… but every now and then it can take quite a while. Over time, his friends have noticed a pattern: it usually takes him a few minutes, but there is a decent chance it could take significantly longer.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this scenario, \\alpha=3 and \\beta=4.\nReplace with your answer\nd. What is the probability that Donny will take more than 15 minutes to find a spot?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Donny will find a parking space quickly – i.e., that he parks within 5 minutes of arriving?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 3: Maude is famous for her avant-garde dance performances that leave audiences both puzzled and mesmerized. Her performances at the local art venue are known for their spontaneity and lack of strict timing. Observers have noted that the duration of her performances can last anywhere between 15 and 30 minutes, with any length within this interval being equally likely. There’s no predicting exactly how long Maude will choose to perform on any given night… sometimes it’s a brief expression and sometimes it stretches to the edge of the audience’s patience.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Maude’s performance will be on the shorter end – i.e., it lasts somewhere between 15 and 16 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Maude’s performance will be on the longer end – i.e., it lasts somewhere between 25 and 30 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 4. The Dude always orders a White Russian when he’s at the bowling alley. However, the bowling alley bar is not always well-stocked. Each time The Dude places an order, there is only a 60% chance that the bartender has all the necessary ingredients on hand to make the drink (they are frequently out of cream). Throughout one particularly long evening of bowling and philosophical debates, The Dude orders 8 White Russians. He hopes that most of them will be successfully made.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that at least 5 drinks will be successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that all 8 drinks are successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 5: The Dude’s bowling games tend to last around 45 minutes, give or take. While the exact length can vary from game to game, it’s rare for his games to be extremely short or unusually long. Most of the time, his game lengths cluster fairly tightly around that 45-minute mark, though occasionally he’ll have a quicker match or one that drags on a little longer if the vibe calls for it, to the tune of \\pm 5 minutes.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that the game will last exactly 45 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\ne. What is the probability that the game will really drag on – that it lasts somewhere between 50 and 60 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\nScenario 6: After many laid-back bowling sessions (and several White Russians), The Dude has started keeping track of how often he lands a strike. He knows he’s not perfect, but he’s developed a pretty good feel for his overall strike success rate. It seems like his strike percentage tends to hang out somewhere between 60% and 80% most nights, though there’s still some uncertainty. Sometimes he’s on fire, sometimes he’s a little off, but overall he’s confident his long-term strike rate leans more toward success than failure.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this example, they are 7 and 3 (in that order)).\nReplace with your answer\nd. What is the probability that The Dude’s strike success rate is less than 50%?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that The Dude’s strike success rate is above 80%?\nReplace with your answer (i.e., don’t just show me R output here :))"
+  },
+  {
+    "objectID": "files/assignments/assignment2.html",
+    "href": "files/assignments/assignment2.html",
+    "title": "Assignment 2: Thinking Like a Bayesian",
+    "section": "",
+    "text": "1. Think of a recent situation in which you changed your mind. As with the restaurant example in class, make a diagram that includes your prior information, your new data that helped you change your mind, and your posterior conclusion.\n\n2. Odie is trying to convince Jon that Garfield is in the mood to steal lasagna, but Jon thinks there is only 0.10 probability that Garfield is in the mood to steal lasagna. Jon also believes that the probability Garfield raids the fridge given that he’s in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield was in the mood to steal lasagna?\n\n3. Arlene, Garfield’s on-again-off-again girlfriend, has two dispositions toward Garfield: happy or annoyed. In general, Arlene is happy with Garfield 55% of the time. You’ve noticed, however, that her disposition is related to how many times Garfield ignored her the day before. If Arlene is happy with Garfield today, there’s a 60% chance Garfield ignored her 0 times, a 35% chance he ignored her between 1 and 3 times, and a 5% chance he ignored her more than 3 times yesterday. If Arlene is annoyed with Garfield today, there’s a 10% chance Garfield ignored her 0 times, a 55% chance he ignored her between 1 and 3 times, and a 35% chance he ignored her more than 3 times yesterday.\na. Use the given information to complete the following table:\n\n\n\nIgnores yesterday\nP(ignores | happy)\nP(ignores | annoyed)\n\n\n\n\n0 times\n\n\n\n\n1–3 times\n\n\n\n\nMore than 3 times\n\n\n\n\n\nb. Today’s a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what’s the probability that Arlene is happy with Garfield?\nc. You’ve been spying on Garfield all day and have tallied that he ignored Arlene a whopping 4 times yesterday. How likely is Arlene to have been ignored 4 times if she’s happy with Garfield today? What part of the Bayes’ Rule equation is this?\nd. What is the posterior probability that Arlene is happy with Garfield today, given that Garfield ignored her 4 times yesterday?"
   },
   {
     "objectID": "files/lectures/2-1-conjugate-families.html#introduction-beta-binomial-model",
@@ -1446,60 +1817,67 @@
     "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model",
     "title": "Conjugate Families",
     "section": "The Normal Posterior Model",
-    "text": "The Normal Posterior Model\n\nLet us now apply this to our example.\nWe have our prior model, \\mu \\sim N(6.5, 0.4^2).\nLet’s look at the football dataset in the bayesrules package.\n\n\ndata(football)\nconcussion_subjects &lt;- football %&gt;% \n  filter(group == \"fb_concuss\")\n\n\nWhat is the average hippocampal volume?"
+    "text": "The Normal Posterior Model\n\nThe plot_normal_normal() function:\n\n\nplot_normal_normal(mean = prior_mean, \n                   sd = prior_sd, \n                   sigma = data_sigma,\n                   y_bar = sample_mean, \n                   n = num_obs, \n                   posterior = TRUE or FALSE)\n\n\nThe summarize_normal_normal() function:\n\n\nsummarize_normal_normal(mean = prior_mean, \n                        sd = prior_sd, \n                        sigma = data_sigma,\n                        y_bar = sample_mean, \n                        n = num_obs)"
   },
   {
     "objectID": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-1",
     "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-1",
     "title": "Conjugate Families",
     "section": "The Normal Posterior Model",
-    "text": "The Normal Posterior Model\n\nLet us now apply this to our example.\nWe have our prior model, \\mu \\sim N(6.5, 0.4^2).\nLet’s look at the football dataset in the bayesrules package.\n\n\ndata(football)\nconcussion_subjects &lt;- football %&gt;% \n  filter(group == \"fb_concuss\")\n\n\nWhat is the average hippocampal volume?\n\n\nmean(concussion_subjects$volume)\n\n[1] 5.7346"
+    "text": "The Normal Posterior Model\n\nLet us now apply this to our example.\nWe have our prior model, \\mu \\sim N(6.5, 0.4^2).\nLet’s look at the football dataset in the bayesrules package.\n\n\ndata(football)\nconcussion_subjects &lt;- football %&gt;% \n  filter(group == \"fb_concuss\")\n\n\nWhat is the average hippocampal volume?"
   },
   {
     "objectID": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-2",
     "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-2",
     "title": "Conjugate Families",
     "section": "The Normal Posterior Model",
-    "text": "The Normal Posterior Model\n\nBefore computing the posterior, let’s examine the distribution of observed hippocampal volumes."
+    "text": "The Normal Posterior Model\n\nLet us now apply this to our example.\nWe have our prior model, \\mu \\sim N(6.5, 0.4^2).\nLet’s look at the football dataset in the bayesrules package.\n\n\ndata(football)\nconcussion_subjects &lt;- football %&gt;% \n  filter(group == \"fb_concuss\")\n\n\nWhat is the average hippocampal volume?\n\n\nmean(concussion_subjects$volume)\n\n[1] 5.7346"
   },
   {
     "objectID": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-3",
     "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-3",
     "title": "Conjugate Families",
     "section": "The Normal Posterior Model",
-    "text": "The Normal Posterior Model\n\nNow, we can plug in the information we have (n = 25, \\bar{y} = 5.735, \\sigma = 0.5) into our likelihood,\n\n\nL(\\mu|\\overset{\\to}y) \\propto \\exp \\left\\{ \\frac{-(5.735 - \\mu)^2}{2(0.5^2/25)} \\right\\}"
+    "text": "The Normal Posterior Model\n\nBefore computing the posterior, let’s examine the distribution of observed hippocampal volumes."
   },
   {
     "objectID": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-4",
     "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-4",
     "title": "Conjugate Families",
     "section": "The Normal Posterior Model",
-    "text": "The Normal Posterior Model\n\nWe are now ready to put together our posterior:\n\nData distribution, Y_i | \\mu \\overset{\\text{iid}} \\sim N(\\mu, \\sigma^2)\nPrior distribution, \\mu \\sim N(\\theta, \\tau^2)\n\nPosterior distribution, \\mu | \\overset{\\to}y \\sim N\\left( \\theta \\frac{\\sigma^2}{n\\tau^2 + \\sigma^2} + \\bar{y} \\frac{n\\tau^2}{n\\tau^2 + \\sigma^2}, \\frac{\\tau^2 \\sigma^2}{n \\tau^2 + \\sigma^2} \\right)\n\nGiven our information (\\theta=6.5, \\tau=0.4, n=25, \\bar{y}=5.735, \\sigma=0.5), our posterior is\n\n\n\\mu | \\overset{\\to}y \\sim N\\left( \\theta \\frac{\\sigma^2}{n\\tau^2 + \\sigma^2} + \\bar{y} \\frac{n\\tau^2}{n\\tau^2 + \\sigma^2}, \\frac{\\tau^2 \\sigma^2}{n \\tau^2 + \\sigma^2} \\right)"
+    "text": "The Normal Posterior Model\n\nNow, we can plug in the information we have (n = 25, \\bar{y} = 5.735, \\sigma = 0.5) into our likelihood,\n\n\nL(\\mu|\\overset{\\to}y) \\propto \\exp \\left\\{ \\frac{-(5.735 - \\mu)^2}{2(0.5^2/25)} \\right\\}"
   },
   {
     "objectID": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-5",
     "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-5",
     "title": "Conjugate Families",
     "section": "The Normal Posterior Model",
-    "text": "The Normal Posterior Model\n\nGiven our information (\\theta=6.5, \\tau=0.4, n=25, \\bar{y}=5.735, \\sigma=0.5), our posterior is\n\n\n\\begin{align*}\n\\mu | \\overset{\\to}y &\\sim N\\left( \\theta \\frac{\\sigma^2}{n\\tau^2 + \\sigma^2} + \\bar{y} \\frac{n\\tau^2}{n\\tau^2 + \\sigma^2}, \\frac{\\tau^2 \\sigma^2}{n \\tau^2 + \\sigma^2} \\right) \\\\\n&\\sim N\\left( 6.5 \\frac{0.5^2}{25 \\cdot 0.4^2 + 0.5^2} + 5.735 \\frac{25 \\cdot 0.4^2}{25 \\cdot 0.4^2 + 0.5^2}, \\frac{0.4^2 \\cdot 0.5^2}{25 \\cdot 0.4^2 + 0.5^2} \\right) \\\\\n&\\sim N(6.5 \\cdot 0.0588 + 5.735 \\cdot 0.9412, 0.09^2) \\\\\n&\\sim N(5.78, 0.09^2)\n\\end{align*}\n\n\nLooking at the posterior, we can see the weights\n\n94% on the data mean, 6% on the prior mean."
+    "text": "The Normal Posterior Model\n\nWe are now ready to put together our posterior:\n\nData distribution, Y_i | \\mu \\overset{\\text{iid}} \\sim N(\\mu, \\sigma^2)\nPrior distribution, \\mu \\sim N(\\theta, \\tau^2)\n\nPosterior distribution, \\mu | \\overset{\\to}y \\sim N\\left( \\theta \\frac{\\sigma^2}{n\\tau^2 + \\sigma^2} + \\bar{y} \\frac{n\\tau^2}{n\\tau^2 + \\sigma^2}, \\frac{\\tau^2 \\sigma^2}{n \\tau^2 + \\sigma^2} \\right)\n\nGiven our information (\\theta=6.5, \\tau=0.4, n=25, \\bar{y}=5.735, \\sigma=0.5), our posterior is\n\n\n\\mu | \\overset{\\to}y \\sim N\\left( \\theta \\frac{\\sigma^2}{n\\tau^2 + \\sigma^2} + \\bar{y} \\frac{n\\tau^2}{n\\tau^2 + \\sigma^2}, \\frac{\\tau^2 \\sigma^2}{n \\tau^2 + \\sigma^2} \\right)"
   },
   {
     "objectID": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-6",
     "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-6",
     "title": "Conjugate Families",
     "section": "The Normal Posterior Model",
-    "text": "The Normal Posterior Model\n\nLooking at just the prior and data distributions,"
+    "text": "The Normal Posterior Model\n\nGiven our information (\\theta=6.5, \\tau=0.4, n=25, \\bar{y}=5.735, \\sigma=0.5), our posterior is\n\n\n\\begin{align*}\n\\mu | \\overset{\\to}y &\\sim N\\left( \\theta \\frac{\\sigma^2}{n\\tau^2 + \\sigma^2} + \\bar{y} \\frac{n\\tau^2}{n\\tau^2 + \\sigma^2}, \\frac{\\tau^2 \\sigma^2}{n \\tau^2 + \\sigma^2} \\right) \\\\\n&\\sim N\\left( 6.5 \\frac{0.5^2}{25 \\cdot 0.4^2 + 0.5^2} + 5.735 \\frac{25 \\cdot 0.4^2}{25 \\cdot 0.4^2 + 0.5^2}, \\frac{0.4^2 \\cdot 0.5^2}{25 \\cdot 0.4^2 + 0.5^2} \\right) \\\\\n&\\sim N(6.5 \\cdot 0.0588 + 5.735 \\cdot 0.9412, 0.09^2) \\\\\n&\\sim N(5.78, 0.09^2)\n\\end{align*}\n\n\nLooking at the posterior, we can see the weights\n\n94% on the data mean, 6% on the prior mean."
   },
   {
     "objectID": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-7",
     "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-7",
     "title": "Conjugate Families",
     "section": "The Normal Posterior Model",
-    "text": "The Normal Posterior Model\n\nNow including the posterior,"
+    "text": "The Normal Posterior Model\n\nLooking at just the prior and data distributions,"
   },
   {
     "objectID": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-8",
     "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-8",
+    "title": "Conjugate Families",
+    "section": "The Normal Posterior Model",
+    "text": "The Normal Posterior Model\n\nNow including the posterior,"
+  },
+  {
+    "objectID": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-9",
+    "href": "files/lectures/2-1-conjugate-families.html#the-normal-posterior-model-9",
     "title": "Conjugate Families",
     "section": "The Normal Posterior Model",
     "text": "The Normal Posterior Model\n\nWe can use the summarize_normal_normal() function to summarize the distribution,\n\n\nsummarize_normal_normal(mean = 6.5, sd = 0.4, sigma = 0.5, y_bar = 5.735, n = 25) \n\n\n\n\n\nmodel\nmean\nmode\nvar\nsd\n\n\n\n\nprior\n6.50\n6.50\n0.1600000\n0.4000000\n\n\nposterior\n5.78\n5.78\n0.0094118\n0.0970143"
@@ -1516,7 +1894,7 @@
     "href": "files/lectures/2-1-conjugate-families.html#wrap-up",
     "title": "Conjugate Families",
     "section": "Wrap Up",
-    "text": "Wrap Up\n\nToday we covered the main conjugate families.\n\nBeta-Binomial: binary outcomes\nGamma-Poisson: count outcomes\nNormal-Normal: continuous outcomes\n\nYou now are ready to work on Assignment 3: Conjugate Families.\n\n.qmd file is available to download on Canvas.\n\nWednesday: how do we draw conclusions using the posterior distribution?"
+    "text": "Wrap Up\n\nToday we covered the main conjugate families.\n\nBeta-Binomial: binary outcomes\nGamma-Poisson: count outcomes\nNormal-Normal: continuous outcomes\n\nYou now are ready to work on Assignment 3: Conjugate Families.\n\n.qmd file is available to download on Canvas.\n\nWednesday: how do we actually draw conclusions using the posterior distribution?"
   },
   {
     "objectID": "files/lectures/1-1-probability.html#introduction",
@@ -1705,7 +2083,7 @@
     "href": "files/lectures/1-1-probability.html#complementary-events",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Complementary Events",
-    "text": "Complementary Events\n\nComplement of A: the event that includes all the outcomes that are not in A.\n\n\n\n\n\nMathematically,\n\n\n\\begin{align*}\nP[A] &+ P[A^c] = 1 \\\\\nP[A] &= 1 - P[A^c] \\\\\nP[A^c] &= 1 - P[A]\n\\end{align*}"
+    "text": "Complementary Events\n\nComplement of A: the event that includes all the outcomes that are not in A.\n\n\n\n\n\nMathematically,\n\n\\begin{align*}\nP[A] &+ P[A^c] = 1 \\\\\nP[A] &= 1 - P[A^c] \\\\\nP[A^c] &= 1 - P[A]\n\\end{align*}"
   },
   {
     "objectID": "files/lectures/1-1-probability.html#complementary-events-1",
@@ -1768,14 +2146,14 @@
     "href": "files/lectures/1-1-probability.html#expected-values-for-discrete-rv",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Expected Values for Discrete RV",
-    "text": "Expected Values for Discrete RV\n\nExpected value: Let Y be a discrete random variable with probability function p(y). Then the expected value of Y, E[Y], is defined to be\n\n\nE(Y) = \\sum_{y} y p(y)\n\n\nWhen p(y) is an accurate characterization of the population frequency distribution, then the expected value is the population mean.\n\n\nE[Y] = \\mu"
+    "text": "Expected Values for Discrete RV\n\nExpected value: Let Y be a discrete random variable with probability function p(y). Then the expected value of Y, E[Y], is defined to be\n\nE(Y) = \\sum_{y} y p(y)\n\nWhen p(y) is an accurate characterization of the population frequency distribution, then the expected value is the population mean.\n\nE[Y] = \\mu"
   },
   {
     "objectID": "files/lectures/1-1-probability.html#expected-values-for-discrete-rv-1",
     "href": "files/lectures/1-1-probability.html#expected-values-for-discrete-rv-1",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Expected Values for Discrete RV",
-    "text": "Expected Values for Discrete RV\n\nVariance: if Y is a random variable with mean E[Y] = \\mu, the variance of a random variable Y is defined to be the expected value of (Y-\\mu)^2.\n\n\nV[Y] = E\\left[ (Y-\\mu)^2 \\right]\n\n\nIf p(y) is an accurate characterization of the population frequency distribution, then V(Y) is the population variance,\n\n\nV[Y] = \\sigma^2\n\n\nStandard deviation: the positive square root of V[Y]."
+    "text": "Expected Values for Discrete RV\n\nVariance: if Y is a random variable with mean E[Y] = \\mu, the variance of a random variable Y is defined to be the expected value of (Y-\\mu)^2.\n\nV[Y] = E\\left[ (Y-\\mu)^2 \\right]\n\nIf p(y) is an accurate characterization of the population frequency distribution, then V(Y) is the population variance,\n\nV[Y] = \\sigma^2\n\nStandard deviation: the positive square root of V[Y]."
   },
   {
     "objectID": "files/lectures/1-1-probability.html#expected-values-for-discrete-rv-2",
@@ -1810,7 +2188,7 @@
     "href": "files/lectures/1-1-probability.html#binomial-probability-distribution-1",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Binomial Probability Distribution",
-    "text": "Binomial Probability Distribution\n\nA random variable Y is said to have a binomial distribution based on n trials with success probability p iff\n\n\np(y) = {n \\choose y}p^y q^{n-y}, \\text{ where } y = 0, 1, 2, ..., n, \\text{ and } 0 \\le p \\le1\n\n\nLet Y be a binomial random variable based on n trials and success probability p. Then\n\n\nE[Y] = \\mu = np \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2 = npq\n\n\nSee Wackerly pg. 107 for derivation."
+    "text": "Binomial Probability Distribution\n\nA random variable Y is said to have a binomial distribution based on n trials with success probability p iff\n\np(y) = {n \\choose y}p^y q^{n-y}, \\text{ where } y = 0, 1, 2, ..., n, \\text{ and } 0 \\le p \\le1\n\nLet Y be a binomial random variable based on n trials and success probability p. Then\n\nE[Y] = \\mu = np \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2 = npq\n\nSee Wackerly pg. 107 for derivation."
   },
   {
     "objectID": "files/lectures/1-1-probability.html#binomial-probability-distribution-2",
@@ -1859,7 +2237,7 @@
     "href": "files/lectures/1-1-probability.html#poisson-probability-distribution",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Poisson Probability Distribution",
-    "text": "Poisson Probability Distribution\n\nWe often use the Poisson distribution to model count data.\nA random variable Y is said to have a Poisson probability distribution iff\n\n\np(y) = \\frac{\\lambda^y}{y!}e^{-\\lambda}, \\text{ where } y=0,1,2,..., \\text{ and } \\lambda &gt; 0\n\n\nIf Y is a random variable with a Poisson distribution with parameter \\lambda, then\n\n\nE[Y] = \\mu = \\lambda \\text{ and } V[Y] = \\sigma^2 = \\lambda\n\n\nSee Wackerly pg. 134 for derivation."
+    "text": "Poisson Probability Distribution\n\nWe often use the Poisson distribution to model count data.\nA random variable Y is said to have a Poisson probability distribution iff\n\np(y) = \\frac{\\lambda^y}{y!}e^{-\\lambda}, \\text{ where } y=0,1,2,..., \\text{ and } \\lambda &gt; 0\n\nIf Y is a random variable with a Poisson distribution with parameter \\lambda, then\n\nE[Y] = \\mu = \\lambda \\text{ and } V[Y] = \\sigma^2 = \\lambda\n\nSee Wackerly pg. 134 for derivation."
   },
   {
     "objectID": "files/lectures/1-1-probability.html#poisson-probability-distribution-1",
@@ -1936,21 +2314,21 @@
     "href": "files/lectures/1-1-probability.html#probability-distributions-for-continuous-rv-4",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Probability Distributions for Continuous RV",
-    "text": "Probability Distributions for Continuous RV\n\nTheorem: If the random variable Y has density function f(y) and a &lt; b, then the probability that Y falls in the interval [a, b] is\n\n\nP[a \\le Y \\le b] = \\int_a^b f(y) dy."
+    "text": "Probability Distributions for Continuous RV\n\nTheorem: If the random variable Y has density function f(y) and a &lt; b, then the probability that Y falls in the interval [a, b] is\n\nP[a \\le Y \\le b] = \\int_a^b f(y) dy."
   },
   {
     "objectID": "files/lectures/1-1-probability.html#expected-values-for-continuous-rv",
     "href": "files/lectures/1-1-probability.html#expected-values-for-continuous-rv",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Expected Values for Continuous RV",
-    "text": "Expected Values for Continuous RV\n\nExpected value: The expected value of a continuous variable Y is\n\n\nE[Y] = \\int_{-\\infty}^{\\infty} y f(y) \\ dy\n\n\nThis is the continuous version of the expected value for a discrete random variable,\n\n\nE[Y] = \\sum_y y p(y)"
+    "text": "Expected Values for Continuous RV\n\nExpected value: The expected value of a continuous variable Y is\n\nE[Y] = \\int_{-\\infty}^{\\infty} y f(y) \\ dy\n\nThis is the continuous version of the expected value for a discrete random variable,\n\nE[Y] = \\sum_y y p(y)"
   },
   {
     "objectID": "files/lectures/1-1-probability.html#expected-values-for-continuous-rv-1",
     "href": "files/lectures/1-1-probability.html#expected-values-for-continuous-rv-1",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Expected Values for Continuous RV",
-    "text": "Expected Values for Continuous RV\n\nTheorem: Let g(Y) be a function of Y; then the expected value of g(Y) is given by\n\n\nE\\left[ g(Y) \\right] = \\int_{-\\infty}^{\\infty} g(y) f(y) \\ dy\n\n\nTheorem: Let c be a constant and let g(Y), g_1(Y), g_2(Y), …, g_k(Y) be functions of a continuous random variable, Y. Then the following results hold:\n\nE[c] = c\nE\\left[cg(Y)] = cE[g(Y)\\right]\nE\\left[g_1(Y)+...+g_k(Y)\\right] = E\\left[ g_1(Y) \\right] + ... + E\\left[ g_k(Y) \\right]"
+    "text": "Expected Values for Continuous RV\n\nTheorem: Let g(Y) be a function of Y; then the expected value of g(Y) is given by\n\nE\\left[ g(Y) \\right] = \\int_{-\\infty}^{\\infty} g(y) f(y) \\ dy\n\nTheorem: Let c be a constant and let g(Y), g_1(Y), g_2(Y), …, g_k(Y) be functions of a continuous random variable, Y. Then the following results hold:\n\nE[c] = c\nE\\left[cg(Y)] = cE[g(Y)\\right]\nE\\left[g_1(Y)+...+g_k(Y)\\right] = E\\left[ g_1(Y) \\right] + ... + E\\left[ g_k(Y) \\right]"
   },
   {
     "objectID": "files/lectures/1-1-probability.html#uniform-probability-distribution",
@@ -1964,7 +2342,7 @@
     "href": "files/lectures/1-1-probability.html#uniform-probability-distribution-1",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Uniform Probability Distribution",
-    "text": "Uniform Probability Distribution\n\nA random variable Y is said to have a uniform distribution iff\n\n\nf(y) = \\frac{1}{\\theta_2 - \\theta_1}, \\ \\theta_1 \\le y \\le \\theta_2\n\n\nIf \\theta_1 &lt; \\theta_2 and Y is a uniformly distributed r.v. on the interval (\\theta_1, \\theta_2), then\n\n\nE[Y] = \\mu = \\frac{\\theta_1+\\theta_2}{2} \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2 = \\frac{(\\theta_2-\\theta_1)^2}{12}\n\n\nSee Wackerly pg. 176 for derivation."
+    "text": "Uniform Probability Distribution\n\nA random variable Y is said to have a uniform distribution iff\n\nf(y) = \\frac{1}{\\theta_2 - \\theta_1}, \\ \\theta_1 \\le y \\le \\theta_2\n\nIf \\theta_1 &lt; \\theta_2 and Y is a uniformly distributed r.v. on the interval (\\theta_1, \\theta_2), then\n\nE[Y] = \\mu = \\frac{\\theta_1+\\theta_2}{2} \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2 = \\frac{(\\theta_2-\\theta_1)^2}{12}\n\nSee Wackerly pg. 176 for derivation."
   },
   {
     "objectID": "files/lectures/1-1-probability.html#uniform-probability-distribution-2",
@@ -2020,7 +2398,7 @@
     "href": "files/lectures/1-1-probability.html#normal-probability-distribution-1",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Normal Probability Distribution",
-    "text": "Normal Probability Distribution\n\nA random variable Y is said to have a normal distribution iff, for \\sigma &gt; 0 and -\\infty &lt; \\mu &lt; \\infty,\n\n\nf(y) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-(y-\\mu)^2/(2\\sigma^2)}\n\n\nIf Y is a random variable normally distributed with parameters \\mu and \\sigma, then\n\n\nE[Y] = \\mu  \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2"
+    "text": "Normal Probability Distribution\n\nA random variable Y is said to have a normal distribution iff, for \\sigma &gt; 0 and -\\infty &lt; \\mu &lt; \\infty,\n\nf(y) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-(y-\\mu)^2/(2\\sigma^2)}\n\nIf Y is a random variable normally distributed with parameters \\mu and \\sigma, then\n\nE[Y] = \\mu  \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2"
   },
   {
     "objectID": "files/lectures/1-1-probability.html#normal-probability-distribution-2",
@@ -2034,7 +2412,7 @@
     "href": "files/lectures/1-1-probability.html#normal-probability-distribution-3",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Normal Probability Distribution",
-    "text": "Normal Probability Distribution\n\nA random variable Y is said to have a standard normal distribution iff\n\n\nY \\sim N(\\mu=0,\\sigma=1)\n\n\nThe normal distribution is then simplified to\n\n\nf(y) = \\frac{1}{\\sqrt{2\\pi}} e^{-y^2/2}\n\n\nNote that in all cases of the normal distribution, we assume -\\infty &lt; y &lt; \\infty."
+    "text": "Normal Probability Distribution\n\nA random variable Y is said to have a standard normal distribution iff\n\nY \\sim N(\\mu=0,\\sigma=1)\n\nThe normal distribution is then simplified to\n\nf(y) = \\frac{1}{\\sqrt{2\\pi}} e^{-y^2/2}\n\nNote that in all cases of the normal distribution, we assume -\\infty &lt; y &lt; \\infty."
   },
   {
     "objectID": "files/lectures/1-1-probability.html#normal-probability-distribution-4",
@@ -2090,7 +2468,7 @@
     "href": "files/lectures/1-1-probability.html#gamma-probability-distribution-1",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Gamma Probability Distribution",
-    "text": "Gamma Probability Distribution\n\nA random variable Y is said to have a gamma distribution with parameters \\alpha &gt; 0 and \\beta &gt; 0 iff,\n\n\nf(y) = \\frac{y^{\\alpha-1} e^{-y/\\beta}}{\\beta^{\\alpha} \\Gamma(\\alpha)}, \\ 0 \\le y &lt; \\infty\n\n\nNote that \\Gamma(\\alpha) = \\int_{0}^{\\infty} y^{\\alpha-1} e^{-y} \\ dy.\nIf Y has a gamma distribution with parameters \\alpha and \\beta, then\n\n\nE[Y] = \\mu = \\alpha\\beta \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2  = \\alpha\\beta^2\n\n\nSee Wackerly pg. 187 for derivation."
+    "text": "Gamma Probability Distribution\n\nA random variable Y is said to have a gamma distribution with parameters \\alpha &gt; 0 and \\beta &gt; 0 iff,\n\nf(y) = \\frac{y^{\\alpha-1} e^{-y/\\beta}}{\\beta^{\\alpha} \\Gamma(\\alpha)}, \\ 0 \\le y &lt; \\infty\n\nNote that \\Gamma(\\alpha) = \\int_{0}^{\\infty} y^{\\alpha-1} e^{-y} \\ dy.\nIf Y has a gamma distribution with parameters \\alpha and \\beta, then\n\nE[Y] = \\mu = \\alpha\\beta \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2  = \\alpha\\beta^2\n\nSee Wackerly pg. 187 for derivation."
   },
   {
     "objectID": "files/lectures/1-1-probability.html#gamma-probability-distribution-2",
@@ -2139,7 +2517,7 @@
     "href": "files/lectures/1-1-probability.html#beta-probability-distribution-1",
     "title": "Overview of Probability Theoryand Probability Distributions",
     "section": "Beta Probability Distribution",
-    "text": "Beta Probability Distribution\n\nA random variable Y is said to have a beta distribution with parameters \\alpha &gt; 0 and \\beta &gt; 0 iff,\n\n\nf(y) = \\frac{y^{\\alpha-1}(1-y)^{\\beta-1}}{B(\\alpha,\\beta)}, \\ 0 \\le y \\le 1\n\n\nNote: B(\\alpha,\\beta) = \\int_0^1 y^{\\alpha-1}(1-y)^{\\beta-1} \\ dy = \\frac{\\Gamma(\\alpha) \\Gamma(\\beta)}{\\Gamma(\\alpha+\\beta)}.\nIf Y has a beta distribution with parameters \\alpha &gt; 0 and \\beta &gt; 0, then\n\n\nE[Y] = \\mu = \\frac{\\alpha}{\\alpha+\\beta} \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2  = \\frac{\\alpha\\beta}{(\\alpha+\\beta)^2(\\alpha+\\beta+1)}"
+    "text": "Beta Probability Distribution\n\nA random variable Y is said to have a beta distribution with parameters \\alpha &gt; 0 and \\beta &gt; 0 iff,\n\nf(y) = \\frac{y^{\\alpha-1}(1-y)^{\\beta-1}}{B(\\alpha,\\beta)}, \\ 0 \\le y \\le 1 \n\nNote: B(\\alpha,\\beta) = \\int_0^1 y^{\\alpha-1}(1-y)^{\\beta-1} \\ dy = \\frac{\\Gamma(\\alpha) \\Gamma(\\beta)}{\\Gamma(\\alpha+\\beta)}.\nIf Y has a beta distribution with parameters \\alpha &gt; 0 and \\beta &gt; 0, then\n\nE[Y] = \\mu = \\frac{\\alpha}{\\alpha+\\beta} \\ \\ \\ \\text{and} \\ \\ \\ V[Y] = \\sigma^2  = \\frac{\\alpha\\beta}{(\\alpha+\\beta)^2(\\alpha+\\beta+1)}"
   },
   {
     "objectID": "files/lectures/1-1-probability.html#beta-probability-distribution-2",

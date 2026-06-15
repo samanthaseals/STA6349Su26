@@ -8,7 +8,7 @@
 
 <meta name="author" content="Your Name Here">
 
-<title>Assignment 2: Thinking Like a Bayesian – Applied Bayesian Analysis - Summer 2026</title>
+<title>Assignment 4: Bayesian Statistical Inference – Applied Bayesian Analysis - Summer 2026</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -4709,6 +4709,65 @@ vertical-align: -.125em;
   }
 }</script>
 
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var head = document.getElementsByTagName("head")[0];
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css";
+      head.appendChild(link);
+
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js";
+      script.async = false;
+      script.addEventListener('load', function() {
+        var mathElements = document.getElementsByClassName("math");
+          var macros = [];
+          for (var i = 0; i < mathElements.length; i++) {
+            var texText = mathElements[i].firstChild;
+            if (mathElements[i].tagName == "SPAN") {
+              window.katex.render(texText.data, mathElements[i], {
+                displayMode: mathElements[i].classList.contains('display'),
+                throwOnError: false,
+                macros: macros,
+                fleqn: false
+              });
+            }
+          }
+      });
+      head.appendChild(script);
+    });
+  </script>
+  
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <style type="text/css">
 
@@ -4947,7 +5006,7 @@ text-transform: uppercase;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Assignment 2: Thinking Like a Bayesian</h1>
+<h1 class="title">Assignment 4: Bayesian Statistical Inference</h1>
 </div>
 
 
@@ -4970,41 +5029,33 @@ text-transform: uppercase;
 </header>
 
 
-<p><strong>1. Think of a recent situation in which you changed your mind. As with the restaurant example in class, make a diagram that includes your prior information, your new data that helped you change your mind, and your posterior conclusion.</strong></p>
-<!-- this is a great place to ask AI for help with coding! with Claude's help it took me about an hour to iron out the code for the diagrams in lecture :) -->
-<p><strong>2. Odie is trying to convince Jon that Garfield is in the mood to steal lasagna, but Jon thinks there is only 0.10 probability that Garfield is in the mood to steal lasagna. Jon also believes that the probability Garfield raids the fridge given that he’s in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield was in the mood to steal lasagna?</strong></p>
-<!-- another great place to ask AI for help -- how to format your solution in LaTeX -->
-<p><strong>3. Arlene, Garfield’s on-again-off-again girlfriend, has two dispositions toward Garfield: happy or annoyed. In general, Arlene is happy with Garfield 55% of the time. You’ve noticed, however, that her disposition is related to how many times Garfield ignored her the day before. If Arlene is happy with Garfield today, there’s a 60% chance Garfield ignored her 0 times, a 35% chance he ignored her between 1 and 3 times, and a 5% chance he ignored her more than 3 times yesterday. If Arlene is annoyed with Garfield today, there’s a 10% chance Garfield ignored her 0 times, a 55% chance he ignored her between 1 and 3 times, and a 35% chance he ignored her more than 3 times yesterday.</strong></p>
-<p><strong>a. Use the given information to complete the following table:</strong></p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Ignores yesterday</th>
-<th>P(ignores | happy)</th>
-<th>P(ignores | annoyed)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>0 times</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>1–3 times</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>More than 3 times</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><strong>b. Today’s a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what’s the probability that Arlene is happy with Garfield?</strong></p>
-<p><strong>c. You’ve been spying on Garfield all day and have tallied that he ignored Arlene a whopping 4 times yesterday. How likely is Arlene to have been ignored 4 times if she’s happy with Garfield today? What part of the Bayes’ Rule equation is this?</strong></p>
-<p><strong>d. What is the posterior probability that Arlene is happy with Garfield today, given that Garfield ignored her 4 times yesterday?</strong></p>
+<p><strong>1. Consider the Beta-Binomial model for <span class="math inline">\pi</span> with <span class="math inline">Y|\pi \sim \text{Bin}(n, \pi)</span> and <span class="math inline">\pi \sim \text{Beta}(3, 8)</span>. Suppose that in <span class="math inline">n=10</span> independent trials, you observe <span class="math inline">Y=2</span> successes.</strong></p>
+<p><strong>a. Simulate the posterior model of <span class="math inline">\pi</span> with RStan using 4 chains and 10000 iterations per chain.</strong></p>
+<p><strong>b. Produce trace and density plots for each of the four chains.</strong></p>
+<p><strong>c. Create a density plot of the values for each of the four chains.</strong></p>
+<p><strong>d. Use what we know about conjugate families to find the posterior distribution.</strong></p>
+<!-- revisit last lecture :) -->
+<p><strong>e. Overlay the true posterior distribution on the density plot of the simulated posterior distribution. Do they match?</strong></p>
+<!-- this is a great place to ask AI for help :) -->
+<p><strong>f. What do you think the most likely value of <span class="math inline">\pi</span> is? Why?</strong></p>
+<p><strong>2. Consider the Gamma-Poisson model for <span class="math inline">\lambda</span> with <span class="math inline">Y|\lambda \sim \text{Poi}(\lambda)</span> and <span class="math inline">\lambda \sim \text{Gamma}(20, 5)</span>. Suppose you observe <span class="math inline">n=3</span> independent data points, <span class="math inline">\left(Y_1, Y_2, Y_3\right) = (0, 1, 0)</span>.</strong></p>
+<p><strong>a. Simulate the posterior model of <span class="math inline">\lambda</span> with RStan using 4 chains and 10000 iterations per chain.</strong></p>
+<p><strong>b. Produce trace and density plots for each of the four chains.</strong></p>
+<p><strong>c. Create a density plot of the values for each of the four chains.</strong></p>
+<p><strong>d. Use what we know about conjugate families to find the posterior distribution.</strong></p>
+<!-- revisit last lecture :) -->
+<p><strong>e. Overlay the true posterior distribution on the density plot of the simulated posterior distribution. Do they match?</strong></p>
+<!-- this is a great place to ask AI for help :) -->
+<p><strong>f. What do you think the most likely value of <span class="math inline">\lambda</span> is? Why?</strong></p>
+<p><strong>3. Consider the Normal-Normal model for <span class="math inline">\mu</span> with <span class="math inline">Y|\mu \sim \text{N}(\mu, 1.3^2)</span> and <span class="math inline">\mu \sim \text{N}(10, 1.2^2)</span>. Suppose you observe <span class="math inline">n=4</span> independent data points, <span class="math inline">\left(Y_1, Y_2, Y_3, Y_4\right) = (7.1, 8.9, 8.4, 8.6)</span>.</strong></p>
+<p><strong>a. Simulate the posterior model of <span class="math inline">\mu</span> with RStan using 4 chains and 10000 iterations per chain.</strong></p>
+<p><strong>b. Produce trace and density plots for each of the four chains.</strong></p>
+<p><strong>c. Create a density plot of the values for each of the four chains.</strong></p>
+<p><strong>d. Use what we know about conjugate families to find the posterior distribution.</strong></p>
+<!-- revisit last lecture :) -->
+<p><strong>e. Overlay the true posterior distribution on the density plot of the simulated posterior distribution. Do they match?</strong></p>
+<!-- this is a great place to ask AI for help :) -->
+<p><strong>f. What do you think the most likely value of <span class="math inline">\mu</span> is? Why?</strong></p>
 
 
 
