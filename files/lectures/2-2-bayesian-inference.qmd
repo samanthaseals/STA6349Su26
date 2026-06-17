@@ -1,0 +1,1394 @@
+---
+title: "Bayesian Statistical Inference"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format:
+  revealjs:
+    theme: simple
+    css: style_lecture.css
+    include-after-body: headers.html
+    self-contained: true
+    slide-number: true
+    footer: "STA6349 · Applied Bayesian Analysis · Summer 2026"
+    width: 1600
+    height: 900
+    df-print: kable
+    html-math-method: katex
+    code-fold: false
+    code-tools: false
+    incremental: false
+editor: source
+---
+
+## Introduction
+
+- We have learned how to think like a Bayesian: 
+
+    - Prior distribution
+    - Data distribution
+    - Posterior distribution
+
+- We have learned three conjugate families:
+
+    - Beta-Binomial (binary outcomes)
+    - Gamma-Poisson (count outcomes)
+    - Normal-Normal (continuous outcomes)
+    
+- Once we have a posterior model, we must be able to apply the results.
+
+    - Posterior estimation
+    - Hypothesis testing
+    - Prediction  
+    
+## R Packages Needed
+
+- To follow today's lecture, please load the following packages:
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(rstan)
+library(bayesrules)
+library(bayesplot)
+library(broom.mixed)
+library(ggpubr)
+```    
+
+## Introduction
+
+- Recall, we have the posterior pdf,
+
+$$f(\theta|y) = \frac{f(\theta) L(\theta|y)}{f(y)} \propto f(\theta)L(\theta|y)$$
+    
+- Now, in the denominator, we need to remember,
+
+$$f(y) = \int_{\theta_1} \int_{\theta_2} \cdot \cdot \cdot \int_{\theta_k} f(\theta) L(\theta|y) d\theta_k \cdot \cdot \cdot d\theta_2 d\theta_1$$
+
+- Because this is ... not fun ... we will approximate the posterior via simulation.
+
+## Introduction
+
+- We are going to explore two simulation techniques:
+    - grid approximation
+    - Markov chain Monte Carlo (MCMC)
+    
+- Either method will produce a **sample** of $N$ values for $\theta$. 
+
+$$\left \{ \theta^{(1)}, \theta^{(2)}, ..., \theta^{(N)} \right \}$$
+
+- These $\theta_i$ will have properties that reflect those of the posterior model for $\theta$.
+
+- To help us, we will apply these simulation techniques to Beta-Binomial and Gamma-Poisson models.
+    - Note that these models do not require simulation! We know their posteriors!
+    - That's why we are starting there -- we can link the concepts to what we know. :)
+
+## Grid Approximation
+
+![](images/W12-L1-a.png){fig-align="center" width="80%"} 
+
+- Suppose there is an image that you can't view in its entirety.
+
+- We can see snippets along a grid that sweeps from left to right across the image. 
+
+- The finer the grid, the clearer the image; if the grid is fine enough, the result is a good approximation.
+
+## Grid Approximation
+
+![](images/W12-L1-a.png){fig-align="center" width="80%"} 
+
+- This is the general idea behind Bayesian grid approximation.
+
+- Our target image is the posterior pdf, $f(\theta|y)$.
+    - It is not necessary to observe all possible $f(\theta|y) \ \forall \theta$ for us to understand its structure.
+    - Instead, we evaluate $f(\theta|y)$ at a finite, discrete grid of possible $\theta$ values.
+    - Then, we take random samples from this discretized pdf to approximate the full posterior pdf.
+    
+## Grid Approximation
+
+- Grid approximation produces a sample of $N$ independent $\theta$ values, 
+
+$$\left\{ \theta^{(1)}, \theta^{(2)}, ..., \theta^{(N)} \right\},$$ 
+
+from a discretized approximation of the posterior pdf, $f(\theta|y)$.
+
+
+## Grid Approximation
+
+- **Algorithm:**
+    1. Define a discrete grid of possible $\theta$ values.
+    2. Evaluate the prior pdf, $f(\theta)$, and the likelihood function, $L(\theta|y)$ at each $\theta$ grid value.
+    3. Obtain a discrete approximation of the posterior pdf, $f(\theta|y)$ by:
+        a. Calculating the product $f(\theta) L(\theta|y)$ at each $\theta$ grid value,
+        b. Normalize the products from (a) to sum to 1 across all $\theta$.
+    4. Randomly sample $N$ $\theta$ grid values with respect to their corresponding normalized posterior probabilities.        
+
+## Grid Approximation 
+
+- We will use the following Beta-Binomial model to learn how to do grid approximation:
+
+$$
+\begin{align*}
+Y|\pi &\sim \text{Bin}(10, \pi) \\
+\pi &\sim \text{Beta}(2, 2)
+\end{align*}
+$$
+
+- Note that 
+    - $Y$ is the number of successes in 10 independent trials.
+    - Every trial has probability of success, $\pi$.
+    - Our prior understanding about $\pi$ is captured by a $\text{Beta}(2,2)$ model.
+    
+## Grid Approximation 
+
+- If we observe $Y = 9$ successes, we know that the updated posterior model for $\pi$ is $\text{Beta}(11, 3)$.
+    - $Y + \alpha = 9+2$
+    - $n - Y + \beta = 10-9+2$
+    
+- Thus,    
+
+$$
+\begin{align*}
+Y|\pi &\sim \text{Bin}(10, \pi) \\
+\pi &\sim \text{Beta}(2, 2) \\
+\pi | Y &\sim \text{Beta}(11, 3)
+\end{align*}
+$$
+
+## Grid Approximation
+
+- Instead of using the posterior we know, let's approximate it using grid approximation.
+
+- **First step:** define a discrete grid of possible $\theta$ values.
+    - So, let's consider $\pi \in \{0, 0.2, 0.4, 0.6, 0.8, 1\}$.
+
+```{r}
+#| eval: false
+grid_data <- tibble(pi_grid = seq(from = 0, to = 1, length = 6))
+head(grid_data)
+```
+
+## Grid Approximation
+
+- Instead of using the posterior we know, let's approximate it using grid approximation.
+
+- **First step:** define a discrete grid of possible $\theta$ values.
+    - So, let's consider $\pi \in \{0, 0.2, 0.4, 0.6, 0.8, 1\}$.
+
+```{r}
+#| echo: false
+grid_data <- tibble(pi_grid = seq(from = 0, to = 1, length = 6))
+head(grid_data)
+```
+
+## Grid Approximation
+
+- Instead of using the posterior we know, let's approximate it using grid approximation.
+
+- **Second step:** evaluate the prior pdf, $f(\theta)$, and the likelihood function, $L(\theta|y)$ at each $\theta$ grid value.
+    - We will use `dbeta()` and `dbinom()` to evaluate the $\text{Beta}(2,2)$ prior and $\text{Bin}(10, \pi)$ likelihood with $Y=9$ at each $\pi$ in `pi_grid`.
+
+```{r}
+#| eval: false
+grid_data <- grid_data %>%
+  mutate(prior = dbeta(pi_grid, 2, 2),
+         likelihood = dbinom(9, 10, pi_grid))
+head(grid_data)
+```
+
+
+## Grid Approximation
+
+- Instead of using the posterior we know, let's approximate it using grid approximation.
+
+- **Second step:** evaluate the prior pdf, $f(\theta)$, and the likelihood function, $L(\theta|y)$ at each $\theta$ grid value.
+    - We will use `dbeta()` and `dbinom()` to evaluate the $\text{Beta}(2,2)$ prior and $\text{Bin}(10, \pi)$ likelihood with $Y=9$ at each $\pi$ in `pi_grid`.
+
+```{r}
+#| echo: false
+grid_data <- grid_data %>%
+  mutate(prior = dbeta(pi_grid, 2, 2),
+         likelihood = dbinom(9, 10, pi_grid))
+head(grid_data)
+```
+
+## Grid Approximation
+
+- Instead of using the posterior we know, let's approximate it using grid approximation.
+
+- **Third step:** obtain a discrete approximation of the posterior pdf, $f(\theta|y)$ by calculating the product $f(\theta) L(\theta|y)$ at each $\theta$ grid value and normalizing the products to sum to 1 across all $\theta$.
+
+```{r}
+#| eval: false
+grid_data <- grid_data %>%
+  mutate(unnormalized = likelihood*prior,
+         posterior = unnormalized / sum(unnormalized))
+head(grid_data)
+```
+
+## Grid Approximation
+
+- Instead of using the posterior we know, let's approximate it using grid approximation.
+
+- **Third step:** obtain a discrete approximation of the posterior pdf, $f(\theta|y)$ by calculating the product $f(\theta) L(\theta|y)$ at each $\theta$ grid value and normalizing the products to sum to 1 across all $\theta$.
+
+```{r}
+#| echo: false
+grid_data <- grid_data %>%
+  mutate(unnormalized = likelihood*prior,
+         posterior = unnormalized / sum(unnormalized))
+```
+
+## Grid Approximation
+
+- Instead of using the posterior we know, let's approximate it using grid approximation.
+
+- **Third step:** obtain a discrete approximation of the posterior pdf, $f(\theta|y)$ by calculating the product $f(\theta) L(\theta|y)$ at each $\theta$ grid value and normalizing the products to sum to 1 across all $\theta$.
+
+- Verifying our calculations,
+
+```{r}
+#| eval: false
+grid_data %>%
+  summarize(sum(unnormalized), sum(posterior))
+```
+
+## Grid Approximation
+
+- Instead of using the posterior we know, let's approximate it using grid approximation.
+
+- **Third step:** obtain a discrete approximation of the posterior pdf, $f(\theta|y)$ by calculating the product $f(\theta) L(\theta|y)$ at each $\theta$ grid value and normalizing the products to sum to 1 across all $\theta$.
+
+- Verifying our calculations,
+
+```{r}
+#| echo: false
+grid_data %>%
+  summarize(sum(unnormalized), sum(posterior))
+```
+
+## Grid Approximation
+
+- Instead of using the posterior we know, let's approximate it using grid approximation.
+
+- We now have a *glimpse* into the actual posterior pdf.
+    - We can plot it to see what it looks like,
+    
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Plot of grid approximation results."
+ggplot(grid_data, aes(x = pi_grid, y = posterior)) + 
+  geom_point() + 
+  geom_segment(aes(x = pi_grid, xend = pi_grid, y = 0, yend = posterior)) +
+  theme_minimal()
+```
+
+## Grid Approximation
+
+- As we increase the number of possible $\theta$ values, the better we can "see" the resulting posterior.
+
+- What happens if we try the following: $n=50$, $n=100$, $n=500$, $n=1000$?
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Plot of grid approximation results."
+g1 <- tibble(pi_grid = seq(from = 0, to = 1, length = 50)) %>%
+  mutate(prior = dbeta(pi_grid, 2, 2),
+         likelihood = dbinom(9, 10, pi_grid),
+         unnormalized = likelihood*prior,
+         posterior = unnormalized / sum(unnormalized)) %>%
+  ggplot(aes(x = pi_grid, y = posterior)) + 
+  geom_point() + 
+  geom_segment(aes(x = pi_grid, xend = pi_grid, y = 0, yend = posterior)) +
+  theme_minimal() + ggtitle("n=50")
+
+g2 <- tibble(pi_grid = seq(from = 0, to = 1, length = 100)) %>%
+  mutate(prior = dbeta(pi_grid, 2, 2),
+         likelihood = dbinom(9, 10, pi_grid),
+         unnormalized = likelihood*prior,
+         posterior = unnormalized / sum(unnormalized)) %>%
+  ggplot(aes(x = pi_grid, y = posterior)) + 
+  geom_point() + 
+  geom_segment(aes(x = pi_grid, xend = pi_grid, y = 0, yend = posterior)) +
+  theme_minimal()+ ggtitle("n=100")
+
+g3 <- tibble(pi_grid = seq(from = 0, to = 1, length = 500)) %>%
+  mutate(prior = dbeta(pi_grid, 2, 2),
+         likelihood = dbinom(9, 10, pi_grid),
+         unnormalized = likelihood*prior,
+         posterior = unnormalized / sum(unnormalized)) %>%
+  ggplot(aes(x = pi_grid, y = posterior)) + 
+  geom_point() + 
+  geom_segment(aes(x = pi_grid, xend = pi_grid, y = 0, yend = posterior)) +
+  theme_minimal()+ ggtitle("n=500")
+
+g4 <- tibble(pi_grid = seq(from = 0, to = 1, length = 1000)) %>%
+  mutate(prior = dbeta(pi_grid, 2, 2),
+         likelihood = dbinom(9, 10, pi_grid),
+         unnormalized = likelihood*prior,
+         posterior = unnormalized / sum(unnormalized)) %>%
+  ggplot(aes(x = pi_grid, y = posterior)) + 
+  geom_point() + 
+  geom_segment(aes(x = pi_grid, xend = pi_grid, y = 0, yend = posterior)) +
+  theme_minimal()+ ggtitle("n=1000")
+
+ggarrange(g1, g2, g3, g4, ncol=2, nrow=2)
+```
+## Markov chain Monte Carlo (MCMC)
+
+- Markov chain Monte Carlo (MCMC) is an application of [Markov chains](https://en.wikipedia.org/wiki/Markov_chain) to simulate probability models.
+
+- MCMC samples are not taken directly from the posterior pdf, $f(\theta | y)$... and they are not independent.
+    - Each subsequent value depends on the previous value.
+    
+- Suppose we have an $N$-length MCMC sample, $$\left\{ \theta^{(1)}, \theta^{(2)}, \theta^{(3)}, ..., \theta^{(N)} \right\}$$
+    - $\theta^{(2)}$ is drawn from a model that depends on $\theta^{(1)}$.
+    - $\theta^{(3)}$ is drawn from a model that depends on $\theta^{(2)}$.
+    - etc.
+
+## Markov chain Monte Carlo (MCMC)
+
+- The $(i+1)$^st^ chain value, $\theta^{(i+1)}$ is drawn from a model that depends on data $y$ and the previous chain value, $\theta^{(i)}$.
+
+$$f\left( \theta^{(i+1)} | \theta^{(i)}, y \right)$$ 
+    
+- It is important for us to note that the pdf from which a Markov chain is simulated is not equivalent to the posterior pdf!
+
+$$f\left( \theta^{(i+1)} | \theta^{(i)}, y  \right) \ne f\left(\theta^{(i+1)}|y \right)$$
+
+## Using `rstan`
+
+- We will use `rstan`:
+    - define the Bayesian model structure in `rstan` notation
+    - simulate the posterior
+    
+- Again, we will use the Beta-Binomial model from earlier.
+    - `data`: in our example, $Y$ is the observed number of successes in 10 trials.
+        - We need to tell `rstan` that $Y$ is an *integer* between 0 and 10.
+    - `parameters`: in our example, our model depends on $\pi$.
+        - We need to tell `rstan` that $\pi$ can be any *real* number between 0 and 1.
+    - `model`: in our example, we need to specify $Y \sim \text{Bin}(10, \pi)$ and $\pi \sim \text{Beta}(2,2)$.
+
+## Using `rstan`
+
+```{r}
+#| echo: false
+
+library(janitor)
+library(bayesplot)
+library(bayesrules)
+library(rstan)
+```
+
+```{r}
+# STEP 1: DEFINE the model
+bb_model <- "
+  data {
+    int<lower = 0, upper = 10> Y;
+  }
+  parameters {
+    real<lower = 0, upper = 1> pi;
+  }
+  model {
+    Y ~ binomial(10, pi);
+    pi ~ beta(2, 2);
+  }
+"
+```
+
+## Using `rstan`
+
+- Then, when we go to simulate, we first put in the model information
+    - `model code`: the character string defining the model (in our case, `bb_model`).
+    - `data`: a list of the observed data.
+        - In this example, we are using $Y = 9$ - a single data point.
+        
+- Then, we put in the Markov chain information,
+    - `chains`: how many parallel Markov chains to run.
+        - This will be the number of distinct $\theta$ values we want.
+    - `iter`: desired number of iterations, or length of Markov chain.
+        - Half are thrown out as "burn in" samples. 
+            - "burn in"? Think: pancakes!
+    - `seed`: used to set the seed of the RNG.        
+
+## Using `rstan`
+
+```{r}
+# STEP 2: simulate the posterior
+bb_sim <- stan(model_code = bb_model, data = list(Y = 9), 
+               chains = 4, iter = 5000*2, seed = 84735)
+```
+
+## Using `rstan`
+
+- Now, we need to extract the values,
+
+```{r}
+as.array(bb_sim, pars = "pi") %>% head(4)
+```
+
+- Remember, these are *not* a random sample from the posterior!
+
+- They are also *not* independent!
+
+- Each chain forms a dependent 5,000 length Markov chain of $\left\{ \pi^{(1)}, \pi^{(2)}, ..., \pi^{(5000)}\right\}$
+
+    - Each chain will move along the sample space of plausible values for $\pi$.
+    
+## Using `rstan`
+
+- We will look at the trace plot (using `mcmc_trace()` from `bayesplot` package) to see what the values did longitudinally.
+
+<center>
+```{r}
+mcmc_trace(bb_sim, pars = "pi", size = 0.1)
+```
+</center>
+
+## Using `rstan`
+
+- We can also look at the `mcmc_hist()` and `mcmc_dens()` functions,
+
+<center>
+```{r}
+#| echo: false
+g1 <- mcmc_hist(bb_sim, pars = "pi") +
+  yaxis_text(TRUE) +
+  ylab("count") + ggtitle("mcmc_hist()") + theme_bw()
+g2 <- mcmc_dens(bb_sim, pars = "pi") +
+  yaxis_text(TRUE) + ggtitle("mcmc_dens()") + theme_bw() +
+  ylab("count")
+ggarrange(g1, g2, ncol=2, nrow=1)
+```
+</center>
+
+<!-- ## MCMC - Example -->
+
+<!-- - Your turn! -->
+
+<!-- - Let's now apply this to a Gamma-Poisson model. -->
+
+<!-- - $Y$ is the number of events that occur in a one-hour period, where events occur at an average rate of $\lambda$ per hour. -->
+
+<!-- $$ -->
+<!-- \begin{align*} -->
+<!-- Y_i | \lambda &\overset{\text{iid}}\sim \text{Pois}(\lambda) \\ -->
+<!-- \lambda &\sim \text{Gamma}(3,1) -->
+<!-- \end{align*} -->
+<!-- $$ -->
+
+<!-- - We collect two data points, $(Y_1, Y_2) = (2, 8)$ -->
+
+<!-- - What is the posterior model? -->
+
+<!-- - Simulate this posterior using MCMC in `rstan`. -->
+
+<!-- - If you struggle, ask Dr. Seals for a hint :) -->
+    
+## Diagnostics
+
+- Simulations are not perfect...
+    - What does a good Markov chain look like?
+    - How can we tell if the Markov chain sample produces a reasonable approximation of the posterior?
+    - How big should our Markov chain sample size be?
+    
+- Unfortunately there is no one answer here.
+    - You will learn through experience, much like other nuanced areas of statistics.
+    
+## Diagnostics   
+    
+- Let's now discuss diagnostic tools.
+    - Trace plots
+    - Parallel chains
+    - Effective sample size
+    - Autocorrelation
+    - $\hat{R}$
+
+## Trace Plots
+
+<center><img src = "images/W12-L1-b.png" width = 1200></center>
+
+- Chain A has not stabilized after 5000 iterations.
+    - It has not "found" or does not know how to explore the range of posterior plausible $\pi$ values.
+    - The downward trend also hints against independent noise. 
+    
+## Trace Plots
+
+<center><img src = "images/W12-L1-b.png" width = 1200></center>    
+- We say that Chain A is mixing slowly. 
+    - The more Markov chains behave like fast mixing (noisy) independent samples, the smaller the error in the resulting posterior approximation.
+
+## Trace Plots
+
+<center><img src = "images/W12-L1-c.png" width = 1200></center>
+
+- Chain B is not great, either -- it gets stuck when looking at a smaller value of $\pi$.
+
+## Trace Plots
+
+- Realistically, we are only going to do simulations when we can't specify the posterior and must approximate
+    - i.e., we won't be able to compare the simulation results to the "true" results.
+    
+- If we see bad trace plots:
+    - Check the model (... or your code). Are the assumed prior and data models appropriate? 
+    - Run the chain for more iterations. Sometimes we just need a longer run to iron out issues.
+
+
+## Parallel Chains
+
+- Let's now consider a smaller simulation, where $n=50$ (recall, overall $n=100$, but half is for burn-in).
+
+- Run the following code:
+
+```{r}
+bb_sim_short <- stan(model_code = bb_model, data = list(Y = 9), 
+                     chains = 4, iter = 50*2, seed = 84735)
+```
+
+## Parallel Chains
+
+- Let's now generate the trace and density plots for the smaller simulation:
+
+```{r}
+#| eval: false
+ggarrange(mcmc_trace(bb_sim_short, pars = "pi") + 
+            ggtitle("trace") +
+            theme_minimal() + 
+            theme(legend.position="none"),
+          mcmc_dens_overlay(bb_sim_short, pars = "pi") + ylab("density") + 
+            ggtitle("density") + 
+            theme_minimal(),
+          ncol=2, nrow=1)
+```
+
+## Parallel Chains
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Trace plot and density plot."
+ggarrange(mcmc_trace(bb_sim_short, pars = "pi") + ggtitle("trace") + theme_minimal() + theme(legend.position="none"),
+          mcmc_dens_overlay(bb_sim_short, pars = "pi") + ylab("density") + ggtitle("density") + theme_minimal(),
+          ncol=2, nrow=1)
+```
+
+## Parallel Chains
+
+- Now you try 10,000 iterations. Update the following code:
+
+```{r}
+#| eval: false
+bb_sim_full <- stan(model_code = bb_model, 
+                    data = list(Y = 9), 
+                    chains = 4, 
+                    iter = 50*2, 
+                    seed = 84735)
+```
+
+## Parallel Chains
+
+- Create the trace and density plots. Recall the code,
+
+```{r}
+#| eval: false
+ggarrange(mcmc_trace(bb_sim_short, pars = "pi") + 
+            ggtitle("trace") +
+            theme_minimal() + 
+            theme(legend.position="none"),
+          mcmc_dens_overlay(bb_sim_short, pars = "pi") + ylab("density") + 
+            ggtitle("density") + 
+            theme_minimal(),
+          ncol=2, nrow=1)
+```
+
+## Parallel Chains
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Trace plot and density plot."
+ggarrange(
+  mcmc_trace(bb_sim, pars = "pi") + theme_minimal() + theme(legend.position="none") + ggtitle("trace"),
+  mcmc_dens_overlay(bb_sim, pars = "pi") +  ylab("density") + ggtitle("density") + theme_minimal(),
+  ncol = 2, nrow = 1)
+```
+
+## Effective Sample Size
+
+- The more a dependent Markov chain behaves like an independent sample, the smaller the error in the resulting posterior approximation. 
+    - Plots are great, but numerical assessment can provide more nuanced information.
+
+- **Effective sample size** ($N_{\text{eff}}$): the number of independent sample values it would take to produce an equivalently accurate posterior approximation.
+
+- **Effective sample size ratio**: 
+
+$$\frac{N_{\text{eff}}}{N}$$
+
+- Generally, we look for the effective sample size, $N_{\text{eff}}$, to be greater than 10% of the actual sample size, $N$. 
+
+## Effective Sample Size
+
+- We will use the `neff_ratio()` function to find this ratio.
+
+- In our example data,
+
+```{r}
+# Calculate the effective sample size ratio - N = 50
+neff_ratio(bb_sim, pars = c("pi"))
+
+# Calculate the effective sample size ratio - N = 10000
+neff_ratio(bb_sim_short, pars = c("pi"))
+```
+
+- Because the $N_{\text{eff}}$ is over 10%, we are not concerned and can proceed.
+
+## Autocorrelation
+
+- Autocorrelation allows us to evaluate if our Markov chain sufficiently mimics the behavior of an independent sample. 
+
+- **Autocorrelation**:
+    - *Lag 1* autocorrelation measures the correlation between pairs of Markov chain values that are one "step" apart (e.g.,  $\pi_i$ and $\pi_{(i-1)}$; e.g., $\pi_4$ and $\pi_3$).
+    - *Lag 2* autocorrelation measures the correlation between pairs of Markov chain values that are two "steps apart (e.g.,  $\pi_i$ and $\pi_{(i-2)}$; e.g., $\pi_4$ and $\pi_2$).
+    - *Lag $k$* autocorrelation measures the correlation between pairs of Markov chain values that are $k$ "steps" apart (e.g.,  $\pi_i$ and $\pi_{(i-k)}$; e.g., $\pi_4$ and $\pi_{(4-k)}$).
+
+    
+## Autocorrelation
+
+- Autocorrelation allows us to evaluate if our Markov chain sufficiently mimics the behavior of an independent sample. 
+
+- Strong autocorrelation or dependence is a bad thing.
+    - It goes hand in hand with small effective sample size ratios.
+    - These provide a warning sign that our resulting posterior approximations might be unreliable. 
+    
+## Autocorrelation
+
+<center>
+<img src = "images/W12-L1-d.png" width = 1200>
+</center>
+
+- No obvious patterns in the trace plot; dependence is relatively weak.
+
+- Autocorrelation plot quickly drops off and is effectively 0 by lag 5.
+
+- Confirmation that our Markov chain is mixing quickly.
+    - i.e., quickly moving around the range of posterior plausible $\pi$ values
+    - i.e., at least mimicking an independent sample.
+
+## Autocorrelation
+
+<center>
+<img src = "images/W12-L1-e.png" width = 1200>
+</center>
+
+- This is an "unhealthy" Markov chain.
+
+- Trace plot shows strong trends $\to$ autocorrelation in the Markov chain values.
+
+- Slow decrease in autocorrelation plot indicates that the dependence between chain values does not quickly fade away.
+
+    - At lag 20, the autocorrelation is still $\sim$ 90%.
+
+## Fast vs. Slow Mixing Markov Chains
+
+- **Fast mixing** chains: 
+    - The chains move "quickly" around the range of posterior plausible values
+    - The autocorrelation among the chain values drops off quickly.
+    - The effective sample size ratio is reasonably large.
+    
+- **Slow mixing** chains:
+    - The chains move "slowly" around the range of posterior plauslbe values.
+    - The autocorrelation among the chainv alues drops off very slowly.
+    - The effective sample size ratio is small.
+    
+- What do we do if we have a slow mixing chain?
+    - Increase the chain size :)
+    
+## $\hat{R}$
+
+- $\hat{R}$ compares the variability in sampled $\theta$ values across all chains combined with the variability within each individual change.
+
+$$\hat{R} \approx \sqrt{\frac{\text{var}_{\text{combined}}}{\text{var}_{\text{within}}}}$$
+
+- where
+    - $\text{var}_{\text{combined}}$ is the variability in $\theta$ across <u>all chains</u> combined.
+    - $\text{var}_{\text{within}}$ is the typical variability within <u>any individual chain</u>.
+
+## $\hat{R}$
+
+- $\hat{R}$ compares the variability in sampled $\theta$ values across all chains combined with the variability within each individual change.
+
+$$\hat{R} \approx \sqrt{\frac{\text{var}_{\text{combined}}}{\text{var}_{\text{within}}}}$$
+
+- Ideally, $\hat{R} \approx 1$, showing stability across chains.
+    - $\hat{R} > 1$ indicates instability with the variability in the combined chains larger than that of the variability within the chains.
+    - $\hat{R} > 1.05$ raises red flags about the stability of the simulation.
+
+## $\hat{R}$
+
+- We can use the `rhat()` function from the `bayesplot` package to find $\hat{R}$.
+
+```{r}
+rhat(bb_sim, pars = "pi")
+```
+
+- We can see that our simulation is stable.
+
+- If we were to find $\hat{R}$ for the other (obviously bad) simulation, it would be 5.35 😱
+    
+## {background-color="#003A6B"}
+
+```{=html}
+<div style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:75vh; gap:1.25rem;">
+  <p style="font-family:'EB Garamond',Georgia,serif; font-size:64px; font-weight:400; color:#ffffff !important; margin:0; letter-spacing:0.01em;">Take a break!</p>
+  <div style="width:56px; height:3px; background:#97D200; border-radius:2px;"></div>
+  <p style="font-family:'EB Garamond',Georgia,serif; font-size:36px; font-weight:300; color:#8DC8E8 !important; margin:0; font-style:italic;">Back in 10 minutes.</p>
+</div>
+```
+
+## Introduction
+
+- Now that we know how to find posterior distributions, we will discuss how to use them to make inference.
+
+- Imagine you find yourself standing at the Museum of Modern Art (MoMA) in New York City, captivated by the artwork in front of you. 
+    - What are the chances that this modern artist is Gen X or even younger, i.e., born in 1965 or later? 
+
+- Let $\pi$ denote the proportion of artists represented in major U.S. modern art museums that are Gen X or younger. 
+    - Let's let the Beta(4,6) prior model for $\pi$ reflect our prior assumption that major modern art museums disproportionately display artists born before 1965, i.e., $\pi$  most likely falls below 0.5. 
+    - Rationale: "modern art" dates back to the 1880s and it can take a while to gain recognition as an artist.
+
+## Working Example
+
+- The Beta(4,6) prior model for $\pi$:
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing a Beta(4,6)."
+#| echo: false
+plot_beta(4,6) + theme_minimal() + ggtitle("Beta(4,6)")
+```
+
+## Working Example
+
+- Let's consider the following dataset:
+
+```{r}
+data(moma_sample)
+head(moma_sample)
+```
+
+## Working Example
+
+- Counting the number of Generation X and younger,
+
+```{r}
+moma_sample %>% 
+  count(genx) 
+```
+
+## Working Example
+    
+- Our modeling is as follows,     
+
+$$
+\begin{align*}
+Y|\pi &\sim \text{Bin}(100,\pi) \\
+\pi &\sim \text{Beta}(4,6) \\
+\pi | (Y = 14) &\sim \text{Beta(18,92)}
+\end{align*}
+$$
+
+```{r}
+#| echo: false
+summarize_beta_binomial(alpha = 4, beta = 6,
+                        y = 14, n = nrow(moma_sample))
+```
+
+## Working Example
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density plot showing beta posterior distributions with binomial likelihoods and beta prior distributions."
+#| echo: false
+plot_beta_binomial(alpha = 4, beta = 6,
+                   y = 14, n = nrow(moma_sample)) +
+  theme_minimal() 
+```
+
+
+## Working Example
+
+- There are three common tasks in posterior analysis: 
+    - estimation, 
+    - hypothesis testing, and 
+    - prediction. 
+    
+- For example, 
+    - What's our estimate of  $\pi$?
+    - Does our model support the claim that fewer than 20% of museum artists are Gen X or younger? 
+    - If we sample 20 more museum artists, how many do we predict will be Gen X or younger?
+
+## Posterior Estimation
+
+- We can construct **posterior credible intervals**.
+    - A posterior credible interval (CI) provides a range of posterior plausible values of $\theta$, and thus a summary of both posterior central tendency and variability. 
+    - A middle 95% CI is constructed by the 2.5th and 97.5th posterior percentiles, $$\left( \theta_{0.025}, \theta_{0.975} \right),$$ and there is a 95% posterior probability that $\theta$ is in this range,
+    
+$$P\left[ \theta \in (\theta_{0.025}, \theta_{0.975})|Y=y \right] = \int_{\theta_{0.025}}^{\theta_{0.975}} f(\theta|y) d\theta = 0.95$$    
+
+## Posterior Estimation
+
+- Recall the Beta(18, 92) posterior model for $\pi$, the proportion of modern art museum artists that are Gen X or younger. 
+
+```{r}
+qbeta(c(0.025, 0.975), 18, 92) # 95% CI
+```
+
+- There is a 95% posterior probability that somewhere between 10% and 24% of museum artists are Gen X or younger.
+
+## Posterior Estimation
+
+- Recall the Beta(18, 92) posterior model for $\pi$, the proportion of modern art museum artists that are Gen X or younger. 
+
+```{r}
+qbeta(c(0.25, 0.75), 18, 92) # 50% CI
+```
+
+- There is a 50% posterior probability that somewhere between 14% and 19% of museum artists are Gen X or younger.
+
+## Posterior Estimation
+
+- 95% is a common choice, however, note that it is somewhat arbitrary and used because of decades of tradition.
+    
+<center><img src = "images/W13-L1-a.png" width=1000></center>    
+
+- There is no one right credible interval.
+    - It will just depend on the context of the analysis.
+
+## Posterior Hypothesis Testing
+
+- Suppose we read an article claiming that fewer than 20% of museum artists are Gen X or younger. 
+
+<center><img src = "images/W13-L1-b.png"></center>
+
+- How plausible is it that $\pi < 0.2$?
+
+$$
+P\left[ \pi < 0.2 | Y = 14 \right] = \int_0^{0.2} f(\pi|y = 14) d\pi
+$$
+
+## Posterior Hypothesis Testing
+
+- Posterior Probability
+
+$$
+P\left[ \pi < 0.2 | Y = 14 \right] = \int_0^{0.2} f(\pi|y = 14) d\pi
+$$
+
+- We can find this probability by using the `pbeta()` function:
+
+```{r}
+#| eval: false
+pbeta(0.20, 18, 92)
+```
+
+## Posterior Hypothesis Testing
+
+- We can find this probability by using the `pbeta()` function:
+
+```{r}
+pbeta(0.20, 18, 92)
+```
+
+- Thus, 
+
+$$
+P\left[ \pi < 0.2 | Y = 14 \right] = 0.849
+$$
+
+- There is approximately an 84.9% posterior chance that Gen Xers account for fewer than 20% of modern art museum artists.
+
+## Posterior Hypothesis Testing
+
+- Prior Probability
+
+$$
+P\left[ \pi < 0.2 \right] = \int_0^{0.2} f(\pi) d\pi
+$$
+
+- We can find this probability by using the `pbeta()` function:
+
+```{r}
+#| eval: false
+pbeta(0.20, 4, 6)
+```
+
+## Posterior Hypothesis Testing
+
+- We can find this probability by using the `pbeta()` function:
+
+```{r}
+pbeta(0.20, 4, 6)
+```
+
+- Thus, 
+
+$$
+P\left[ \pi < 0.2 \right] = 0.086
+$$
+
+- There is approximately an 8.6% prior chance that Gen Xers account for fewer than 20% of modern art museum artists.
+
+## Posterior Hypothesis Testing
+
+- We can create a table of information we will use to make inferences:
+
+| Hypotheses | Prior Probability | Posterior Probability |
+|:---:|:---:|:---:|
+| $H_0: \pi \ge 0.2$ | $P[H_0] = 0.914$ | $P[H_0 \mid Y = 14] = 0.151$ |
+| $H_1: \pi < 0.2$ | $P[H_1] = 0.086$ | $P[H_1 \mid Y = 14] = 0.849$ |
+
+- We want to find the odds in favor of $H_1$ under both the prior and posterior distributions.
+
+$$
+\text{posterior odds} = \frac{P\left[ H_1 | Y = y \right]}{P\left[ H_0 | Y = y \right]}, \ \ \ \ \ \ \ \text{prior odds} = \frac{P\left[ H_1  \right]}{P\left[ H_0  \right]} 
+$$
+
+## Posterior Hypothesis Testing  
+
+- Let's find the posterior odds in favor of $H_1$:
+
+| Hypotheses | Prior Probability | Posterior Probability |
+|:---:|:---:|:---:|
+| $H_0: \pi \ge 0.2$ | $P[H_0] = 0.914$ | $P[H_0 \mid Y = 14] = 0.151$ |
+| $H_1: \pi < 0.2$ | $P[H_1] = 0.086$ | $P[H_1 \mid Y = 14] = 0.849$ |
+
+$$
+\begin{align*}
+\text{posterior odds} &= \frac{P\left[ H_1 | Y = 14 \right]}{P\left[ H_0 | Y = 14 \right]} \\
+&= \frac{0.849}{0.151} \\
+&\approx 5.62
+\end{align*}
+$$ 
+
+## Posterior Hypothesis Testing  
+
+- Let's find the posterior odds in favor of $H_1$:
+
+$$
+\begin{align*}
+\text{posterior odds} &= \frac{P\left[ H_1 | Y = 14 \right]}{P\left[ H_0 | Y = 14 \right]} \\
+&= \frac{0.849}{0.151} \\
+&\approx 5.62
+\end{align*}
+$$ 
+
+- Our posterior assessment, after considering data collected, suggests that $\pi$ is 5.62 times more likely to be *below* 0.2 rather than being *above* 0.2.
+
+## Posterior Hypothesis Testing
+
+- Let's find the prior odds in favor of $H_1$:
+
+| Hypotheses | Prior Probability | Posterior Probability |
+|:---:|:---:|:---:|
+| $H_0: \pi \ge 0.2$ | $P[H_0] = 0.914$ | $P[H_0 \mid Y = 14] = 0.151$ |
+| $H_1: \pi < 0.2$ | $P[H_1] = 0.086$ | $P[H_1 \mid Y = 14] = 0.849$ |
+
+$$
+\begin{align*}
+\text{prior odds} &= \frac{P\left[ H_1 \right]}{P\left[ H_0 \right]} \\
+&= \frac{0.086}{0.914} \\
+&\approx 0.093
+\end{align*}
+$$ 
+
+## Posterior Hypothesis Testing
+
+- Let's find the prior odds in favor of $H_1$:
+
+$$
+\begin{align*}
+\text{prior odds} &= \frac{P\left[ H_1 \right]}{P\left[ H_0 \right]} \\
+&= \frac{0.086}{0.914} \\
+&\approx 0.093
+\end{align*}
+$$ 
+
+- Our prior assessment, before considering the data collected, suggests that $\pi$ is 0.093 times more likely to be *below* 0.2 rather than being *above* 0.2.
+
+## Posterior Hypothesis Testing
+
+- Bayes Factor
+    - When we are comparing two competing hypotheses, $H_0$ vs. $H_1$, the Bayes Factor is an odds ratio for $H_1$.
+    - i.e., the Bayes Factor as a <u>measure of evidence</u> in favor of $H_1$.
+    
+$$
+\text{Bayes Factor} = \frac{\text{posterior odds}}{\text{prior odds}} = \frac{P\left[H_1 | Y\right] / P\left[H_0 | Y\right]}{P\left[H_1\right] / P\left[H_0\right]}
+$$
+
+- This will be our alternative to the *p*-value.
+
+## Posterior Hypothesis Testing
+
+- Bayes Factor
+    
+$$
+\text{Bayes Factor} = \frac{\text{posterior odds}}{\text{prior odds}} = \frac{P\left[H_1 | Y\right] / P\left[H_0 | Y\right]}{P\left[H_1\right] / P\left[H_0\right]}
+$$
+
+- We will compare the BF to 1.
+    - BF = 1: The plausibility of $H_1$ did not change in light of the observed data.
+    - BF > 1: The plausibility of $H_1$ increased in light of the observed data.
+        - The greater the Bayes Factor, the more convincing the evidence for $H_1$.
+    - BF < 1: The plausibilty of $H_1$ decreased in light of the observed data.        
+  
+## Posterior Hypothesis Testing
+
+- Let's now find the Bayes Factor:
+
+| Hypotheses | Prior Probability | Posterior Probability |
+|:---:|:---:|:---:|
+| $H_0: \pi \ge 0.2$ | $P[H_0] = 0.914$ | $P[H_0 \mid Y = 14] = 0.151$ |
+| $H_1: \pi < 0.2$ | $P[H_1] = 0.086$ | $P[H_1 \mid Y = 14] = 0.849$ |
+
+$$
+\begin{align*}
+\text{Bayes Factor} &= \frac{\text{posterior odds}}{\text{prior odds}} = \frac{P\left[H_1 | Y\right] / P\left[H_0 | Y\right]}{P\left[H_1\right] / P\left[H_0\right]} \\ 
+&= \frac{5.62}{0.09} \\
+&\approx 62.44
+\end{align*}
+$$
+
+## Posterior Hypothesis Testing
+
+- Let's now find the Bayes Factor:
+
+| Hypotheses | Prior Probability | Posterior Probability |
+|:---:|:---:|:---:|
+| $H_0: \pi \ge 0.2$ | $P[H_0] = 0.914$ | $P[H_0 \mid Y = 14] = 0.151$ |
+| $H_1: \pi < 0.2$ | $P[H_1] = 0.086$ | $P[H_1 \mid Y = 14] = 0.849$ |
+
+```{r}
+prior_odds <- pbeta(0.20, 4, 6)/(1-pbeta(0.20, 4, 6))
+post_odds <- pbeta(0.20, 18, 92)/(1-pbeta(0.20, 18, 92))
+(BF <- post_odds/prior_odds)
+```
+
+## Posterior Hypothesis Testing
+
+- It's time to draw a conclusion! 
+
+- Hypotheses:
+    - $H_0: \pi \ge 0.2$
+    - $H_1: \pi < 0.2$
+
+- Evidence:
+    - Posterior probability: 0.85
+    - Bayes factor: 60
+
+- Conclusion:    
+    - We have fairly convincing evidence in factor of the claim that fewer than 20% of artists at major modern art museums are Gen X or younger.
+    
+
+    
+## Posterior Hypothesis Testing
+
+- We now want to test whether or not 30% of major museum artists are Gen X or younger.
+
+$$
+\begin{align*}
+H_0&: \ \pi = 0.3 \\
+H_1&: \ \pi \ne 0.3
+\end{align*}
+$$
+
+- Why is this an issue?
+
+## Posterior Hypothesis Testing
+
+- We now want to test whether or not 30% of major museum artists are Gen X or younger.
+
+$$
+\begin{align*}
+H_0&: \ \pi = 0.3 \\
+H_1&: \ \pi \ne 0.3
+\end{align*}
+$$
+
+- Why is this an issue? The posterior probability of a point hypothesis is always 0!
+    
+$$
+P\left[ \pi =0.3 | Y = 14 \right] = \int_{0.3}^{0.3} f(\pi|y = 14) d\pi = 0
+$$
+
+## Posterior Hypothesis Testing
+
+- The posterior probability of a point hypothesis is always 0!
+    
+$$
+P\left[ \pi =0.3 | Y = 14 \right] = \int_{0.3}^{0.3} f(\pi|y = 14) d\pi = 0
+$$
+
+- .... meaning:
+
+$$
+\text{posterior odds}  = \frac{P\left[ H_1 | Y = 14 \right]}{P\left[ H_0 | Y = 14 \right]} = \frac{1}{0}
+$$
+
+## Posterior Hypothesis Testing
+
+- Welp.
+
+- Let's think about the 95% posterior credible interval for $\pi$: (0.10, 0.24).
+    - Do we think that 0.3 is a plausible value?
+
+
+## Posterior Hypothesis Testing
+
+- Let's reframe our hypotheses:
+
+$$
+\begin{align*}
+H_0&: \ \pi \in (0.25, 0.35) \\
+H_1&: \ \pi \not\in (0.25, 0.35)
+\end{align*}
+$$
+
+- Now, we can more rigorously claim belief in $H_1$.
+    - The entire hypothesized range is above the 95% CI.
+    
+- This also allows us a way to construct our hypothesis test with posterior probability and Bayes Factor.
+
+## Posterior Prediction
+
+- In addition to estimating the posterior and using the posterior distribution for hypothesis testing, we may be interested in predicting the outcome in a new dataset.
+
+- Suppose we get our hands on data for 20 more artworks displayed at the museum. 
+
+- Based on the posterior understanding of $\pi$ that we've developed throughout this chapter, what number would you predict are done by artists that are Gen X or younger?
+
+## Posterior Prediction
+
+- Suppose we get our hands on data for 20 more artworks displayed at the museum. 
+
+- Based on the posterior understanding of $\pi$ that we've developed throughout this chapter, what number would you predict are done by artists that are Gen X or younger?
+    - Logical response:
+        - posterior guess was 16%
+        - $n = 20$
+        - $n \hat{\pi} = 20(0.16) = 3.2$
+
+## Posterior Prediction
+
+- Suppose we get our hands on data for 20 more artworks displayed at the museum. What number would you predict are done by artists that are Gen X or younger?
+    - Two sources of variability in prediction:
+        - Sampling variability: we do not expect $n \hat{\pi}$ to be an integer.
+        - Posterior variability in $\pi$: we know that 0.16 is not the only plausible $\pi$. 
+            - 95% credible interval for $\pi$: $(0.10, 0.24)$
+            - What do we expect to see under each possible $\pi$?
+            
+## Posterior Prediction
+
+- Let's look at combining the sampling variability in our new $Y$ and posterior variability in $\pi$.
+    - Let $Y' = y'$ be the (unknown) number of the 20 new artwork that are done by Gen X or younger artists.
+        - $y' \in \{0, 1, ..., 20\}$.
+    - Conditioned on $\pi$, the sampling variability in $Y'$ can be modeled
+    
+$$
+Y'|\pi \sim \text{Bin}(20, \pi)
+$$
+
+
+$$
+f(y'|\pi) = P[Y' = y'|\pi] = {20\choose{y'}} \pi^{y'} (1-\pi)^{20-y'}
+$$
+
+## Posterior Prediction
+
+- We can weight $f(y'|\pi)$ by the posterior pdf, $f(\pi|y=14)$.
+    - This captures the chance of observing $Y' = y'$ Gen Xers for a given $\pi$
+    - At the same time, this accounts for the posterior plausibility of $\pi$.
+    
+$$f(y'|\pi) f(\pi|y=14)$$
+
+## Posterior Prediction
+
+- This leads us to the posterior predictive model of $Y'$.
+
+$$ 
+f(y'|y) = \int f(y'|\pi) f(\pi|y) \ d \pi
+$$
+
+- The overall chance of observing $Y' = y'$ weights the chance of observing this outcome under *any* possible $\pi$ by the posterior plausibility of $\pi$.
+    - Chance of observing this outcome under any $\pi$: $f(y'|\pi)$.
+    - Posterior plausibility of $\pi$: $f(\pi|y)$.
+    
+## Posterior Prediction
+
+```{r}
+# STEP 1: DEFINE the model
+art_model <- "
+  data {
+    int<lower = 0, upper = 100> Y;
+  }
+  parameters {
+    real<lower = 0, upper = 1> pi;
+  }
+  model {
+    Y ~ binomial(100, pi);
+    pi ~ beta(4, 6);
+  }
+"
+```
+
+## Posterior Prediction
+
+```{r}
+# STEP 2: SIMULATE the posterior
+art_sim <- stan(model_code = art_model, 
+                data = list(Y = 14),  
+                chains = 4, 
+                iter = 5000*2, 
+                seed = 84735)
+```
+    
+## Posterior Prediction
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Parallel trace plot."
+mcmc_trace(art_sim, pars = "pi", size = 0.5) + xlab("iteration") + theme_minimal()
+```
+
+
+## Posterior Prediction
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Density of for pi."
+mcmc_dens_overlay(art_sim, pars = "pi") + theme_minimal()
+```
+
+
+## Posterior Prediction
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Autocorrelation plots."
+mcmc_acf(art_sim, pars = "pi") + theme_minimal()
+```
+
+## Posterior Prediction
+
+- As we saw previously, the posterior was Beta(18, 92).
+
+- We will use the `tidy()` function from the `broom.mixed` package.
+
+```{r}
+tidy(art_sim, conf.int = TRUE, conf.level = 0.95)
+```
+
+- The approximate middle 95% CI for $\pi$ is (0.100, 0.239).
+
+- Our approximation of the actual posterior median is 0.162.
+
+## Posterior Prediction
+
+- We can use the `mcmc_areas()` function from the `bayesrules` package to get a corresponding graph,
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: 'center'
+#| fig-alt: "Plot of Beta(27, 33)."
+mcmc_areas(art_sim, pars = "pi", prob = 0.95)
+```
+
+
+## Posterior Simulation
+
+- Unfortunately, `tidy()` does not give everything we may be interested in.
+    - We can save the Markov chain values to a dataset and analyze. 
+
+```{r}
+# Store the 4 chains in 1 data frame
+art_chains_df <- as.data.frame(art_sim, pars = "lp__", include = FALSE)
+dim(art_chains_df)
+head(art_chains_df, n=3)
+```
+
+## Posterior Simulation
+
+- We can then summarize the Markov chain values,
+
+```{r}
+art_chains_df %>% 
+  summarize(post_mean = mean(pi), 
+            post_median = median(pi),
+            post_mode = sample_mode(pi),
+            lower_95 = quantile(pi, 0.025),
+            upper_95 = quantile(pi, 0.975))
+```
+
+- We have reproduced/verified the results from `tidy()` (and then some!)
+
+## Posterior Simulation
+
+- Now that we have saved the Markov chain values, we can use them to answer questions about the data.
+
+- Recall, we were interested in testing the claim that fewer than 20% of major museum artists are Gen X.
+
+```{r}
+art_chains_df %>% 
+  mutate(exceeds = pi < 0.20) %>% 
+  tabyl(exceeds)
+```
+
+- By the posterior, there is an 84.6% chance that Gen X artist representation is under 20%.
+
+## Posterior Simulation
+
+- Let us compare the results between using conjugate family knowledge and MCMC.
+
+<center><img src = "images/W13-L1-d.png"></center>
+
+- From this, we can see that MCMC gave us an accurate approximation.
+
+- We should use this as "proof" that the approximations are "reliable" for non-conjugate families.
+    - Always look at diagnostics!
+
+## Wrap Up
+
+- Today we learned the basics of Bayesian inference: 
+    - MCMC $\to$ find posterior distributions 
+    - How to use the posterior distribution for estimation, hypothesis testing, and prediction.
+    
+- You now are ready to work on Assignment 4: Introduction to Bayesian Inference.
+    - .qmd file is available to download on Canvas.
+    
+- Next week: formal hypothesis testing cases.
+

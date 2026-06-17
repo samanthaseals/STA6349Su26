@@ -1217,6 +1217,31 @@ $$
 
 ## The Normal Posterior Model
 
+- The `plot_normal_normal()` function:
+
+```{r}
+#| eval: false
+plot_normal_normal(mean = prior_mean, 
+                   sd = prior_sd, 
+                   sigma = data_sigma,
+                   y_bar = sample_mean, 
+                   n = num_obs, 
+                   posterior = TRUE or FALSE)
+```
+
+- The `summarize_normal_normal()` function: 
+
+```{r}
+#| eval: false
+summarize_normal_normal(mean = prior_mean, 
+                        sd = prior_sd, 
+                        sigma = data_sigma,
+                        y_bar = sample_mean, 
+                        n = num_obs)
+```
+
+## The Normal Posterior Model
+
 - Let us now apply this to our example.
 
 - We have our prior model, $\mu \sim N(6.5, 0.4^2)$.
@@ -1382,6 +1407,6 @@ $$
 - You now are ready to work on Assignment 3: Conjugate Families.
     - .qmd file is available to download on Canvas.    
 
-- Wednesday: how do we draw conclusions using the posterior distribution?
+- Wednesday: how do we actually draw conclusions using the posterior distribution?
 
 

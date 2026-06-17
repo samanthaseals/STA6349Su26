@@ -1,0 +1,146 @@
+---
+title: "Assignment 4: Bayesian Statistical Inference"
+author: "Your Name Here"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format: 
+  html:
+    df-print: kable
+    self-contained: true
+    html-math-method: katex
+    code-fold: false
+    code-tools: false
+    incremental: false
+editor: source
+---
+
+**1. Consider the Beta-Binomial model for $\pi$ with $Y|\pi \sim \text{Bin}(n, \pi)$ and $\pi \sim \text{Beta}(3, 8)$. Suppose that in $n=10$ independent trials, you observe $Y=2$ successes.**
+
+**a. Simulate the posterior model of $\pi$ with RStan using 4 chains and 10000 iterations per chain.**
+
+```{r}
+
+```
+
+**b. Produce trace and density plots for each of the four chains.**
+
+```{r}
+
+```
+
+**c. Create a density plot of the values for each of the four chains.**
+
+```{r}
+
+```
+
+**d. Use what we know about conjugate families to find the posterior distribution.**
+
+<!-- revisit last lecture :) -->
+
+```{r}
+
+```
+
+**e. Overlay the true posterior distribution on the density plot of the simulated posterior distribution. Do they match?**
+
+<!-- this is a great place to ask AI for help :) -->
+
+```{r}
+
+```
+
+**f. What do you think the most likely value of $\pi$ is? Why?**
+
+
+
+
+
+**2. Consider the Gamma-Poisson model for $\lambda$ with $Y|\lambda \sim \text{Poi}(\lambda)$ and $\lambda \sim \text{Gamma}(20, 5)$. Suppose you observe $n=3$ independent data points, $\left(Y_1, Y_2, Y_3\right) = (0, 1, 0)$.**
+
+**a. Simulate the posterior model of $\lambda$ with RStan using 4 chains and 10000 iterations per chain.**
+
+```{r}
+
+```
+
+**b. Produce trace and density plots for each of the four chains.**
+
+```{r}
+
+```
+
+**c. Create a density plot of the values for each of the four chains.**
+
+```{r}
+
+```
+
+**d. Use what we know about conjugate families to find the posterior distribution.**
+
+<!-- revisit last lecture :) -->
+
+```{r}
+
+```
+
+**e. Overlay the true posterior distribution on the density plot of the simulated posterior distribution. Do they match?**
+
+<!-- this is a great place to ask AI for help :) -->
+
+```{r}
+
+```
+
+**f. What do you think the most likely value of $\lambda$ is? Why?**
+
+
+
+
+
+**3. Consider the Normal-Normal model for $\mu$ with $Y|\mu \sim \text{N}(\mu, 1.3^2)$ and $\mu \sim \text{N}(10, 1.2^2)$. Suppose you observe $n=4$ independent data points, $\left(Y_1, Y_2, Y_3, Y_4\right) = (7.1, 8.9, 8.4, 8.6)$.**
+
+**a. Simulate the posterior model of $\mu$ with RStan using 4 chains and 10000 iterations per chain.**
+
+```{r}
+
+```
+
+**b. Produce trace and density plots for each of the four chains.**
+
+```{r}
+
+```
+
+**c. Create a density plot of the values for each of the four chains.**
+
+```{r}
+
+```
+
+**d. Use what we know about conjugate families to find the posterior distribution.**
+
+<!-- revisit last lecture :) -->
+
+```{r}
+
+```
+
+**e. Overlay the true posterior distribution on the density plot of the simulated posterior distribution. Do they match?**
+
+<!-- this is a great place to ask AI for help :) -->
+
+```{r}
+
+```
+
+**f. What do you think the most likely value of $\mu$ is? Why?**
+
+
+
+
+
+

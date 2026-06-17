@@ -21,7 +21,7 @@ editor: source
 
 <!-- this is a great place to ask AI for help with coding! with Claude's help it took me about an hour to iron out the code for the diagrams in lecture :) -->
 
-**2. Odie is trying to convince Jon that Garfield stole the lasagna. Jon thinks there is a 0.10 probability that Garfield would steal the lasagna. Jon also believes that the probability Garfield raids the fridge given that he's in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield stole the lasagna?**
+**2. Odie is trying to convince Jon that Garfield is in the mood to steal lasagna, but Jon thinks there is only 0.10 probability that Garfield is in the mood to steal lasagna. Jon also believes that the probability Garfield raids the fridge given that he's in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield was in the mood to steal lasagna?**
 
 <!-- another great place to ask AI for help -- how to format your solution in LaTeX -->
 
@@ -29,14 +29,14 @@ editor: source
 
 **a. Use the given information to complete the following table:**
 
-| Ignores yesterday | P(ignores | happy) | P(ignores | annoyed) |
+| Ignores yesterday | P(ignores \| happy) | P(ignores \| annoyed) |
 |---|---|---|
 | 0 times | | |
 | 1–3 times | | |
 | More than 3 times | | |
 
-**b. Today's a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what's the probability that Arlene is happy with Garfield? What part of the Bayes' Rule equation is this: the prior, likelihood, normalizing constant, or posterior?**
+**b. Today's a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what's the probability that Arlene is happy with Garfield?**
 
-**c. You've been spying on Garfield all day and have tallied that he ignored Arlene a whopping 5 times yesterday. How likely is Arlene to have been ignored 4 times if she's happy with Garfield today? What part of the Bayes' Rule equation is this?**
+**c. You've been spying on Garfield all day and have tallied that he ignored Arlene a whopping 4 times yesterday. How likely is Arlene to have been ignored 4 times if she's happy with Garfield today? What part of the Bayes' Rule equation is this?**
 
 **d. What is the posterior probability that Arlene is happy with Garfield today, given that Garfield ignored her 4 times yesterday?**
