@@ -185,47 +185,34 @@ head(bechdel20, n = 5)
 bechdel20 %>% n_pct(binary)
 ```
 
+- Find the posterior distributions. (i.e., What are the updated parameters?)
 
-
-## Different Priors $\to$ Different Posteriors
-
-- Let's look at the graphs of just the prior and likelihood.
-
-```{r}
-#| echo: false
-#| fig-width: 12
-#| fig-height: 6.5
-#| fig-align: 'center'
-#| fig-alt: "Plot of priors + likelihoods."
-plot_beta_binomial(alpha = 5, beta = 11, y = 9, n = 20, posterior = FALSE) + theme_minimal() + ggtitle("The feminist: Beta(5, 11)")
-```
-
-## Different Priors $\to$ Different Posteriors
-
-- Let's look at the graphs of just the prior and likelihood.
-
-```{r}
-#| echo: false
-#| fig-width: 12
-#| fig-height: 6.5
-#| fig-align: 'center'
-#| fig-alt: "Plot of priors + likelihoods."
-plot_beta_binomial(alpha = 1, beta = 1, y = 9, n = 20, posterior = FALSE) + theme_minimal() + ggtitle("The clueless: Beta(1, 1)") 
-```
-
-
-## Different Priors $\to$ Different Posteriors
-
-- Let's look at the graphs of just the prior and likelihood.
-
-```{r, fig.align="center"}
-#| echo: false
-#| fig-width: 12
-#| fig-height: 6.5
-#| fig-align: 'center'
-#| fig-alt: "Plot of priors + likelihoods."
-plot_beta_binomial(alpha = 14, beta = 1, y = 9, n = 20, posterior = FALSE) + theme_minimal() + ggtitle("The optimist: Beta(14, 1)") 
-```
+<center>
+<table><thead>
+  <tr>
+    <th>Analyst</th>
+    <th>Prior</th>
+    <th>Posterior</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>the feminist</td>
+    <td>Beta(5, 11)</td>
+    <td>Beta(?<sub>1</sub>, ?<sub>2</sub>)</td>
+  </tr>
+  <tr>
+    <td>the clueless</td>
+    <td>Beta(1, 1)</td>
+    <td>Beta(?<sub>1</sub>, ?<sub>2</sub>)</td>
+  </tr>
+  <tr>
+    <td>the optimist</td>
+    <td>Beta(14, 1)</td>
+    <td>Beta(?<sub>1</sub>, ?<sub>2</sub>)</td>
+  </tr>
+</tbody>
+</table>
+</center>
 
 ## Different Priors $\to$ Different Posteriors
 
@@ -297,7 +284,7 @@ plot_beta_binomial(alpha = 1, beta = 1, y = 9, n = 20) + theme_minimal() + ggtit
 plot_beta_binomial(alpha = 14, beta = 1, y = 9, n = 20) + theme_minimal() + ggtitle("The optimist: Beta(14, 1)")
 ```
 
-## Different Data $\to$ Different Posteriors
+## Example
 
 - In addition to priors affecting our posterior distributions... the data also affects it.
 
@@ -308,45 +295,40 @@ plot_beta_binomial(alpha = 14, beta = 1, y = 9, n = 20) + theme_minimal() + ggti
     
 - How will the different data affect the posterior distributions?
 
-## Different Data $\to$ Different Posteriors
-
-- How will the different data affect the posterior distributions?   
-
-```{r}
-#| echo: false
-#| fig-width: 12
-#| fig-height: 6.5
-#| fig-align: 'center'
-#| fig-alt: "Plot of priors, likelihoods, and posteriors."
-plot_beta_binomial(alpha = 14, beta = 1, y = 6, n = 13) + theme_minimal() + ggtitle("Morteza: Y = 6 of n = 13")
-```   
-
-## Different Data $\to$ Different Posteriors
-
-- How will the different data affect the posterior distributions?   
-
-```{r}
-#| echo: false
-#| fig-width: 12
-#| fig-height: 6.5
-#| fig-align: 'center'
-#| fig-alt: "Plot of priors, likelihoods, and posteriors."
-plot_beta_binomial(alpha = 14, beta = 1, y = 29, n = 63) + theme_minimal() + ggtitle("Nadide: Y = 29 of n = 63")
-```
-
-## Different Data $\to$ Different Posteriors
-
-- How will the different data affect the posterior distributions?   
-
-```{r}
-#| echo: false
-#| fig-width: 12
-#| fig-height: 6.5
-#| fig-align: 'center'
-#| fig-alt: "Plot of priors, likelihoods, and posteriors."
-plot_beta_binomial(alpha = 14, beta = 1, y = 46, n = 99) + theme_minimal() + ggtitle("Ursula: Y = 46 of n = 99")
-```   
     
+## Different Data $\to$ Different Posteriors
+
+- Find the posterior distributions. (i.e., What are the updated parameters?)
+
+    - Recall that all use the Beta(14, 1) prior.    
+
+<center>
+<table><thead>
+  <tr>
+    <th><center>Analyst</center></th>
+    <th><center>Data</center></th>
+    <th><center>Posterior</center></th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>Morteza</td>
+    <td>$Y=6$ of $n=13$</td>
+    <td>Beta(?<sub>1</sub>, ?<sub>2</sub>)</td>
+  </tr>
+  <tr>
+    <td>Nadide</td>
+    <td>$Y=29$ of $n=63$</td>
+    <td>Beta(?<sub>1</sub>, ?<sub>2</sub>)</td>
+  </tr>
+  <tr>
+    <td>Ursula</td>
+    <td>$Y=46$ of $n=99$</td>
+    <td>Beta(?<sub>1</sub>, ?<sub>2</sub>)</td>
+  </tr>
+</tbody>
+</table>
+</center>
+
 ## Different Data $\to$ Different Posteriors
 
 - Find the posterior distributions. (i.e., What are the updated parameters?)
