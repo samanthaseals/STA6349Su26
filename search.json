@@ -2083,7 +2083,7 @@
     "href": "files/lectures/2-2-bayesian-inference.html#using-rstan-3",
     "title": "Bayesian Statistical Inference",
     "section": "Using rstan",
-    "text": "Using rstan\n\n# STEP 2: simulate the posterior\nbb_sim &lt;- stan(model_code = bb_model, data = list(Y = 9), \n               chains = 4, iter = 5000*2, seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 3e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 1:                0.011 seconds (Sampling)\nChain 1:                0.021 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 2:                0.011 seconds (Sampling)\nChain 2:                0.021 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 3:                0.01 seconds (Sampling)\nChain 3:                0.02 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 1e-06 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 4:                0.011 seconds (Sampling)\nChain 4:                0.021 seconds (Total)\nChain 4:"
+    "text": "Using rstan\n\n# STEP 2: simulate the posterior\nbb_sim &lt;- stan(model_code = bb_model, data = list(Y = 9), \n               chains = 4, iter = 5000*2, seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 2e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.02 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 1:                0.011 seconds (Sampling)\nChain 1:                0.021 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 2:                0.011 seconds (Sampling)\nChain 2:                0.021 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 3:                0.01 seconds (Sampling)\nChain 3:                0.02 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 1e-06 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.017 seconds (Warm-up)\nChain 4:                0.02 seconds (Sampling)\nChain 4:                0.037 seconds (Total)\nChain 4:"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#using-rstan-4",
@@ -2692,116 +2692,81 @@
     "href": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-2",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Priors \\to Different Posteriors",
-    "text": "Different Priors \\to Different Posteriors\n\nHow many pass the test in this sample?\n\n\nbechdel20 %&gt;% n_pct(binary)\n\n\n\n\n\nbinary\nn (pct)\n\n\n\n\nFAIL\n11 (55.0%)\n\n\nPASS\n9 (45.0%)"
+    "text": "Different Priors \\to Different Posteriors\n\nHow many pass the test in this sample?\n\n\nbechdel20 %&gt;% n_pct(binary)\n\n\n\n\n\nbinary\nn (pct)\n\n\n\n\nFAIL\n11 (55.0%)\n\n\nPASS\n9 (45.0%)\n\n\n\n\n\n\n\nFind the posterior distributions. (i.e., What are the updated parameters?)\n\n\n\n\n\n\nAnalyst\n\n\nPrior\n\n\nPosterior\n\n\n\n\n\n\nthe feminist\n\n\nBeta(5, 11)\n\n\nBeta(?1, ?2)\n\n\n\n\nthe clueless\n\n\nBeta(1, 1)\n\n\nBeta(?1, ?2)\n\n\n\n\nthe optimist\n\n\nBeta(14, 1)\n\n\nBeta(?1, ?2)"
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-3",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-3",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Priors \\to Different Posteriors",
-    "text": "Different Priors \\to Different Posteriors\n\nLet’s look at the graphs of just the prior and likelihood."
+    "text": "Different Priors \\to Different Posteriors\n\nFind the posterior distributions. (i.e., What are the updated parameters?)\n\n\n\n\n\n\nAnalyst\n\n\nPrior\n\n\nPosterior\n\n\n\n\n\n\nthe feminist\n\n\nBeta(5, 11)\n\n\nBeta(14, 22)\n\n\n\n\nthe clueless\n\n\nBeta(1, 1)\n\n\nBeta(10, 12)\n\n\n\n\nthe optimist\n\n\nBeta(14, 1)\n\n\nBeta(23, 12)"
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-4",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-4",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Priors \\to Different Posteriors",
-    "text": "Different Priors \\to Different Posteriors\n\nLet’s look at the graphs of just the prior and likelihood."
+    "text": "Different Priors \\to Different Posteriors\n\nLet’s now explore what the posteriors look like."
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-5",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-5",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Priors \\to Different Posteriors",
-    "text": "Different Priors \\to Different Posteriors\n\nLet’s look at the graphs of just the prior and likelihood."
+    "text": "Different Priors \\to Different Posteriors\n\nLet’s now explore what the posteriors look like."
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-6",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-6",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Priors \\to Different Posteriors",
-    "text": "Different Priors \\to Different Posteriors\n\nFind the posterior distributions. (i.e., What are the updated parameters?)\n\n\n\n\n\n\nAnalyst\n\n\nPrior\n\n\nPosterior\n\n\n\n\n\n\nthe feminist\n\n\nBeta(5, 11)\n\n\nBeta(14, 22)\n\n\n\n\nthe clueless\n\n\nBeta(1, 1)\n\n\nBeta(10, 12)\n\n\n\n\nthe optimist\n\n\nBeta(14, 1)\n\n\nBeta(23, 12)"
-  },
-  {
-    "objectID": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-7",
-    "href": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-7",
-    "title": "Balance and Sequentialityin Bayesian Analysis",
-    "section": "Different Priors \\to Different Posteriors",
     "text": "Different Priors \\to Different Posteriors\n\nLet’s now explore what the posteriors look like."
   },
   {
-    "objectID": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-8",
-    "href": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-8",
+    "objectID": "files/lectures/3-2-balance-sequentiality.html#example-5",
+    "href": "files/lectures/3-2-balance-sequentiality.html#example-5",
     "title": "Balance and Sequentialityin Bayesian Analysis",
-    "section": "Different Priors \\to Different Posteriors",
-    "text": "Different Priors \\to Different Posteriors\n\nLet’s now explore what the posteriors look like."
-  },
-  {
-    "objectID": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-9",
-    "href": "files/lectures/3-2-balance-sequentiality.html#different-priors-to-different-posteriors-9",
-    "title": "Balance and Sequentialityin Bayesian Analysis",
-    "section": "Different Priors \\to Different Posteriors",
-    "text": "Different Priors \\to Different Posteriors\n\nLet’s now explore what the posteriors look like."
+    "section": "Example",
+    "text": "Example\n\nIn addition to priors affecting our posterior distributions… the data also affects it.\nLet’s now consider three new analysts: they all share the optimistic Beta(14, 1) for \\pi, however, they have access to different data.\n\nMorteza reviews n = 13 movies from the year 1991, among which Y=6 (about 46%) pass the Bechdel.\nNadide reviews n = 63 movies from the year 2001, among which Y=29 (about 46%) pass the Bechdel.\nUrsula reviews n = 99 movies from the year 2013, among which Y=46 (about 46%) pass the Bechdel.\n\nHow will the different data affect the posterior distributions?"
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Data \\to Different Posteriors",
-    "text": "Different Data \\to Different Posteriors\n\nIn addition to priors affecting our posterior distributions… the data also affects it.\nLet’s now consider three new analysts: they all share the optimistic Beta(14, 1) for \\pi, however, they have access to different data.\n\nMorteza reviews n = 13 movies from the year 1991, among which Y=6 (about 46%) pass the Bechdel.\nNadide reviews n = 63 movies from the year 2001, among which Y=29 (about 46%) pass the Bechdel.\nUrsula reviews n = 99 movies from the year 2013, among which Y=46 (about 46%) pass the Bechdel.\n\nHow will the different data affect the posterior distributions?"
+    "text": "Different Data \\to Different Posteriors\n\nFind the posterior distributions. (i.e., What are the updated parameters?)\n\nRecall that all use the Beta(14, 1) prior.\n\n\n\n\n\n\n\n\nAnalyst\n\n\n\n\nData\n\n\n\n\nPosterior\n\n\n\n\n\n\n\nMorteza\n\n\nY=6 of n=13\n\n\nBeta(?1, ?2)\n\n\n\n\nNadide\n\n\nY=29 of n=63\n\n\nBeta(?1, ?2)\n\n\n\n\nUrsula\n\n\nY=46 of n=99\n\n\nBeta(?1, ?2)"
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-1",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-1",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Data \\to Different Posteriors",
-    "text": "Different Data \\to Different Posteriors\n\nHow will the different data affect the posterior distributions?"
+    "text": "Different Data \\to Different Posteriors\n\nFind the posterior distributions. (i.e., What are the updated parameters?)\n\nRecall that all use the Beta(14, 1) prior.\n\n\n\n\n\n\n\n\nAnalyst\n\n\n\n\nData\n\n\n\n\nPosterior\n\n\n\n\n\n\n\nMorteza\n\n\nY=6 of n=13\n\n\nBeta(20, 8)\n\n\n\n\nNadide\n\n\nY=29 of n=63\n\n\nBeta(45, 35)\n\n\n\n\nUrsula\n\n\nY=46 of n=99\n\n\nBeta(60, 54)"
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-2",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-2",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Data \\to Different Posteriors",
-    "text": "Different Data \\to Different Posteriors\n\nHow will the different data affect the posterior distributions?"
+    "text": "Different Data \\to Different Posteriors\n\nLet’s explore what the posteriors look like."
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-3",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-3",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Data \\to Different Posteriors",
-    "text": "Different Data \\to Different Posteriors\n\nHow will the different data affect the posterior distributions?"
+    "text": "Different Data \\to Different Posteriors\n\nLet’s explore what the posteriors look like."
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-4",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-4",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Data \\to Different Posteriors",
-    "text": "Different Data \\to Different Posteriors\n\nFind the posterior distributions. (i.e., What are the updated parameters?)\n\nRecall that all use the Beta(14, 1) prior.\n\n\n\n\n\n\n\n\nAnalyst\n\n\n\n\nData\n\n\n\n\nPosterior\n\n\n\n\n\n\n\nMorteza\n\n\nY=6 of n=13\n\n\nBeta(20, 8)\n\n\n\n\nNadide\n\n\nY=29 of n=63\n\n\nBeta(45, 35)\n\n\n\n\nUrsula\n\n\nY=46 of n=99\n\n\nBeta(60, 54)"
+    "text": "Different Data \\to Different Posteriors\n\nLet’s explore what the posteriors look like."
   },
   {
     "objectID": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-5",
     "href": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-5",
-    "title": "Balance and Sequentialityin Bayesian Analysis",
-    "section": "Different Data \\to Different Posteriors",
-    "text": "Different Data \\to Different Posteriors\n\nLet’s explore what the posteriors look like."
-  },
-  {
-    "objectID": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-6",
-    "href": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-6",
-    "title": "Balance and Sequentialityin Bayesian Analysis",
-    "section": "Different Data \\to Different Posteriors",
-    "text": "Different Data \\to Different Posteriors\n\nLet’s explore what the posteriors look like."
-  },
-  {
-    "objectID": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-7",
-    "href": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-7",
-    "title": "Balance and Sequentialityin Bayesian Analysis",
-    "section": "Different Data \\to Different Posteriors",
-    "text": "Different Data \\to Different Posteriors\n\nLet’s explore what the posteriors look like."
-  },
-  {
-    "objectID": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-8",
-    "href": "files/lectures/3-2-balance-sequentiality.html#different-data-to-different-posteriors-8",
     "title": "Balance and Sequentialityin Bayesian Analysis",
     "section": "Different Data \\to Different Posteriors",
     "text": "Different Data \\to Different Posteriors\n\nWhat did we observe?\n\nAs n \\to \\infty, variance in the likelihood \\to 0.\n\nIn Morteza’s small sample of 13 movies, the likelihood function is wide.\nIn Ursula’s larger sample size of 99 movies, the likelihood function is narrower.\n\nWe see that the narrower the likelihood, the more influence the data holds over the posterior."
