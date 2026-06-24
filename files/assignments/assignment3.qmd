@@ -50,7 +50,7 @@ editor: source
 
 **Scenario 2: Yakko, Wakko, and Dot have a long-standing rivalry with the [Goodfeathers, Bobby, Squit, and Pesto](https://animaniacs.fandom.com/wiki/Goodfeathers), who are always pecking around the WB studio lot. The siblings suspect the Goodfeathers show up at an annoyingly high rate throughout the day, and Dot has decided to model this formally. Let $\lambda$ represent the rate at which the Goodfeathers appear per hour on the studio lot.**
 
-**a. Dot believes the Goodfeathers show up about 8 times per hour on average, with a standard deviation of 0.5 appearances. Tune and plot an appropriate Gamma(s, r) prior model for λ.**
+**a. Dot believes the Goodfeathers show up about 8 times per hour on average, with a standard deviation of 0.5 appearances. Tune and plot an appropriate Gamma(s, r) prior model for $\lambda$.**
 
 ```{r}
 
@@ -94,7 +94,7 @@ editor: source
 ```
 
 
-**e. Comment on how Brain's understanding of μ evolved from the prior to the posterior based on Pinky's observed data. Did the stock perform as well as Brain had hoped?**
+**e. Comment on how Brain's understanding of $\mu$ evolved from the prior to the posterior based on Pinky's observed data. Did the stock perform as well as Brain had hoped?**
 
 
 
