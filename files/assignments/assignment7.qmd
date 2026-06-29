@@ -1,0 +1,121 @@
+---
+title: "Assignment 7: Bayesian General Linear Models"
+author: "Your Name Here"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format: 
+  html:
+    df-print: kable
+    self-contained: true
+    html-math-method: katex
+    code-fold: false
+    code-tools: false
+    incremental: false
+editor: source
+---
+
+**In this assignment, you will use the `penguins_bayes` data in the `bayesrules` package to build various models of penguin body mass (`body_mass_g`). We have a basic understanding that the average penguin weighs somewhere between 3500 and 4500 grams. A predictor of interest is penguin species: Adelie, Chinstrap, or Gentoo.**
+
+```{r}
+library(bayesrules)
+penguin_data <- penguins_bayes
+```
+
+## Model 1
+
+**Let's explore body mass (`body_mass_g`) as a function of flipper length (`flipper_length_mm`) and species (`species`).**
+
+**a. Plot body mass against flipper length, colored by species.**
+
+```{r}
+
+```
+
+**b. What pattern(s) do you observe, if any, in the above graph?**
+
+Your response here
+
+**c. Use `stan_glm()` to simulate the specified model.**
+
+```{r}
+#| results: "hide"
+
+
+```
+
+**d. What is the estimated model?**
+
+$$\hat{y} = \beta_0 + \beta_1 \text{var1} + \beta_2 \text{var2} + ...$$ 
+
+<!-- make sure you actually plug in the values for the betas -- use what you estimated in part c -->
+
+**e. Construct visual diagnostics for your MCMC simulations.**
+
+```{r}
+
+```
+
+**f. Comment on the diagnostics. Do you see any issues with our simulation?**
+
+Your response here
+
+**g. Construct the visual posterior predictive check for your model.**
+
+```{r}
+
+```
+
+**h. How wrong is the model?**
+
+Your response here.
+
+**i. Plot the data with the posterior predictive 50% and 95% credible intervals.**
+
+```{r}
+
+```
+
+**j. Find and interpret the scaled absolute median error.**
+
+```{r}
+
+```
+
+**k. How accurate is the posterior predictive model?**
+
+Your response here.
+
+## Model 2
+
+**Let's now explore body mass (`body_mass_g`) as a function of flipper length (`flipper_length_mm`), species (`species`), and the interaction between the two.**
+
+**a. Use `stan_glm()` to simulate the specified model.**
+
+```{r}
+#| results: "hide"
+
+
+```
+
+**b. What is the estimated model?**
+
+$$\hat{y} = \beta_0 + \beta_1 \text{var1} + \beta_2 \text{var2} + ...$$ 
+
+<!-- make sure you actually plug in the values for the betas -- use what you estimated in part a -->
+
+**c. Determine if this model is better than the previous model.**
+
+Your response here.
+
+<!-- this is totally a stretch question -- there's not a pre-defined right answer -->
+<!-- you will want to research to figure out how to perform the comparison -->
+
+**d. Do you recommend keeping the interaction in the model? Why or why not?**
+
+Your response here.
+
+<!-- this response should be based on your part c -->
+
