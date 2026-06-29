@@ -4,7 +4,7 @@
     "href": "schedule.html",
     "title": "Tentative Schedule",
     "section": "",
-    "text": "Week 1: June 8 - June 12\n\n\n\n\n\n\nMonday, June 8: Foundations of Probability\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, June 10: Foundations of Bayesian Thinking\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\n\n\n\n\n\n\n\n\n\n\nWeek 2: June 15 - June 19\n\n\n\n\n\n\nMonday, June 15: Conjugate Families\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, June 17: Statistical Inference in the Bayesian Framework\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\n\n\n\n\n\n\n\n\n\n\nWeek 3: June 22 - June 26\n\n\n\n\n\n\nMonday, June 22: Statistical Inference Practice\n\nAssignment: see Canvas\n\nWednesday, June 26: Balance and Sequentiality\n\nLecture: slides & .qmd\nAssignment: see Canvas\n\n\n\n\n\n\n\n\n\n\n\nWeek 4: June 29 - July 3\n\n\n\n\n\n\nMonday, June 29: Bayesian General Linear Models\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, July 1: Model Evaluation and Comparison\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\n\n\n\n\nTake home midterm given the week of June 29.\n\n\n\n\n\n\nWeek 5: July 6 - July 10\n\n\n\n\n\n\nMonday, July 6: Bayesian Generalized Linear Models\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, July 8: Bayesian Classification\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\n\n\n\n\n\n\n\n\n\n\nWeek 6: July 13 - July 17\n\n\n\n\n\n\nMonday, July 13: Bayesian Hierarchical Models\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, July 17: Bayesian Hierarchical Models\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\n\n\n\n\n\n\n\n\n\n\nWeek 7: July 20 - July 24\n\n\n\n\n\nProject week, no lectures or assignments.\n\n\n\n\n\n\n\n\n\nWeek 8: July 27 - July 31\n\n\n\n\n\n\nMonday, July 27: Presentations\n\n\n\n\nTake home final given the week of July 27."
+    "text": "Week 1: June 8 - June 12\n\n\n\n\n\n\nMonday, June 8: Foundations of Probability\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, June 10: Foundations of Bayesian Thinking\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\n\n\n\n\n\n\n\n\n\n\nWeek 2: June 15 - June 19\n\n\n\n\n\n\nMonday, June 15: Conjugate Families\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, June 17: Statistical Inference in the Bayesian Framework\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\n\n\n\n\n\n\n\n\n\n\nWeek 3: June 22 - June 26\n\n\n\n\n\n\nMonday, June 22: Statistical Inference Practice\n\nAssignment: see Canvas\n\nWednesday, June 26: Balance and Sequentiality\n\nLecture: slides & .qmd\nAssignment: see Canvas\n\n\n\n\n\n\n\n\n\n\n\nWeek 4: June 29 - July 3\n\n\n\n\n\n\nMonday, June 29: Bayesian General Linear Models\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, July 1:\n\nPlease work on your midterm and Assignment 7.\nI will be available through Zoom if you have questions.\n\n\n\n\n\nTake home midterm given the week of June 29.\n\n\n\n\n\n\nWeek 5: July 6 - July 10\n\n\n\n\n\n\nMonday, July 6: Bayesian Generalized Linear Models\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, July 8: Bayesian Classification\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\n\n\n\n\n\n\n\n\n\n\nWeek 6: July 13 - July 17\n\n\n\n\n\n\nMonday, July 13: Bayesian Hierarchical Models\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\nWednesday, July 17: Bayesian Hierarchical Models\n\nLecture: slides & .qmd\nAssignment: html & .qmd\n\n\n\n\n\n\n\n\n\n\n\nWeek 7: July 20 - July 24\n\n\n\n\n\nProject week, no lectures or assignments.\n\n\n\n\n\n\n\n\n\nWeek 8: July 27 - July 31\n\n\n\n\n\n\nMonday, July 27: Presentations\n\n\n\n\nTake home final given the week of July 27."
   },
   {
     "objectID": "files/lectures/1-2-bayes-thinking.html#introduction",
@@ -914,7 +914,7 @@
     "href": "files/lectures/2-2-bayesian-inference.html#using-rstan-3",
     "title": "Bayesian Statistical Inference",
     "section": "Using rstan",
-    "text": "Using rstan\n\n# STEP 2: simulate the posterior\nbb_sim &lt;- stan(model_code = bb_model, data = list(Y = 9), \n               chains = 4, iter = 5000*2, seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 2e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.02 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 1:                0.011 seconds (Sampling)\nChain 1:                0.021 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 2:                0.011 seconds (Sampling)\nChain 2:                0.021 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.011 seconds (Warm-up)\nChain 3:                0.01 seconds (Sampling)\nChain 3:                0.021 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 1e-06 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 4:                0.011 seconds (Sampling)\nChain 4:                0.021 seconds (Total)\nChain 4:"
+    "text": "Using rstan\n\n# STEP 2: simulate the posterior\nbb_sim &lt;- stan(model_code = bb_model, data = list(Y = 9), \n               chains = 4, iter = 5000*2, seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 2e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.02 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 1:                0.011 seconds (Sampling)\nChain 1:                0.021 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 2:                0.011 seconds (Sampling)\nChain 2:                0.021 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 3:                0.01 seconds (Sampling)\nChain 3:                0.02 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 1e-06 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 4:                0.011 seconds (Sampling)\nChain 4:                0.021 seconds (Total)\nChain 4:"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#using-rstan-4",
@@ -984,7 +984,7 @@
     "href": "files/lectures/2-2-bayesian-inference.html#parallel-chains",
     "title": "Bayesian Statistical Inference",
     "section": "Parallel Chains",
-    "text": "Parallel Chains\n\nLet’s now consider a smaller simulation, where n=50 (recall, overall n=100, but half is for burn-in).\nRun the following code:\n\n\nbb_sim_short &lt;- stan(model_code = bb_model, data = list(Y = 9), \n                     chains = 4, iter = 50*2, seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 8e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: WARNING: There aren't enough warmup iterations to fit the\nChain 1:          three stages of adaptation as currently configured.\nChain 1:          Reducing each adaptation stage to 15%/75%/10% of\nChain 1:          the given number of warmup iterations:\nChain 1:            init_buffer = 7\nChain 1:            adapt_window = 38\nChain 1:            term_buffer = 5\nChain 1: \nChain 1: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 1: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 1: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 1: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 1: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 1: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 1: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 1: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 1: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 1: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 1: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 1: Iteration: 100 / 100 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0 seconds (Warm-up)\nChain 1:                0 seconds (Sampling)\nChain 1:                0 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: WARNING: There aren't enough warmup iterations to fit the\nChain 2:          three stages of adaptation as currently configured.\nChain 2:          Reducing each adaptation stage to 15%/75%/10% of\nChain 2:          the given number of warmup iterations:\nChain 2:            init_buffer = 7\nChain 2:            adapt_window = 38\nChain 2:            term_buffer = 5\nChain 2: \nChain 2: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 2: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 2: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 2: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 2: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 2: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 2: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 2: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 2: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 2: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 2: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 2: Iteration: 100 / 100 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0 seconds (Warm-up)\nChain 2:                0 seconds (Sampling)\nChain 2:                0 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: WARNING: There aren't enough warmup iterations to fit the\nChain 3:          three stages of adaptation as currently configured.\nChain 3:          Reducing each adaptation stage to 15%/75%/10% of\nChain 3:          the given number of warmup iterations:\nChain 3:            init_buffer = 7\nChain 3:            adapt_window = 38\nChain 3:            term_buffer = 5\nChain 3: \nChain 3: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 3: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 3: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 3: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 3: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 3: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 3: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 3: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 3: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 3: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 3: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 3: Iteration: 100 / 100 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0 seconds (Warm-up)\nChain 3:                0 seconds (Sampling)\nChain 3:                0 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 0 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: WARNING: There aren't enough warmup iterations to fit the\nChain 4:          three stages of adaptation as currently configured.\nChain 4:          Reducing each adaptation stage to 15%/75%/10% of\nChain 4:          the given number of warmup iterations:\nChain 4:            init_buffer = 7\nChain 4:            adapt_window = 38\nChain 4:            term_buffer = 5\nChain 4: \nChain 4: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 4: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 4: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 4: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 4: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 4: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 4: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 4: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 4: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 4: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 4: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 4: Iteration: 100 / 100 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0 seconds (Warm-up)\nChain 4:                0 seconds (Sampling)\nChain 4:                0 seconds (Total)\nChain 4:"
+    "text": "Parallel Chains\n\nLet’s now consider a smaller simulation, where n=50 (recall, overall n=100, but half is for burn-in).\nRun the following code:\n\n\nbb_sim_short &lt;- stan(model_code = bb_model, data = list(Y = 9), \n                     chains = 4, iter = 50*2, seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 3e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: WARNING: There aren't enough warmup iterations to fit the\nChain 1:          three stages of adaptation as currently configured.\nChain 1:          Reducing each adaptation stage to 15%/75%/10% of\nChain 1:          the given number of warmup iterations:\nChain 1:            init_buffer = 7\nChain 1:            adapt_window = 38\nChain 1:            term_buffer = 5\nChain 1: \nChain 1: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 1: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 1: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 1: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 1: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 1: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 1: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 1: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 1: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 1: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 1: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 1: Iteration: 100 / 100 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0 seconds (Warm-up)\nChain 1:                0 seconds (Sampling)\nChain 1:                0 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: WARNING: There aren't enough warmup iterations to fit the\nChain 2:          three stages of adaptation as currently configured.\nChain 2:          Reducing each adaptation stage to 15%/75%/10% of\nChain 2:          the given number of warmup iterations:\nChain 2:            init_buffer = 7\nChain 2:            adapt_window = 38\nChain 2:            term_buffer = 5\nChain 2: \nChain 2: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 2: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 2: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 2: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 2: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 2: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 2: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 2: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 2: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 2: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 2: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 2: Iteration: 100 / 100 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0 seconds (Warm-up)\nChain 2:                0 seconds (Sampling)\nChain 2:                0 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: WARNING: There aren't enough warmup iterations to fit the\nChain 3:          three stages of adaptation as currently configured.\nChain 3:          Reducing each adaptation stage to 15%/75%/10% of\nChain 3:          the given number of warmup iterations:\nChain 3:            init_buffer = 7\nChain 3:            adapt_window = 38\nChain 3:            term_buffer = 5\nChain 3: \nChain 3: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 3: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 3: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 3: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 3: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 3: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 3: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 3: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 3: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 3: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 3: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 3: Iteration: 100 / 100 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0 seconds (Warm-up)\nChain 3:                0 seconds (Sampling)\nChain 3:                0 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 0 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: WARNING: There aren't enough warmup iterations to fit the\nChain 4:          three stages of adaptation as currently configured.\nChain 4:          Reducing each adaptation stage to 15%/75%/10% of\nChain 4:          the given number of warmup iterations:\nChain 4:            init_buffer = 7\nChain 4:            adapt_window = 38\nChain 4:            term_buffer = 5\nChain 4: \nChain 4: Iteration:  1 / 100 [  1%]  (Warmup)\nChain 4: Iteration: 10 / 100 [ 10%]  (Warmup)\nChain 4: Iteration: 20 / 100 [ 20%]  (Warmup)\nChain 4: Iteration: 30 / 100 [ 30%]  (Warmup)\nChain 4: Iteration: 40 / 100 [ 40%]  (Warmup)\nChain 4: Iteration: 50 / 100 [ 50%]  (Warmup)\nChain 4: Iteration: 51 / 100 [ 51%]  (Sampling)\nChain 4: Iteration: 60 / 100 [ 60%]  (Sampling)\nChain 4: Iteration: 70 / 100 [ 70%]  (Sampling)\nChain 4: Iteration: 80 / 100 [ 80%]  (Sampling)\nChain 4: Iteration: 90 / 100 [ 90%]  (Sampling)\nChain 4: Iteration: 100 / 100 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0 seconds (Warm-up)\nChain 4:                0 seconds (Sampling)\nChain 4:                0 seconds (Total)\nChain 4:"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#parallel-chains-1",
@@ -1369,7 +1369,7 @@
     "href": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-7",
     "title": "Bayesian Statistical Inference",
     "section": "Posterior Prediction",
-    "text": "Posterior Prediction\n\n# STEP 2: SIMULATE the posterior\nart_sim &lt;- stan(model_code = art_model, \n                data = list(Y = 14),  \n                chains = 4, \n                iter = 5000*2, \n                seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 4e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.011 seconds (Warm-up)\nChain 1:                0.011 seconds (Sampling)\nChain 1:                0.022 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.01 seconds (Warm-up)\nChain 2:                0.013 seconds (Sampling)\nChain 2:                0.023 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 5e-06 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.011 seconds (Warm-up)\nChain 3:                0.012 seconds (Sampling)\nChain 3:                0.023 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 0 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.011 seconds (Warm-up)\nChain 4:                0.01 seconds (Sampling)\nChain 4:                0.021 seconds (Total)\nChain 4:"
+    "text": "Posterior Prediction\n\n# STEP 2: SIMULATE the posterior\nart_sim &lt;- stan(model_code = art_model, \n                data = list(Y = 14),  \n                chains = 4, \n                iter = 5000*2, \n                seed = 84735)\n\n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 1e-06 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.01 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.013 seconds (Warm-up)\nChain 1:                0.012 seconds (Sampling)\nChain 1:                0.025 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 0 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.011 seconds (Warm-up)\nChain 2:                0.012 seconds (Sampling)\nChain 2:                0.023 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 0 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.011 seconds (Warm-up)\nChain 3:                0.012 seconds (Sampling)\nChain 3:                0.023 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 0 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.011 seconds (Warm-up)\nChain 4:                0.011 seconds (Sampling)\nChain 4:                0.022 seconds (Total)\nChain 4:"
   },
   {
     "objectID": "files/lectures/2-2-bayesian-inference.html#posterior-prediction-8",
@@ -1526,242 +1526,11 @@
     "text": "Did the Prior Matter?\n\nResearch Question:\n\n\n\n\n\n\nStudent 1\nStudent 2\n\n\n\n\nPrior hyperparameters\n\n\n\n\nPosterior mean\n\n\n\n\n95% Credible interval\n\n\n\n\nPosterior probability\n\n\n\n\nBayes’ Factor\n\n\n\n\nConclusion\n\n\n\n\n\nHow did prior choice affect the analysis?"
   },
   {
-    "objectID": "files/assignments/assignment3.html",
-    "href": "files/assignments/assignment3.html",
-    "title": "Assignment 3: Conjugate Families",
+    "objectID": "files/assignments/assignment2.html",
+    "href": "files/assignments/assignment2.html",
+    "title": "Assignment 2: Thinking Like a Bayesian",
     "section": "",
-    "text": "Scenario 1: Every night, the same thing happens: Brain concocts an elaborate scheme to take over the world, and somehow it never quite works out. Whether it’s Pinky’s blundering, an unexpected plot twist, or the Warner siblings’ interference, Brain’s plans have a way of falling apart at the last moment.\nThe Warner siblings — Yakko, Wakko, and Dot — have each been keeping tabs on Brain’s success (or lack thereof) while atop the Warners’ water tower. Each sibling has been independently tracking whether Brain’s plan was foiled on any given day, and each comes into the analysis with the same prior belief: a Beta(2, 5) distribution for \\pi, the probability that Brain’s plan gets foiled on any given day. This prior reflects a shared suspicion that Brain usually gets pretty far with his plans, but not always.\nThe current issue is that each sibling has been watching for a different stretch of time, and they don’t always agree on what they saw. For each sibling, you’ll update the Beta(2, 5) prior with their observed data and summarize the resulting posterior distribution.\na. After carefully observing Brain’s schemes over 50 days, Dot recorded that 18 of Brain’s plans were successfully foiled. Summarize Dot’s analysis using the functions demonstrated in lecture.\nb. Yakko has been keeping his own records from a different observation period. In his records, Brain’s plans were foiled 12 out of 25 days. Summarize Yakko’s analysis using the functions demonstrated in lecture.\nc. In Wakko’s records, Brain’s plans were foiled 18 out of 25 days. Summarize Wakko’s analysis using the functions demonstrated in lecture.\nd. How do Dot, Yakko, and Wakko’s posterior models compare to one another?\nScenario 2: Yakko, Wakko, and Dot have a long-standing rivalry with the Goodfeathers, Bobby, Squit, and Pesto, who are always pecking around the WB studio lot. The siblings suspect the Goodfeathers show up at an annoyingly high rate throughout the day, and Dot has decided to model this formally. Let \\lambda represent the rate at which the Goodfeathers appear per hour on the studio lot.\na. Dot believes the Goodfeathers show up about 8 times per hour on average, with a standard deviation of 0.5 appearances. Tune and plot an appropriate Gamma(s, r) prior model for \\lambda.\nb. Yakko and Wakko help out by each staking out different parts of the lot. Across 8 hours of observation, they recorded the following Goodfeather appearances: \\{3,9,7,11,8,6,10, 9\\}. Update Dot’s prior model with this data to find the posterior model for \\lambda.\nc. Comment on how the siblings’ understanding of \\lambda changed from the prior to the posterior based on their observations. Did the Goodfeathers show up as often as Dot feared?\nScenario 3: Brain has abandoned his usual schemes and pivoted to high finance. His latest plan for world domination involves cornering the market on Acme Corp stock — the same company that supplies every single product on the WB studio lot. Pinky is thrilled. Brain is focused. Let μ represent the average dollar amount that Acme Corp stock goes up or down in a one-day period.\na. Brain has reviewed Acme Corp’s historical performance. He believes the stock increases by an average of 7.2 dollars per day, with a standard deviation of 2.6 dollars. Tune and plot an appropriate Normal prior model for \\mu.\nb. According to your plot, does it seem plausible that Acme Corp stock would increase by an average of 7.6 dollars in a day? Why or why not?\nc. Does it seem plausible that the stock would increase by an average of 4 dollars in a day? Why or why not?\nd. Pinky recorded the following daily changes over a random sample of 4 days: \\{−0.7,1.2,4.5,−4.0\\}. Update Brain’s prior model with this data to find the posterior model for \\mu.\ne. Comment on how Brain’s understanding of \\mu evolved from the prior to the posterior based on Pinky’s observed data. Did the stock perform as well as Brain had hoped?"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#r-packages-needed",
-    "href": "4-1-bayesian-glm.html#r-packages-needed",
-    "title": "Regression in the Bayesian Framework",
-    "section": "R Packages Needed",
-    "text": "R Packages Needed\n\nTo follow today’s lecture, please load the following packages:\n\n\nlibrary(tidyverse)\nlibrary(bayesrules)\nlibrary(bayesplot)\nlibrary(tidybayes)"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#introduction",
-    "href": "4-1-bayesian-glm.html#introduction",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Introduction",
-    "text": "Introduction\n\nBefore today, we effectively were performing one-sample tests of means, proportions, and counts.\nNow, we will focus on incorporating just a single predictor into our analysis.\n\nOverall question: what is the relationship between Y (outcome) and X (predictor)?\n\nWe now switch to thinking about analysis in terms of regression."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#working-example",
-    "href": "4-1-bayesian-glm.html#working-example",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Working Example",
-    "text": "Working Example\n\nCapital Bikeshare is a bike sharing service in the Washington, D.C. area. To best serve its registered members, the company must understand the demand for its service. We will analyze the number of rides taken on a random sample of n days, (Y_1, Y_2, ..., Y_n).\nBeacuse Y_i is a count variable, you might assume that ridership might need the Poisson distribution. However, past bike riding seasons have exhibited bell-shaped daily ridership with a variability in ridership that far exceeds the typical ridership.\n\n(i.e., the Poisson assumption of \\mu = \\sigma does not hold here)\n\nWe will instead assume that the number of rides varies normally around some typical ridership, \\mu, with standard deviation, \\sigma.\n\n Y_i|\\mu,\\sigma \\overset{\\text{ind}}{\\sim} N(\\mu, \\sigma^2)"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#working-example-1",
-    "href": "4-1-bayesian-glm.html#working-example-1",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Working Example",
-    "text": "Working Example\n\nIn our example, Y is the number of rides and X is the temperature.\nOur specific goal will be to model the relationship between ridership and temperature:\n\nDoes ridership tend to increase on warmer days?\nIf so, by how much?\nHow strong is this relationship?\n\nIt is reasonable to assume a positive relationship between temperature and number of rides.\n\nAs it warms up outside, folks are more likely to puruse outdoor activities, including biking.\n\nFor learning purposes, let’s focus on the model with a single predictor (y ~ x in R)."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#building-the-regression-model",
-    "href": "4-1-bayesian-glm.html#building-the-regression-model",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Building the Regression Model",
-    "text": "Building the Regression Model\n\nSuppose we have n data pairs,\n\n \\{ (Y_1, X_1), (Y_2, X_2), ..., (Y_n, X_n) \\} \n\nwhere Y_i is the number of rides and X_i is the high temperature (oF) on day i.\nAssuming that the relationship is linear, we can model\n\n\\mu_i = \\beta_0 + \\beta_1 X_i,\n\nwhere \\beta_0 and \\beta_1 are model coefficients."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#building-the-regression-model-1",
-    "href": "4-1-bayesian-glm.html#building-the-regression-model-1",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Building the Regression Model",
-    "text": "Building the Regression Model\n\nWhat do we mean by “model coefficients?”\n\n\\mu_i = \\beta_0 + \\beta_1 X_i,\n\n\\beta_0 is the baseline for where our model crosses the y-axis, i.e., when X_i=0.\n\nIs this meaningful when we are talking about the average ridership when it is 0oF in DC?"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#building-the-regression-model-2",
-    "href": "4-1-bayesian-glm.html#building-the-regression-model-2",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Building the Regression Model",
-    "text": "Building the Regression Model\n\nWhat do we mean by “model coefficients?”\n\n\\mu_i = \\beta_0 + \\beta_1 X_i,\n\n\\beta_1 is the slope, or average change, in the outcome (Y) for a one unit increase in the predictor (X).\n\nInterpretation: for a [1 unit of predictor] increase in [the predictor], [the outcome] [increases or decreases] by [abs(\\beta_1)].\nIn our example, suppose \\beta_1=4.5. For a 1oF increase in the temperature, the ridership increases by 4.5 riders."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#building-the-regression-model-3",
-    "href": "4-1-bayesian-glm.html#building-the-regression-model-3",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Building the Regression Model",
-    "text": "Building the Regression Model\n\nWe are now interested in the model\n\nY_i|\\beta_0,\\beta_1,\\sigma\\overset{\\text{ind}}{\\sim} N(\\mu_i, \\sigma^2) \\text{ with } \\mu_i = \\beta_0 + \\beta_1 X_i\n\nNote that \\mu_i is the local mean (for a specific value of X).\n\nIn our data, \\mu_i is the mean ridership for day i.\n\nThe global mean (regardless of the value of X) is given by \\mu.\n\nIn our data, \\mu is the mean ridership, regardless of day.\n\nUnder this model, \\sigma is now measuring the variability from the local mean."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#building-the-regression-model-4",
-    "href": "4-1-bayesian-glm.html#building-the-regression-model-4",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Building the Regression Model",
-    "text": "Building the Regression Model\n\nWe know the assumptions for linear regression in the frequentist framework.\nIn Bayesian Normal regression,\n\nThe observations are independent.\nY can be written as a linear function of X, \\mu = \\beta_0 + \\beta_1 X.\nFor any value of X, Y varies normally around \\mu with constant standard deviation \\sigma."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#building-the-regression-model-5",
-    "href": "4-1-bayesian-glm.html#building-the-regression-model-5",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Building the Regression Model",
-    "text": "Building the Regression Model\n\nFirst, we will assume that our prior models of \\beta_0, \\beta_1, and \\sigma are independent.\nIt is common to use the a normal prior for \\beta_0 and \\beta_1.\n\n\n\\begin{align*}\n  \\beta_0 &\\sim N(m_0, s_0^2) \\\\\n  \\beta_1 &\\sim N(m_1, s_1^2)\n\\end{align*}\n\n\nThen, it is the default to use the exponential for \\sigma; both are restricted to positive values.\n\n\\sigma \\sim \\text{Exp}(l)\n\nNote that E[\\sigma] = 1/l and \\text{sd}[\\sigma] = 1/l."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#building-the-regression-model-6",
-    "href": "4-1-bayesian-glm.html#building-the-regression-model-6",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Building the Regression Model",
-    "text": "Building the Regression Model\n\nThus, our regression model has the following formulation:\n\n\n\\begin{align*}\n&\\text{data}: & Y_i|\\beta_0, \\beta_1, \\sigma & \\overset{\\text{ind}}{\\sim} N(\\mu_i, \\sigma^2) \\text{ with } \\mu_i = \\beta_0 + \\beta_1 X_i \\\\\n&\\text{priors:} &\\beta_0 & \\sim N(m_0, s_0^2) \\\\\n& & \\beta_1  &\\sim N(m_1, s_1^2) \\\\\n& & & \\sigma \\sim \\text{Exp}(l)\n\\end{align*}"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#tuning-the-prior-models",
-    "href": "4-1-bayesian-glm.html#tuning-the-prior-models",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Tuning the Prior Models",
-    "text": "Tuning the Prior Models\n\nBased on the past bikeshare analyses, we have the following centered prior understandings. What should our priors be?\n\n\nOn an average temperature day for DC (65oF-70oF), there are typically around 5000 riders, but this could vary between 3000 and 7000 riders.\nFor every one degree increase in temperature, ridership typically increases by 100 rides, but this could vary between 20 and 180 rides.\nAt any given temperature, the daily ridership will tend to vary with a moderate standard deviation of 1250 rides."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#tuning-the-prior-models-1",
-    "href": "4-1-bayesian-glm.html#tuning-the-prior-models-1",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Tuning the Prior Models",
-    "text": "Tuning the Prior Models\n\nOn an average temperature day for DC (65oF-70oF), there are typically around 5000 riders, but this could vary between 3000 and 7000 riders.\n\n\\beta_{0\\text{c}} \\sim N(5000, 1000^2)\n\nFor every one degree increase in temperature, ridership typically increases by 100 rides, but this could vary between 20 and 180 rides.\n\n\\beta_{1\\text{c}} \\sim N(100, 40^2)\n\nAt any given temperature, the daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\nRecall, E[\\sigma] = 1/l = 1250, so l = 1/1250 = 0.0008.\n\n\n \\sigma \\sim \\text{Exp}(0.0008)"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#tuning-the-prior-models-2",
-    "href": "4-1-bayesian-glm.html#tuning-the-prior-models-2",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Tuning the Prior Models",
-    "text": "Tuning the Prior Models\n\\beta_{0\\text{c}} \\sim N(5000, 1000^2) \\ \\ \\ \\beta_{1\\text{c}} \\sim N(100, 40^2) \\ \\ \\ \\sigma \\sim \\text{Exp}(0.0008)"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulating-the-posterior",
-    "href": "4-1-bayesian-glm.html#simulating-the-posterior",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nLet’s now update what we know using the bikes data in the bayesrule package.\nLooking at the basic relationship between the number of rides vs. the temperature (as it feels outside),"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulating-the-posterior-1",
-    "href": "4-1-bayesian-glm.html#simulating-the-posterior-1",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nNote: I am skipping the derivation / the true math behind how to find the posterior in this situation. (It involves multiple integrals!)\nWe will use the stan_glm() function from rstanarm – it contains pre-defined Bayesian regression models.\n\nstan_glm() also applies to the wider family of GzLM (i.e., logistic & Poisson/negbin).\n\n\n\nlibrary(rstanarm)\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulating-the-posterior-2",
-    "href": "4-1-bayesian-glm.html#simulating-the-posterior-2",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG\n\n\nstan_glm() contains three types of information:\n\nData information: The first three arguments specify the structure of our data.\n\nWe want to model ridership by temperature (rides ~ temp_feel) using data = bikes and assuming a Normal data model, aka family = gaussian."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulating-the-posterior-3",
-    "href": "4-1-bayesian-glm.html#simulating-the-posterior-3",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG\n\n\nstan_glm() contains three types of information:\n\nPrior information: The prior_intercept, prior, and prior_aux arguments give the priors for \\beta_{0\\text{c}}, \\beta_{1\\text{c}}, \\sigma."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulating-the-posterior-4",
-    "href": "4-1-bayesian-glm.html#simulating-the-posterior-4",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG\n\n\nstan_glm() contains three types of information:\n\nMarkov chain information: The chains, iter, and seed arguments specify the number of Markov chains to run, the length or number of iterations for each chain, and the starting place of the RNG."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulating-the-posterior-5",
-    "href": "4-1-bayesian-glm.html#simulating-the-posterior-5",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nWait, how does this work when we are looking at three model parameters?\nWe will have three vectors – one for each model parameter.\n\n\n\\begin{align*}\n  &lt;\\beta_0^{(1)}, & \\ \\beta_0^{(2)}, ..., \\beta_0^{(5000)}&gt; \\\\\n  &lt;\\beta_1^{(1)}, & \\ \\beta_1^{(2)}, ..., \\beta_1^{(5000)} &gt; \\\\\n&lt;\\sigma^{(1)}, & \\ \\sigma^{(2)}, ..., \\sigma^{(5000)} &gt; \\\\\n\\end{align*}"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulation-diagnostics",
-    "href": "4-1-bayesian-glm.html#simulation-diagnostics",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulation Diagnostics",
-    "text": "Simulation Diagnostics\n\nRun the simulation code (from a previous slide).\nThen, run diagnostics:\n\n\nneff_ratio(bike_model)\nrhat(bike_model)\nmcmc_trace(bike_model, size = 0.1)\nmcmc_dens_overlay(bike_model)"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulation-diagnostics-1",
-    "href": "4-1-bayesian-glm.html#simulation-diagnostics-1",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulation Diagnostics",
-    "text": "Simulation Diagnostics\n\nDiagnostics:\n\n\nneff_ratio(bike_model)\n\n(Intercept)   temp_feel       sigma \n    0.98500     0.98525     0.96260 \n\nrhat(bike_model)\n\n(Intercept)   temp_feel       sigma \n  1.0001302   1.0001308   0.9998656 \n\n\n\nQuick diagnostics indicate that the resulting chains are trustworthy.\nThe effective sample size ratios are slightly above 1 and the R-hat values are very close to 1."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulation-diagnostics-2",
-    "href": "4-1-bayesian-glm.html#simulation-diagnostics-2",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulation Diagnostics",
-    "text": "Simulation Diagnostics\n\nDiagnostics:\n\n\n\n\n\n\n\n\n\n\n\n\n\nWe can see that the chains are stable, mixing quickly, and behaving much like an independent sample."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#simulation-diagnostics-3",
-    "href": "4-1-bayesian-glm.html#simulation-diagnostics-3",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Simulation Diagnostics",
-    "text": "Simulation Diagnostics\n\nDiagnostics:\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe density plot lets us visualize and examine the posterior models for each of our regression parameters, \\beta_0, \\beta_1, \\sigma."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#interpreting-the-posterior",
-    "href": "4-1-bayesian-glm.html#interpreting-the-posterior",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Interpreting the Posterior",
-    "text": "Interpreting the Posterior\n\nOkay… what does this mean, though?\n\n\ntidy(bike_model, effects = c(\"fixed\", \"aux\"), conf.int = TRUE, conf.level = 0.80)\n\n\n\n\n\nterm\nestimate\nstd.error\nconf.low\nconf.high\n\n\n\n\n(Intercept)\n-2189.94315\n355.897730\n-2647.0889\n-1735.33297\n\n\ntemp_feel\n82.15595\n5.055149\n75.6627\n88.58496\n\n\nsigma\n1282.82760\n40.947777\n1232.0788\n1337.29285\n\n\nmean_PPD\n3487.26618\n81.329374\n3382.5053\n3592.65400\n\n\n\n\n\n\n\nThus, the posterior median relationship is\n\ny = -2194.24 + 82.16x\n\nFor a 1 degree increase in temperature, we expect ridership to increase by about 82 rides, with 80% credible interval (75.7, 88.7)."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#interpreting-the-posterior-1",
-    "href": "4-1-bayesian-glm.html#interpreting-the-posterior-1",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Interpreting the Posterior",
-    "text": "Interpreting the Posterior\n\nWe can look at alternatives by drawing from the simulated data in bike_model.\n\nThe add_fitted_draws() function is from the tidybayes package.\n\n\n\n\nbikes %&gt;%\n  add_fitted_draws(bike_model, n = 50) %&gt;%\n  ggplot(aes(x = temp_feel, y = rides)) +\n    geom_line(aes(y = .value, group = .draw), alpha = 0.15) + \n    geom_point(data = bikes, size = 0.05) +\n  geom_smooth(method = \"lm\", se = FALSE) +\n  theme_bw()"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#interpreting-the-posterior-2",
-    "href": "4-1-bayesian-glm.html#interpreting-the-posterior-2",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Interpreting the Posterior",
-    "text": "Interpreting the Posterior\n\nWe can look at alternatives by drawing from the simulated data in bike_model.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWe see that the plausible models are not super variable.\n\nThis means we’re more confident about the relationship we’re observing."
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#interpreting-the-posterior-3",
-    "href": "4-1-bayesian-glm.html#interpreting-the-posterior-3",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Interpreting the Posterior",
-    "text": "Interpreting the Posterior\n\nHow does this compare against the frequentist version of regression?"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#working-example-2",
-    "href": "4-1-bayesian-glm.html#working-example-2",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Working Example",
-    "text": "Working Example\n\nWe will examine Australian weather from the weather_WU data in the bayesrules package.\n\nThis data contains 100 days of weather data for each of two Australian cities: Uluru and Wollongong.\n\n\n\ndata(weather_WU)\nhead(weather_WU)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nlocation\nmintemp\nmaxtemp\nrainfall\nwindgustdir\nwindgustspeed\nwinddir9am\nwinddir3pm\nwindspeed9am\nwindspeed3pm\nhumidity9am\nhumidity3pm\npressure9am\npressure3pm\ntemp9am\ntemp3pm\nraintoday\nrisk_mm\nraintomorrow\nyear\nmonth\nday_of_year\n\n\n\n\nUluru\n12.3\n30.1\n0\nENE\n39\nE\nENE\n20\n13\n23\n10\n1023.3\n1018.5\n20.9\n29.7\nNo\n0.0\nNo\n2014\n9\n255\n\n\nUluru\n20.5\n35.9\n5\nSSE\n52\nSE\nSE\n9\n20\n71\n29\n1012.9\n1009.1\n23.4\n33.9\nYes\n0.2\nNo\n2015\n2\n54\n\n\nUluru\n15.8\n41.4\n0\nNNW\n50\nSSE\nNW\n7\n24\n15\n4\n1012.3\n1008.5\n24.1\n39.7\nNo\n0.0\nNo\n2013\n10\n282\n\n\nUluru\n18.3\n36.0\n0\nSE\n57\nE\nESE\n28\n17\n29\n11\n1016.0\n1011.7\n26.4\n34.2\nNo\n0.0\nNo\n2014\n1\n6\n\n\nUluru\n28.9\n44.8\n0\nENE\n44\nESE\nE\n24\n26\n10\n8\n1010.5\n1006.4\n36.7\n43.3\nNo\n0.0\nNo\n2019\n1\n13\n\n\nUluru\n18.1\n35.9\n0\nESE\n35\nESE\nSE\n22\n11\n32\n14\n1012.2\n1007.6\n25.1\n33.5\nNo\n0.0\nNo\n2019\n2\n41"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#working-example-3",
-    "href": "4-1-bayesian-glm.html#working-example-3",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Working Example",
-    "text": "Working Example\n\nLet’s keep only the variables on afternoon temperatures (temp3pm) and a subset of possible predictors that we’d have access to in the morning:\n\n\nweather_WU &lt;- weather_WU %&gt;% \n  select(location, windspeed9am, humidity9am, pressure9am, temp9am, temp3pm)\nhead(weather_WU)\n\n\n\n\n\nlocation\nwindspeed9am\nhumidity9am\npressure9am\ntemp9am\ntemp3pm\n\n\n\n\nUluru\n20\n23\n1023.3\n20.9\n29.7\n\n\nUluru\n9\n71\n1012.9\n23.4\n33.9\n\n\nUluru\n7\n15\n1012.3\n24.1\n39.7\n\n\nUluru\n28\n29\n1016.0\n26.4\n34.2\n\n\nUluru\n24\n10\n1010.5\n36.7\n43.3\n\n\nUluru\n22\n32\n1012.2\n25.1\n33.5"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#working-example-4",
-    "href": "4-1-bayesian-glm.html#working-example-4",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Working Example",
-    "text": "Working Example\n\nWe begin our analysis with the familiar: a simple Normal regression model of temp3pm with one quantitative predictor, the morning temperature temp9am, both measured in degrees Celsius.\n\n\n\nggplot(weather_WU, aes(x = temp9am, y = temp3pm)) +\n  geom_point(size = 0.2) + \n  theme_bw()"
-  },
-  {
-    "objectID": "4-1-bayesian-glm.html#working-example-5",
-    "href": "4-1-bayesian-glm.html#working-example-5",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Working Example",
-    "text": "Working Example\n\nLet’s model the 3 pm temperature as a function of the 9 am temperature on a given day i.\n\nOutcome: Y_i = 3 pm temp\nPredictor: X_{i1} = 9 am temp\n\nThen, we can model it using the Bayesian normal regression model,\n\n\n\\begin{align*}\nY_i | \\beta_0, \\beta_1, \\sigma &\\overset{\\text{ind}}{\\sim} N(\\mu_i, \\sigma^2), \\text{ with } \\mu_i = \\beta_0 + \\beta_1 X_{i1} \\\\\n\\beta_{0c} &\\sim N(25, 5^2) \\\\\n\\beta_1 &\\sim N(0,3.1^2) \\\\\n\\sigma & \\sim \\text{Exp}(0.13)\n\\end{align*}"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Applied Bayesian Analysis - Summer 2026",
-    "section": "",
-    "text": "Welcome to Applied Bayesian Analysis for Summer 2026!\nThe initial development of this course was supported by the 2023 BATS program, funded by NSF IUSE: EHR program with award numbers 2215879, 2215920, and 2215709."
+    "text": "1. Think of a recent situation in which you changed your mind. As with the restaurant example in class, make a diagram that includes your prior information, your new data that helped you change your mind, and your posterior conclusion.\n\n2. Odie is trying to convince Jon that Garfield is in the mood to steal lasagna, but Jon thinks there is only 0.10 probability that Garfield is in the mood to steal lasagna. Jon also believes that the probability Garfield raids the fridge given that he’s in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield was in the mood to steal lasagna?\n\n3. Arlene, Garfield’s on-again-off-again girlfriend, has two dispositions toward Garfield: happy or annoyed. In general, Arlene is happy with Garfield 55% of the time. You’ve noticed, however, that her disposition is related to how many times Garfield ignored her the day before. If Arlene is happy with Garfield today, there’s a 60% chance Garfield ignored her 0 times, a 35% chance he ignored her between 1 and 3 times, and a 5% chance he ignored her more than 3 times yesterday. If Arlene is annoyed with Garfield today, there’s a 10% chance Garfield ignored her 0 times, a 55% chance he ignored her between 1 and 3 times, and a 35% chance he ignored her more than 3 times yesterday.\na. Use the given information to complete the following table:\n\n\n\nIgnores yesterday\nP(ignores | happy)\nP(ignores | annoyed)\n\n\n\n\n0 times\n\n\n\n\n1–3 times\n\n\n\n\nMore than 3 times\n\n\n\n\n\nb. Today’s a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what’s the probability that Arlene is happy with Garfield?\nc. You’ve been spying on Garfield all day and have tallied that he ignored Arlene a whopping 4 times yesterday. How likely is Arlene to have been ignored 4 times if she’s happy with Garfield today? What part of the Bayes’ Rule equation is this?\nd. What is the posterior probability that Arlene is happy with Garfield today, given that Garfield ignored her 4 times yesterday?"
   },
   {
     "objectID": "files/assignments/assignment1.html",
@@ -1771,11 +1540,39 @@
     "text": "Note: do not read too much into the following scenarios. The purpose is to get comfortable identifying distributions and finding corresponding probabilities.\nScenario 1: Walter is known for his intense personality during bowling league nights. Whether it’s a foot foul, a scoring dispute, or just general frustration with life, he frequently loses his temper and yells loudly at his teammates or opponents. Based on observations over several league nights, it has been determined that Walter loses his temper at an average rate of 4 outbursts per hour. His outbursts are unpredictable and can happen at any point during the game, but they seem to occur independently of each other.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Walter will not have an outburst at all?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Walter has more than 10 outbursts during league night?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 2: Donny often struggles to find parking near the bowling alley, especially on busy league nights. Sometimes he gets lucky and finds a spot fairly quickly, but other times he ends up circling the block several times before he can finally park. His parking times are generally right-skewed as it is much more common for it to take a shorter amount of time… but every now and then it can take quite a while. Over time, his friends have noticed a pattern: it usually takes him a few minutes, but there is a decent chance it could take significantly longer.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this scenario, \\alpha=3 and \\beta=4.\nReplace with your answer\nd. What is the probability that Donny will take more than 15 minutes to find a spot?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Donny will find a parking space quickly – i.e., that he parks within 5 minutes of arriving?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 3: Maude is famous for her avant-garde dance performances that leave audiences both puzzled and mesmerized. Her performances at the local art venue are known for their spontaneity and lack of strict timing. Observers have noted that the duration of her performances can last anywhere between 15 and 30 minutes, with any length within this interval being equally likely. There’s no predicting exactly how long Maude will choose to perform on any given night… sometimes it’s a brief expression and sometimes it stretches to the edge of the audience’s patience.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that Maude’s performance will be on the shorter end – i.e., it lasts somewhere between 15 and 16 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that Maude’s performance will be on the longer end – i.e., it lasts somewhere between 25 and 30 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 4. The Dude always orders a White Russian when he’s at the bowling alley. However, the bowling alley bar is not always well-stocked. Each time The Dude places an order, there is only a 60% chance that the bartender has all the necessary ingredients on hand to make the drink (they are frequently out of cream). Throughout one particularly long evening of bowling and philosophical debates, The Dude orders 8 White Russians. He hopes that most of them will be successfully made.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that at least 5 drinks will be successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that all 8 drinks are successfully made?\nReplace with your answer (i.e., don’t just show me R output here :))\nScenario 5: The Dude’s bowling games tend to last around 45 minutes, give or take. While the exact length can vary from game to game, it’s rare for his games to be extremely short or unusually long. Most of the time, his game lengths cluster fairly tightly around that 45-minute mark, though occasionally he’ll have a quicker match or one that drags on a little longer if the vibe calls for it, to the tune of \\pm 5 minutes.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution?\nReplace with your answer\nd. What is the probability that the game will last exactly 45 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\ne. What is the probability that the game will really drag on – that it lasts somewhere between 50 and 60 minutes?\nReplace with your answer (i.e., don’t just show me R output here :))\n\nScenario 6: After many laid-back bowling sessions (and several White Russians), The Dude has started keeping track of how often he lands a strike. He knows he’s not perfect, but he’s developed a pretty good feel for his overall strike success rate. It seems like his strike percentage tends to hang out somewhere between 60% and 80% most nights, though there’s still some uncertainty. Sometimes he’s on fire, sometimes he’s a little off, but overall he’s confident his long-term strike rate leans more toward success than failure.\na. What is the random variable of interest? (What is being measured?)\nReplace with your answer\nb. What distribution is appropriate and why?\nReplace with your answer\nc. What are the parameters of the distribution? (Hint: for this example, they are 7 and 3 (in that order)).\nReplace with your answer\nd. What is the probability that The Dude’s strike success rate is less than 50%?\nReplace with your answer (i.e., don’t just show me R output here :))\ne. What is the probability that The Dude’s strike success rate is above 80%?\nReplace with your answer (i.e., don’t just show me R output here :))"
   },
   {
-    "objectID": "files/assignments/assignment2.html",
-    "href": "files/assignments/assignment2.html",
-    "title": "Assignment 2: Thinking Like a Bayesian",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Applied Bayesian Analysis - Summer 2026",
     "section": "",
-    "text": "1. Think of a recent situation in which you changed your mind. As with the restaurant example in class, make a diagram that includes your prior information, your new data that helped you change your mind, and your posterior conclusion.\n\n2. Odie is trying to convince Jon that Garfield is in the mood to steal lasagna, but Jon thinks there is only 0.10 probability that Garfield is in the mood to steal lasagna. Jon also believes that the probability Garfield raids the fridge given that he’s in a lasagna-stealing mood is 0.85, and the probability that Garfield raids the fridge given that he is NOT in a lasagna-stealing mood is 0.20. Odie then catches Garfield raiding the fridge. Given that Garfield raided the fridge, what is the probability that Garfield was in the mood to steal lasagna?\n\n3. Arlene, Garfield’s on-again-off-again girlfriend, has two dispositions toward Garfield: happy or annoyed. In general, Arlene is happy with Garfield 55% of the time. You’ve noticed, however, that her disposition is related to how many times Garfield ignored her the day before. If Arlene is happy with Garfield today, there’s a 60% chance Garfield ignored her 0 times, a 35% chance he ignored her between 1 and 3 times, and a 5% chance he ignored her more than 3 times yesterday. If Arlene is annoyed with Garfield today, there’s a 10% chance Garfield ignored her 0 times, a 55% chance he ignored her between 1 and 3 times, and a 35% chance he ignored her more than 3 times yesterday.\na. Use the given information to complete the following table:\n\n\n\nIgnores yesterday\nP(ignores | happy)\nP(ignores | annoyed)\n\n\n\n\n0 times\n\n\n\n\n1–3 times\n\n\n\n\nMore than 3 times\n\n\n\n\n\nb. Today’s a new day. Without knowing anything about how many times Garfield ignored Arlene yesterday, what’s the probability that Arlene is happy with Garfield?\nc. You’ve been spying on Garfield all day and have tallied that he ignored Arlene a whopping 4 times yesterday. How likely is Arlene to have been ignored 4 times if she’s happy with Garfield today? What part of the Bayes’ Rule equation is this?\nd. What is the posterior probability that Arlene is happy with Garfield today, given that Garfield ignored her 4 times yesterday?"
+    "text": "Welcome to Applied Bayesian Analysis for Summer 2026!\nThe initial development of this course was supported by the 2023 BATS program, funded by NSF IUSE: EHR program with award numbers 2215879, 2215920, and 2215709."
+  },
+  {
+    "objectID": "files/assignments/assignment3.html",
+    "href": "files/assignments/assignment3.html",
+    "title": "Assignment 3: Conjugate Families",
+    "section": "",
+    "text": "Scenario 1: Every night, the same thing happens: Brain concocts an elaborate scheme to take over the world, and somehow it never quite works out. Whether it’s Pinky’s blundering, an unexpected plot twist, or the Warner siblings’ interference, Brain’s plans have a way of falling apart at the last moment.\nThe Warner siblings — Yakko, Wakko, and Dot — have each been keeping tabs on Brain’s success (or lack thereof) while atop the Warners’ water tower. Each sibling has been independently tracking whether Brain’s plan was foiled on any given day, and each comes into the analysis with the same prior belief: a Beta(2, 5) distribution for \\pi, the probability that Brain’s plan gets foiled on any given day. This prior reflects a shared suspicion that Brain usually gets pretty far with his plans, but not always.\nThe current issue is that each sibling has been watching for a different stretch of time, and they don’t always agree on what they saw. For each sibling, you’ll update the Beta(2, 5) prior with their observed data and summarize the resulting posterior distribution.\na. After carefully observing Brain’s schemes over 50 days, Dot recorded that 18 of Brain’s plans were successfully foiled. Summarize Dot’s analysis using the functions demonstrated in lecture.\nb. Yakko has been keeping his own records from a different observation period. In his records, Brain’s plans were foiled 12 out of 25 days. Summarize Yakko’s analysis using the functions demonstrated in lecture.\nc. In Wakko’s records, Brain’s plans were foiled 18 out of 25 days. Summarize Wakko’s analysis using the functions demonstrated in lecture.\nd. How do Dot, Yakko, and Wakko’s posterior models compare to one another?\nScenario 2: Yakko, Wakko, and Dot have a long-standing rivalry with the Goodfeathers, Bobby, Squit, and Pesto, who are always pecking around the WB studio lot. The siblings suspect the Goodfeathers show up at an annoyingly high rate throughout the day, and Dot has decided to model this formally. Let \\lambda represent the rate at which the Goodfeathers appear per hour on the studio lot.\na. Dot believes the Goodfeathers show up about 8 times per hour on average, with a standard deviation of 0.5 appearances. Tune and plot an appropriate Gamma(s, r) prior model for \\lambda.\nb. Yakko and Wakko help out by each staking out different parts of the lot. Across 8 hours of observation, they recorded the following Goodfeather appearances: \\{3,9,7,11,8,6,10, 9\\}. Update Dot’s prior model with this data to find the posterior model for \\lambda.\nc. Comment on how the siblings’ understanding of \\lambda changed from the prior to the posterior based on their observations. Did the Goodfeathers show up as often as Dot feared?\nScenario 3: Brain has abandoned his usual schemes and pivoted to high finance. His latest plan for world domination involves cornering the market on Acme Corp stock — the same company that supplies every single product on the WB studio lot. Pinky is thrilled. Brain is focused. Let μ represent the average dollar amount that Acme Corp stock goes up or down in a one-day period.\na. Brain has reviewed Acme Corp’s historical performance. He believes the stock increases by an average of 7.2 dollars per day, with a standard deviation of 2.6 dollars. Tune and plot an appropriate Normal prior model for \\mu.\nb. According to your plot, does it seem plausible that Acme Corp stock would increase by an average of 7.6 dollars in a day? Why or why not?\nc. Does it seem plausible that the stock would increase by an average of 4 dollars in a day? Why or why not?\nd. Pinky recorded the following daily changes over a random sample of 4 days: \\{−0.7,1.2,4.5,−4.0\\}. Update Brain’s prior model with this data to find the posterior model for \\mu.\ne. Comment on how Brain’s understanding of \\mu evolved from the prior to the posterior based on Pinky’s observed data. Did the stock perform as well as Brain had hoped?"
+  },
+  {
+    "objectID": "files/assignments/assignment7.html",
+    "href": "files/assignments/assignment7.html",
+    "title": "Assignment 7: Bayesian General Linear Models",
+    "section": "",
+    "text": "In this assignment, you will use the penguins_bayes data in the bayesrules package to build various models of penguin body mass (body_mass_g). We have a basic understanding that the average penguin weighs somewhere between 3500 and 4500 grams. A predictor of interest is penguin species: Adelie, Chinstrap, or Gentoo.\nlibrary(bayesrules)\npenguin_data &lt;- penguins_bayes"
+  },
+  {
+    "objectID": "files/assignments/assignment7.html#model-1",
+    "href": "files/assignments/assignment7.html#model-1",
+    "title": "Assignment 7: Bayesian General Linear Models",
+    "section": "Model 1",
+    "text": "Model 1\nLet’s explore body mass (body_mass_g) as a function of flipper length (flipper_length_mm) and species (species).\na. Plot body mass against flipper length, colored by species.\nb. What pattern(s) do you observe, if any, in the above graph?\nYour response here\nc. Use stan_glm() to simulate the specified model.\nd. What is the estimated model?\n\\hat{y} = \\beta_0 + \\beta_1 \\text{var1} + \\beta_2 \\text{var2} + ...\n\ne. Construct visual diagnostics for your MCMC simulations.\nf. Comment on the diagnostics. Do you see any issues with our simulation?\nYour response here\ng. Construct the visual posterior predictive check for your model.\nh. How wrong is the model?\nYour response here.\ni. Plot the data with the posterior predictive 50% and 95% credible intervals.\nj. Find and interpret the scaled absolute median error.\nk. How accurate is the posterior predictive model?\nYour response here."
+  },
+  {
+    "objectID": "files/assignments/assignment7.html#model-2",
+    "href": "files/assignments/assignment7.html#model-2",
+    "title": "Assignment 7: Bayesian General Linear Models",
+    "section": "Model 2",
+    "text": "Model 2\nLet’s now explore body mass (body_mass_g) as a function of flipper length (flipper_length_mm), species (species), and the interaction between the two.\na. Use stan_glm() to simulate the specified model.\nb. What is the estimated model?\n\\hat{y} = \\beta_0 + \\beta_1 \\text{var1} + \\beta_2 \\text{var2} + ...\n\nc. Determine if this model is better than the previous model.\nYour response here.\n\n\nd. Do you recommend keeping the interaction in the model? Why or why not?\nYour response here."
   },
   {
     "objectID": "files/assignments/assignment4.html",
@@ -3105,21 +2902,21 @@
     "href": "files/lectures/4-1-bayesian-glm.html#r-packages-needed",
     "title": "Regression in the Bayesian Framework",
     "section": "R Packages Needed",
-    "text": "R Packages Needed\n\nTo follow today’s lecture, please load the following packages:\n\n\nlibrary(tidyverse)\nlibrary(bayesrules)\nlibrary(bayesplot)\nlibrary(tidybayes)"
+    "text": "R Packages Needed\n\nTo follow today’s lecture, please load the following packages:\n\n\nlibrary(tidyverse)\nlibrary(bayesrules)\nlibrary(bayesplot)\nlibrary(tidybayes)\nlibrary(ggpubr)\nlibrary(rstanarm)\nlibrary(janitor)\nlibrary(broom.mixed)"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#introduction",
     "href": "files/lectures/4-1-bayesian-glm.html#introduction",
     "title": "Regression in the Bayesian Framework",
     "section": "Introduction",
-    "text": "Introduction\n\nBefore today, we effectively were performing one-sample tests of means, proportions, and counts.\nNow, we will focus on incorporating just a single predictor into our analysis.\n\nOverall question: what is the relationship between Y (outcome) and X (predictor)?\n\nWe now switch to thinking about analysis in terms of regression."
+    "text": "Introduction\n\nBefore today, we effectively were performing one-sample tests of means, proportions, and counts.\nNow, we will focus on incorporating just a single predictor into our analysis.\n\nOverall question: what is the relationship between Y (outcome) and X (predictor)?\n\nWe now switch to thinking about analysis in terms of regression.\n\ny_i = \\beta_0 + \\beta_1 x_i + \\varepsilon_i\n\\hat{y}_i = \\hat{\\beta}_0 + \\hat{\\beta}_1 x_i"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#working-example",
     "href": "files/lectures/4-1-bayesian-glm.html#working-example",
     "title": "Regression in the Bayesian Framework",
     "section": "Working Example",
-    "text": "Working Example\n\nCapital Bikeshare is a bike sharing service in the Washington, D.C. area. To best serve its registered members, the company must understand the demand for its service. We will analyze the number of rides taken on a random sample of n days, (Y_1, Y_2, ..., Y_n).\nBeacuse Y_i is a count variable, you might assume that ridership might need the Poisson distribution. However, past bike riding seasons have exhibited bell-shaped daily ridership with a variability in ridership that far exceeds the typical ridership.\n\n(i.e., the Poisson assumption of \\mu = \\sigma does not hold here)\n\nWe will instead assume that the number of rides varies normally around some typical ridership, \\mu, with standard deviation, \\sigma.\n\n Y_i|\\mu,\\sigma \\overset{\\text{ind}}{\\sim} N(\\mu, \\sigma^2)"
+    "text": "Working Example\n\nCapital Bikeshare is a bike sharing service in the Washington, D.C. area. To best serve its registered members, the company must understand the demand for its service. We will analyze the number of rides taken on a random sample of n days, (Y_1, Y_2, ..., Y_n).\nBecause Y_i is a count variable, you might assume that ridership might need the Poisson distribution. However, past bike riding seasons have exhibited bell-shaped daily ridership with a variability in ridership that far exceeds the typical ridership.\n\n(i.e., the Poisson assumption of \\mu = \\sigma does not hold here)\n\nWe will instead assume that the number of rides varies normally around some typical ridership, \\mu, with standard deviation, \\sigma.\n\nY_i|\\mu,\\sigma \\overset{\\text{ind}}{\\sim} N(\\mu, \\sigma^2)"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#working-example-1",
@@ -3189,11 +2986,25 @@
     "href": "files/lectures/4-1-bayesian-glm.html#tuning-the-prior-models-1",
     "title": "Regression in the Bayesian Framework",
     "section": "Tuning the Prior Models",
-    "text": "Tuning the Prior Models\n\nOn an average temperature day for DC (65oF-70oF), there are typically around 5000 riders, but this could vary between 3000 and 7000 riders.\n\n\\beta_{0\\text{c}} \\sim N(5000, 1000^2)\n\nFor every one degree increase in temperature, ridership typically increases by 100 rides, but this could vary between 20 and 180 rides.\n\n\\beta_{1\\text{c}} \\sim N(100, 40^2)\n\nAt any given temperature, the daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\nRecall, E[\\sigma] = 1/l = 1250, so l = 1/1250 = 0.0008.\n\n\n \\sigma \\sim \\text{Exp}(0.0008)"
+    "text": "Tuning the Prior Models\n\nOn an average temperature day for DC (65oF-70oF), there are typically around 5000 riders, but this could vary between 3000 and 7000 riders.\n\n\\beta_{0\\text{c}} \\sim N(5000, 1000^2)\n\nFor every one degree increase in temperature, ridership typically increases by 100 rides, but this could vary between 20 and 180 rides.\n\n\\beta_{1\\text{c}} \\sim N(100, 40^2)"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#tuning-the-prior-models-2",
     "href": "files/lectures/4-1-bayesian-glm.html#tuning-the-prior-models-2",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Tuning the Prior Models",
+    "text": "Tuning the Prior Models\n\nAt any given temperature, the daily ridership will tend to vary with a moderate standard deviation of 1250 rides.\n\nRecall, E[\\sigma] = 1/l = 1250, so l = 1/1250 = 0.0008.\n\n\n \\sigma \\sim \\text{Exp}(0.0008) \n\nTherefore, we have,\n\n\n\\begin{align*}\n\\beta_{0\\text{c}} &\\sim N(5000, 1000^2) \\\\ \\beta_{1\\text{c}} &\\sim N(100, 40^2) \\\\\n\\sigma &\\sim \\text{Exp}(0.0008)\n\\end{align*}"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#tuning-the-prior-models-3",
+    "href": "files/lectures/4-1-bayesian-glm.html#tuning-the-prior-models-3",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Tuning the Prior Models",
+    "text": "Tuning the Prior Models\n\\beta_{0\\text{c}} \\sim N(5000, 1000^2) \\ \\ \\ \\beta_{1\\text{c}} \\sim N(100, 40^2) \\ \\ \\ \\sigma \\sim \\text{Exp}(0.0008)"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#tuning-the-prior-models-4",
+    "href": "files/lectures/4-1-bayesian-glm.html#tuning-the-prior-models-4",
     "title": "Regression in the Bayesian Framework",
     "section": "Tuning the Prior Models",
     "text": "Tuning the Prior Models\n\\beta_{0\\text{c}} \\sim N(5000, 1000^2) \\ \\ \\ \\beta_{1\\text{c}} \\sim N(100, 40^2) \\ \\ \\ \\sigma \\sim \\text{Exp}(0.0008)"
@@ -3203,42 +3014,42 @@
     "href": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior",
     "title": "Regression in the Bayesian Framework",
     "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nLet’s now update what we know using the bikes data in the bayesrule package.\nLooking at the basic relationship between the number of rides vs. the temperature (as it feels outside),"
+    "text": "Simulating the Posterior\n\nLet’s now update what we know using the bikes data.\nLooking at the basic relationship between the number of rides vs. the temperature (as it feels outside),"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-1",
     "href": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-1",
     "title": "Regression in the Bayesian Framework",
     "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nNote: I am skipping the derivation / the true math behind how to find the posterior in this situation. (It involves multiple integrals!)\nWe will use the stan_glm() function from rstanarm – it contains pre-defined Bayesian regression models.\n\nstan_glm() also applies to the wider family of GzLM (i.e., logistic & Poisson/negbin).\n\n\n\nlibrary(rstanarm)\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG"
+    "text": "Simulating the Posterior\n\nNote: I am skipping the derivation / the true math behind how to find the posterior in this situation. (It involves multiple integrals!)\nWe will use the stan_glm() function from rstanarm – it contains pre-defined Bayesian regression models.\n\nstan_glm() also applies to the wider family of GzLM (i.e., logistic & Poisson/negbin).\n\n\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-2",
     "href": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-2",
     "title": "Regression in the Bayesian Framework",
     "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG\n\n\nstan_glm() contains three types of information:\n\nData information: The first three arguments specify the structure of our data.\n\nWe want to model ridership by temperature (rides ~ temp_feel) using data = bikes and assuming a Normal data model, aka family = gaussian."
+    "text": "Simulating the Posterior\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG\n\n\nThe first three arguments specify the structure of our data.\n\nWe want to state our model (rides ~ temp_feel),\nspecify the dataset (data = bikes), and\nspecify the family for the outcome (family = gaussian)."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-3",
     "href": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-3",
     "title": "Regression in the Bayesian Framework",
     "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG\n\n\nstan_glm() contains three types of information:\n\nPrior information: The prior_intercept, prior, and prior_aux arguments give the priors for \\beta_{0\\text{c}}, \\beta_{1\\text{c}}, \\sigma."
+    "text": "Simulating the Posterior\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG\n\n\nThen we define our priors:\n\nprior_intercept \\to \\beta_{0\\text{c}},\nprior \\to \\beta_{1\\text{c}}, and\nprior_aux \\to \\sigma."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-4",
     "href": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-4",
     "title": "Regression in the Bayesian Framework",
     "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG\n\n\nstan_glm() contains three types of information:\n\nMarkov chain information: The chains, iter, and seed arguments specify the number of Markov chains to run, the length or number of iterations for each chain, and the starting place of the RNG."
+    "text": "Simulating the Posterior\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, # data model\n                       data = bikes, # dataset\n                       family = gaussian, # distribution to apply\n                       prior_intercept = normal(5000, 1000), # b0_c\n                       prior = normal(100, 40), # b1_c\n                       prior_aux = exponential(0.0008), # sigma\n                       chains = 4, # 4 chains\n                       iter = 5000*2, # 10000 iterations - throw out first 5000\n                       seed = 84735) # starting place in RNG\n\n\nFinally, we specify Markov chain information:\n\nNumber of chains (chains),\nnumber of iterations (iter) for each seed, and\nthe starting place in the RNG (seed)."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-5",
     "href": "files/lectures/4-1-bayesian-glm.html#simulating-the-posterior-5",
     "title": "Regression in the Bayesian Framework",
     "section": "Simulating the Posterior",
-    "text": "Simulating the Posterior\n\nWait, how does this work when we are looking at three model parameters?\nWe will have three vectors – one for each model parameter.\n\n\n\\begin{align*}\n  &lt;\\beta_0^{(1)}, & \\ \\beta_0^{(2)}, ..., \\beta_0^{(5000)}&gt; \\\\\n  &lt;\\beta_1^{(1)}, & \\ \\beta_1^{(2)}, ..., \\beta_1^{(5000)} &gt; \\\\\n&lt;\\sigma^{(1)}, & \\ \\sigma^{(2)}, ..., \\sigma^{(5000)} &gt; \\\\\n\\end{align*}"
+    "text": "Simulating the Posterior\n\nWait, how does this work when we are looking at three model parameters?\nWe will have three vectors: one for each model parameter.\n\n\n\\begin{align*}\n  &lt;\\beta_0^{(1)}, & \\ \\beta_0^{(2)}, ..., \\beta_0^{(5000)}&gt; \\\\\n  &lt;\\beta_1^{(1)}, & \\ \\beta_1^{(2)}, ..., \\beta_1^{(5000)} &gt; \\\\\n&lt;\\sigma^{(1)}, & \\ \\sigma^{(2)}, ..., \\sigma^{(5000)} &gt; \\\\\n\\end{align*}"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#simulation-diagnostics",
@@ -3259,35 +3070,35 @@
     "href": "files/lectures/4-1-bayesian-glm.html#simulation-diagnostics-2",
     "title": "Regression in the Bayesian Framework",
     "section": "Simulation Diagnostics",
-    "text": "Simulation Diagnostics\n\nDiagnostics:\n\n\n\n\n\n\n\n\n\n\n\n\n\nWe can see that the chains are stable, mixing quickly, and behaving much like an independent sample."
+    "text": "Simulation Diagnostics\n\nDiagnostics:\n\n\n\nWe can see that the chains are stable, mixing quickly, and behaving much like an independent sample."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#simulation-diagnostics-3",
     "href": "files/lectures/4-1-bayesian-glm.html#simulation-diagnostics-3",
     "title": "Regression in the Bayesian Framework",
     "section": "Simulation Diagnostics",
-    "text": "Simulation Diagnostics\n\nDiagnostics:\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe density plot lets us visualize and examine the posterior models for each of our regression parameters, \\beta_0, \\beta_1, \\sigma."
+    "text": "Simulation Diagnostics\n\nDiagnostics:\n\n\n\nThe density plot lets us visualize and examine the posterior models for each of our regression parameters, \\beta_0, \\beta_1, \\sigma."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#interpreting-the-posterior",
     "href": "files/lectures/4-1-bayesian-glm.html#interpreting-the-posterior",
     "title": "Regression in the Bayesian Framework",
     "section": "Interpreting the Posterior",
-    "text": "Interpreting the Posterior\n\nOkay… what does this mean, though?\n\n\ntidy(bike_model, effects = c(\"fixed\", \"aux\"), conf.int = TRUE, conf.level = 0.80)\n\n\n\n\n\nterm\nestimate\nstd.error\nconf.low\nconf.high\n\n\n\n\n(Intercept)\n-2189.94315\n355.897730\n-2647.0889\n-1735.33297\n\n\ntemp_feel\n82.15595\n5.055149\n75.6627\n88.58496\n\n\nsigma\n1282.82760\n40.947777\n1232.0788\n1337.29285\n\n\nmean_PPD\n3487.26618\n81.329374\n3382.5053\n3592.65400\n\n\n\n\n\n\n\nThus, the posterior median relationship is\n\ny = -2194.24 + 82.16x\n\nFor a 1 degree increase in temperature, we expect ridership to increase by about 82 rides, with 80% credible interval (75.7, 88.7)."
+    "text": "Interpreting the Posterior\n\nOkay… what does this mean, though?\n\n\ntidy(bike_model, effects = c(\"fixed\"), \n     conf.int = TRUE, \n     conf.level = 0.95)\n\n\n\n\n\nterm\nestimate\nstd.error\nconf.low\nconf.high\n\n\n\n\n(Intercept)\n-2189.94315\n355.897730\n-2883.84137\n-1488.79560\n\n\ntemp_feel\n82.15595\n5.055149\n72.00998\n92.02413\n\n\n\n\n\n\n\nThus, the posterior median relationship is\n\ny = -2189.94 + 82.16x\n\nFor a 1 degree increase in temperature, we expect ridership to increase by about 82 rides, with 95% credible interval (72.0, 92.0)."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#interpreting-the-posterior-1",
     "href": "files/lectures/4-1-bayesian-glm.html#interpreting-the-posterior-1",
     "title": "Regression in the Bayesian Framework",
     "section": "Interpreting the Posterior",
-    "text": "Interpreting the Posterior\n\nWe can look at alternatives by drawing from the simulated data in bike_model.\n\nThe add_fitted_draws() function is from the tidybayes package.\n\n\n\n\nbikes %&gt;%\n  add_fitted_draws(bike_model, n = 50) %&gt;%\n  ggplot(aes(x = temp_feel, y = rides)) +\n    geom_line(aes(y = .value, group = .draw), alpha = 0.15) + \n    geom_point(data = bikes, size = 0.05) +\n  geom_smooth(method = \"lm\", se = FALSE) +\n  theme_bw()"
+    "text": "Interpreting the Posterior\n\nWe can look at alternatives by drawing from the simulated data in bike_model.\n\nThe add_fitted_draws() function is from the tidybayes package.\n\n\n\nbikes %&gt;%\n  add_fitted_draws(bike_model, n = 50) %&gt;%\n  ggplot(aes(x = temp_feel, y = rides)) +\n  geom_line(aes(y = .value, group = .draw), alpha = 0.25, color = \"blue\") + \n  geom_point(data = bikes, size = .5) +\n  theme_minimal()"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#interpreting-the-posterior-2",
     "href": "files/lectures/4-1-bayesian-glm.html#interpreting-the-posterior-2",
     "title": "Regression in the Bayesian Framework",
     "section": "Interpreting the Posterior",
-    "text": "Interpreting the Posterior\n\nWe can look at alternatives by drawing from the simulated data in bike_model.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWe see that the plausible models are not super variable.\n\nThis means we’re more confident about the relationship we’re observing."
+    "text": "Interpreting the Posterior\n\nWe can look at alternatives by drawing from the simulated data in bike_model.\n\n\n\nWe see that the plausible models are not super variable – we are more confident about the relationship we’re observing."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#interpreting-the-posterior-3",
@@ -3301,7 +3112,7 @@
     "href": "files/lectures/4-1-bayesian-glm.html#working-example-2",
     "title": "Regression in the Bayesian Framework",
     "section": "Working Example",
-    "text": "Working Example\n\nWe will examine Australian weather from the weather_WU data in the bayesrules package.\n\nThis data contains 100 days of weather data for each of two Australian cities: Uluru and Wollongong.\n\n\n\ndata(weather_WU)\nhead(weather_WU)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nlocation\nmintemp\nmaxtemp\nrainfall\nwindgustdir\nwindgustspeed\nwinddir9am\nwinddir3pm\nwindspeed9am\nwindspeed3pm\nhumidity9am\nhumidity3pm\npressure9am\npressure3pm\ntemp9am\ntemp3pm\nraintoday\nrisk_mm\nraintomorrow\nyear\nmonth\nday_of_year\n\n\n\n\nUluru\n12.3\n30.1\n0\nENE\n39\nE\nENE\n20\n13\n23\n10\n1023.3\n1018.5\n20.9\n29.7\nNo\n0.0\nNo\n2014\n9\n255\n\n\nUluru\n20.5\n35.9\n5\nSSE\n52\nSE\nSE\n9\n20\n71\n29\n1012.9\n1009.1\n23.4\n33.9\nYes\n0.2\nNo\n2015\n2\n54\n\n\nUluru\n15.8\n41.4\n0\nNNW\n50\nSSE\nNW\n7\n24\n15\n4\n1012.3\n1008.5\n24.1\n39.7\nNo\n0.0\nNo\n2013\n10\n282\n\n\nUluru\n18.3\n36.0\n0\nSE\n57\nE\nESE\n28\n17\n29\n11\n1016.0\n1011.7\n26.4\n34.2\nNo\n0.0\nNo\n2014\n1\n6\n\n\nUluru\n28.9\n44.8\n0\nENE\n44\nESE\nE\n24\n26\n10\n8\n1010.5\n1006.4\n36.7\n43.3\nNo\n0.0\nNo\n2019\n1\n13\n\n\nUluru\n18.1\n35.9\n0\nESE\n35\nESE\nSE\n22\n11\n32\n14\n1012.2\n1007.6\n25.1\n33.5\nNo\n0.0\nNo\n2019\n2\n41"
+    "text": "Working Example\n\nWe will examine Australian weather from the weather_WU data in the bayesrules package.\n\nThis data contains 100 days of weather data for each of two Australian cities: Uluru and Wollongong.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nlocation\nmintemp\nmaxtemp\nrainfall\nwindgustdir\nwindgustspeed\nwinddir9am\nwinddir3pm\nwindspeed9am\nwindspeed3pm\nhumidity9am\nhumidity3pm\npressure9am\npressure3pm\ntemp9am\ntemp3pm\nraintoday\nrisk_mm\nraintomorrow\nyear\nmonth\nday_of_year\n\n\n\n\nUluru\n12.3\n30.1\n0\nENE\n39\nE\nENE\n20\n13\n23\n10\n1023.3\n1018.5\n20.9\n29.7\nNo\n0.0\nNo\n2014\n9\n255\n\n\nUluru\n20.5\n35.9\n5\nSSE\n52\nSE\nSE\n9\n20\n71\n29\n1012.9\n1009.1\n23.4\n33.9\nYes\n0.2\nNo\n2015\n2\n54\n\n\nUluru\n15.8\n41.4\n0\nNNW\n50\nSSE\nNW\n7\n24\n15\n4\n1012.3\n1008.5\n24.1\n39.7\nNo\n0.0\nNo\n2013\n10\n282\n\n\nUluru\n18.3\n36.0\n0\nSE\n57\nE\nESE\n28\n17\n29\n11\n1016.0\n1011.7\n26.4\n34.2\nNo\n0.0\nNo\n2014\n1\n6\n\n\nUluru\n28.9\n44.8\n0\nENE\n44\nESE\nE\n24\n26\n10\n8\n1010.5\n1006.4\n36.7\n43.3\nNo\n0.0\nNo\n2019\n1\n13\n\n\nUluru\n18.1\n35.9\n0\nESE\n35\nESE\nSE\n22\n11\n32\n14\n1012.2\n1007.6\n25.1\n33.5\nNo\n0.0\nNo\n2019\n2\n41"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#working-example-3",
@@ -3315,7 +3126,7 @@
     "href": "files/lectures/4-1-bayesian-glm.html#working-example-4",
     "title": "Regression in the Bayesian Framework",
     "section": "Working Example",
-    "text": "Working Example\n\nWe begin our analysis with the familiar: a simple Normal regression model of temp3pm with one quantitative predictor, the morning temperature temp9am, both measured in degrees Celsius.\n\n\n\nggplot(weather_WU, aes(x = temp9am, y = temp3pm)) +\n  geom_point(size = 0.2) + \n  theme_bw()"
+    "text": "Working Example\n\nExamining temperature,"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#working-example-5",
@@ -3329,49 +3140,49 @@
     "href": "files/lectures/4-1-bayesian-glm.html#working-example-6",
     "title": "Regression in the Bayesian Framework",
     "section": "Working Example",
-    "text": "Working Example\n\nSimulating this model,\n\n\nweather_model_1 &lt;- stan_glm(\n  temp3pm ~ temp9am, \n  data = weather_WU, family = gaussian,\n  prior_intercept = normal(25, 5),\n  prior = normal(0, 2.5, autoscale = TRUE), \n  prior_aux = exponential(1, autoscale = TRUE),\n  chains = 4, iter = 5000*2, seed = 84735)\n\n\nSAMPLING FOR MODEL 'continuous' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 1.4e-05 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.14 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.062 seconds (Warm-up)\nChain 1:                0.108 seconds (Sampling)\nChain 1:                0.17 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'continuous' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 7e-06 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.059 seconds (Warm-up)\nChain 2:                0.121 seconds (Sampling)\nChain 2:                0.18 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'continuous' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 7e-06 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.064 seconds (Warm-up)\nChain 3:                0.124 seconds (Sampling)\nChain 3:                0.188 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'continuous' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 5e-06 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.062 seconds (Warm-up)\nChain 4:                0.12 seconds (Sampling)\nChain 4:                0.182 seconds (Total)\nChain 4:"
+    "text": "Working Example\n\nSimulating this model,\n\n\nweather_model_1 &lt;- stan_glm(temp3pm ~ temp9am, \n                            data = weather_WU, \n                            family = gaussian,\n                            prior_intercept = normal(25, 5, autoscale = TRUE),\n                            prior = normal(0, 2.5, autoscale = TRUE),\n                            prior_aux = exponential(1, autoscale = TRUE),\n                            chains = 4, \n                            iter = 5000*2, \n                            seed = 84735)"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#working-example-7",
     "href": "files/lectures/4-1-bayesian-glm.html#working-example-7",
     "title": "Regression in the Bayesian Framework",
     "section": "Working Example",
-    "text": "Working Example\n\nNote that we asked stan_glm() to autoscale our priors. What did it change them to?\n\n\nprior_summary(weather_model_1)\n\nPriors for model 'weather_model_1' \n------\nIntercept (after predictors centered)\n ~ normal(location = 25, scale = 5)\n\nCoefficients\n  Specified prior:\n    ~ normal(location = 0, scale = 2.5)\n  Adjusted prior:\n    ~ normal(location = 0, scale = 3.1)\n\nAuxiliary (sigma)\n  Specified prior:\n    ~ exponential(rate = 1)\n  Adjusted prior:\n    ~ exponential(rate = 0.13)\n------\nSee help('prior_summary.stanreg') for more details"
+    "text": "Working Example\n\nNote that we asked stan_glm() to autoscale our priors. What did it change them to?\n\n\nprior_summary(weather_model_1)\n\nPriors for model 'weather_model_1' \n------\nIntercept (after predictors centered)\n  Specified prior:\n    ~ normal(location = 25, scale = 5)\n  Adjusted prior:\n    ~ normal(location = 25, scale = 38)\n\nCoefficients\n  Specified prior:\n    ~ normal(location = 0, scale = 2.5)\n  Adjusted prior:\n    ~ normal(location = 0, scale = 3.1)\n\nAuxiliary (sigma)\n  Specified prior:\n    ~ exponential(rate = 1)\n  Adjusted prior:\n    ~ exponential(rate = 0.13)\n------\nSee help('prior_summary.stanreg') for more details"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#working-example-8",
     "href": "files/lectures/4-1-bayesian-glm.html#working-example-8",
     "title": "Regression in the Bayesian Framework",
     "section": "Working Example",
-    "text": "Working Example\n\n\nmcmc_trace(weather_model_1, size = 0.1)"
+    "text": "Working Example"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#working-example-9",
     "href": "files/lectures/4-1-bayesian-glm.html#working-example-9",
     "title": "Regression in the Bayesian Framework",
     "section": "Working Example",
-    "text": "Working Example\n\n\nmcmc_dens_overlay(weather_model_1)"
+    "text": "Working Example"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#working-example-10",
     "href": "files/lectures/4-1-bayesian-glm.html#working-example-10",
     "title": "Regression in the Bayesian Framework",
     "section": "Working Example",
-    "text": "Working Example\n\nposterior_interval(weather_model_1, prob = 0.80)\n\n                  10%      90%\n(Intercept) 2.9498083 5.448752\ntemp9am     0.9802648 1.102423\nsigma       3.8739305 4.409474\n\n\n\n80% credible interval for \\beta_1: (0.98, 1.10)\n80% credible interval for \\sigma: (3.87, 4.41)"
+    "text": "Working Example\n\nposterior_interval(weather_model_1, prob = 0.95)\n\n                 2.5%    97.5%\n(Intercept) 2.2619956 6.149827\ntemp9am     0.9455295 1.137758\nsigma       3.7552460 4.568298\n\n\n\n95% credible interval for \\beta_1: (0.95, 1.14)\n95% credible interval for \\sigma: (3.76, 4.57)"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#working-example-11",
     "href": "files/lectures/4-1-bayesian-glm.html#working-example-11",
     "title": "Regression in the Bayesian Framework",
     "section": "Working Example",
-    "text": "Working Example\n\n\npp_check(weather_model_1)"
+    "text": "Working Example"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#categorical-predictors",
     "href": "files/lectures/4-1-bayesian-glm.html#categorical-predictors",
     "title": "Regression in the Bayesian Framework",
     "section": "Categorical Predictors",
-    "text": "Categorical Predictors\n\nWhat if we look at the data by location?\n\n\n\nggplot(weather_WU, aes(x = temp3pm, fill = location)) + \n  geom_density(alpha = 0.5) + theme_bw()\n\n\n\n\n\n\n\n\n\n\nWe should probably look at location as a predictor…"
+    "text": "Categorical Predictors\n\nWhat if we look at the data by location?\n\n\nggplot(weather_WU, aes(x = temp3pm, fill = location)) + \n  geom_density(alpha = 0.5) + \n  theme_minimal()\n\n\n\nWe should probably look at location as a predictor…"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#categorical-predictors-1",
@@ -3399,28 +3210,28 @@
     "href": "files/lectures/4-1-bayesian-glm.html#categorical-predictors-4",
     "title": "Regression in the Bayesian Framework",
     "section": "Categorical Predictors",
-    "text": "Categorical Predictors\n\nLet’s simulate our posterior using weakly informative priors,\n\n\nweather_model_2 &lt;- stan_glm(\n  temp3pm ~ location,\n  data = weather_WU, family = gaussian,\n  prior_intercept = normal(25, 5),\n  prior = normal(0, 2.5, autoscale = TRUE), \n  prior_aux = exponential(1, autoscale = TRUE),\n  chains = 4, iter = 5000*2, seed = 84735)"
+    "text": "Categorical Predictors\n\nLet’s simulate our posterior using weakly informative priors,\n\n\nweather_model_2 &lt;- stan_glm(temp3pm ~ location,\n                            data = weather_WU,\n                            family = gaussian,\n                            prior_intercept = normal(25, 5, autoscale = TRUE),\n                            prior = normal(0, 2.5, autoscale = TRUE), \n                            prior_aux = exponential(1, autoscale = TRUE),\n                            chains = 4, \n                            iter = 5000*2, \n                            seed = 84735)"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#categorical-predictors-5",
     "href": "files/lectures/4-1-bayesian-glm.html#categorical-predictors-5",
     "title": "Regression in the Bayesian Framework",
     "section": "Categorical Predictors",
-    "text": "Categorical Predictors\n\n\nmcmc_trace(weather_model_2, size = 0.1)"
+    "text": "Categorical Predictors\n\nmcmc_trace(weather_model_2, size = 0.1) + theme_minimal()"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#categorical-predictors-6",
     "href": "files/lectures/4-1-bayesian-glm.html#categorical-predictors-6",
     "title": "Regression in the Bayesian Framework",
     "section": "Categorical Predictors",
-    "text": "Categorical Predictors\n\n\nmcmc_dens_overlay(weather_model_2)"
+    "text": "Categorical Predictors\n\nmcmc_dens_overlay(weather_model_2) + theme_minimal()"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#categorical-predictors-7",
     "href": "files/lectures/4-1-bayesian-glm.html#categorical-predictors-7",
     "title": "Regression in the Bayesian Framework",
     "section": "Categorical Predictors",
-    "text": "Categorical Predictors\n\nLooking at the posterior summary,\n\n\ntidy(weather_model_2, effects = c(\"fixed\", \"aux\"),\n     conf.int = TRUE, conf.level = 0.80) %&gt;% \n  select(-std.error)\n\n\n\n\n\nterm\nestimate\nconf.low\nconf.high\n\n\n\n\n(Intercept)\n29.714695\n29.01943\n30.424971\n\n\nlocationWollongong\n-10.322937\n-11.31883\n-9.301761\n\n\nsigma\n5.484104\n5.14486\n5.857824\n\n\nmean_PPD\n24.564554\n23.85914\n25.261738"
+    "text": "Categorical Predictors\n\ntidy(weather_model_2, effects = c(\"fixed\"),\n     conf.int = TRUE, conf.level = 0.95) \n\n\n\n\n\nterm\nestimate\nstd.error\nconf.low\nconf.high\n\n\n\n\n(Intercept)\n29.71672\n0.5613064\n28.64001\n30.804213\n\n\nlocationWollongong\n-10.31494\n0.7882179\n-11.86444\n-8.785879\n\n\n\n\n\n\n\nThe estimated model is as follows,\n\n\\hat{y} = 29.72 - 10.31 x\n\nThere is a 10 degree difference between the two cities."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#categorical-predictors-8",
@@ -3434,63 +3245,28 @@
     "href": "files/lectures/4-1-bayesian-glm.html#multiple-predictors",
     "title": "Regression in the Bayesian Framework",
     "section": "Multiple Predictors",
-    "text": "Multiple Predictors\n\nWhat if we want to include multiple predictors?\n\nNotice in the code, our model now has multiple predictors (temp9am and location).\nHere, we are simulating the prior - this will allow us to graphically examine what we are claiming with the priors.\n\n\n\nweather_model_3_prior &lt;- stan_glm(\n  temp3pm ~ temp9am + location,\n  data = weather_WU, family = gaussian, \n  prior_intercept = normal(25, 5),\n  prior = normal(0, 2.5, autoscale = TRUE), \n  prior_aux = exponential(1, autoscale = TRUE),\n  chains = 4, iter = 5000*2, seed = 84735,\n  prior_PD = TRUE)"
+    "text": "Multiple Predictors\n\nWhat if we want to include multiple predictors?\n\nNotice in the code, our model now has multiple predictors (temp9am and location).\n\n\n\nweather_model_3 &lt;- stan_glm(temp3pm ~ temp9am + location,\n                            data = weather_WU, family = gaussian,\n                            prior_intercept = normal(25, 5, autoscale = TRUE),\n                            prior = normal(0, 2.5, autoscale = TRUE),\n                            prior_aux = exponential(1, autoscale = TRUE),\n                            chains = 4, \n                            iter = 5000*2, \n                            seed = 84735)"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-1",
     "href": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-1",
     "title": "Regression in the Bayesian Framework",
     "section": "Multiple Predictors",
-    "text": "Multiple Predictors\n\n\n\n\n\n\n\n\n\n\n\n\nFrom the simulated priors,\n\nWe can look at different sets of 3 p.m. temperature data (left graph)."
+    "text": "Multiple Predictors\n\nThe simulation results in 20,000 posterior plausible relationships between temperature and location."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-2",
     "href": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-2",
     "title": "Regression in the Bayesian Framework",
     "section": "Multiple Predictors",
-    "text": "Multiple Predictors\n\n\n\n\n\n\n\n\n\n\n\n\nFrom the simulated priors,\n\nWe can also look at our prior assumptions about the relationship between 3 p.m. and 9 a.m. temperature at each location (right graph).\n\nOur prior is vague; we’re not sure of the relationship!"
+    "text": "Multiple Predictors\n\ntidy(weather_model_3, effects = c(\"fixed\"),\n     conf.int = TRUE, conf.level = 0.95) \n\n\n\n\n\nterm\nestimate\nstd.error\nconf.low\nconf.high\n\n\n\n\n(Intercept)\n11.3302605\n0.6742922\n9.9899497\n12.6477844\n\n\ntemp9am\n0.8575587\n0.0292976\n0.7997129\n0.9154097\n\n\nlocationWollongong\n-7.0612664\n0.3513952\n-7.7450413\n-6.3618179\n\n\n\n\n\n\n\\hat{y} = 11.33 + 0.86 x_1 - 7.06 x_2\n\nAs the 9 am temperature increases by 1 degree, the expected 3 pm temperature increases by 0.86 degrees (95% CI 0.80, 0.92).\nThe 3 pm temperature is about 7 degrees lower in Wollongong than in Uluru (95% CI -7.75, -6.36)."
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-3",
     "href": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-3",
     "title": "Regression in the Bayesian Framework",
     "section": "Multiple Predictors",
-    "text": "Multiple Predictors\n\nInstead of starting the stan_glm() syntax from scratch, we can update() the weather_model_3_prior by setting prior_PD = FALSE:\n\n\nweather_model_3 &lt;- update(weather_model_3_prior, prior_PD = FALSE)\n\n\nSAMPLING FOR MODEL 'continuous' NOW (CHAIN 1).\nChain 1: \nChain 1: Gradient evaluation took 1.5e-05 seconds\nChain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.\nChain 1: Adjust your expectations accordingly!\nChain 1: \nChain 1: \nChain 1: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 1: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 1: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 1: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 1: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 1: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 1: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 1: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 1: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 1: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 1: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 1: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 1: \nChain 1:  Elapsed Time: 0.074 seconds (Warm-up)\nChain 1:                0.129 seconds (Sampling)\nChain 1:                0.203 seconds (Total)\nChain 1: \n\nSAMPLING FOR MODEL 'continuous' NOW (CHAIN 2).\nChain 2: \nChain 2: Gradient evaluation took 6e-06 seconds\nChain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.\nChain 2: Adjust your expectations accordingly!\nChain 2: \nChain 2: \nChain 2: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 2: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 2: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 2: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 2: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 2: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 2: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 2: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 2: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 2: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 2: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 2: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 2: \nChain 2:  Elapsed Time: 0.07 seconds (Warm-up)\nChain 2:                0.135 seconds (Sampling)\nChain 2:                0.205 seconds (Total)\nChain 2: \n\nSAMPLING FOR MODEL 'continuous' NOW (CHAIN 3).\nChain 3: \nChain 3: Gradient evaluation took 5e-06 seconds\nChain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.\nChain 3: Adjust your expectations accordingly!\nChain 3: \nChain 3: \nChain 3: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 3: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 3: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 3: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 3: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 3: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 3: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 3: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 3: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 3: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 3: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 3: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 3: \nChain 3:  Elapsed Time: 0.077 seconds (Warm-up)\nChain 3:                0.128 seconds (Sampling)\nChain 3:                0.205 seconds (Total)\nChain 3: \n\nSAMPLING FOR MODEL 'continuous' NOW (CHAIN 4).\nChain 4: \nChain 4: Gradient evaluation took 7e-06 seconds\nChain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.\nChain 4: Adjust your expectations accordingly!\nChain 4: \nChain 4: \nChain 4: Iteration:    1 / 10000 [  0%]  (Warmup)\nChain 4: Iteration: 1000 / 10000 [ 10%]  (Warmup)\nChain 4: Iteration: 2000 / 10000 [ 20%]  (Warmup)\nChain 4: Iteration: 3000 / 10000 [ 30%]  (Warmup)\nChain 4: Iteration: 4000 / 10000 [ 40%]  (Warmup)\nChain 4: Iteration: 5000 / 10000 [ 50%]  (Warmup)\nChain 4: Iteration: 5001 / 10000 [ 50%]  (Sampling)\nChain 4: Iteration: 6000 / 10000 [ 60%]  (Sampling)\nChain 4: Iteration: 7000 / 10000 [ 70%]  (Sampling)\nChain 4: Iteration: 8000 / 10000 [ 80%]  (Sampling)\nChain 4: Iteration: 9000 / 10000 [ 90%]  (Sampling)\nChain 4: Iteration: 10000 / 10000 [100%]  (Sampling)\nChain 4: \nChain 4:  Elapsed Time: 0.075 seconds (Warm-up)\nChain 4:                0.131 seconds (Sampling)\nChain 4:                0.206 seconds (Total)\nChain 4:"
-  },
-  {
-    "objectID": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-4",
-    "href": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-4",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Multiple Predictors",
-    "text": "Multiple Predictors\n\nThe simulation results in 20,000 posterior plausible relationships between temperature and location.\nYou try the following code:\n\n\n\nweather_WU %&gt;%\n  add_fitted_draws(weather_model_3, n = 100) %&gt;%\n  ggplot(aes(x = temp9am, y = temp3pm, color = location)) +\n    geom_line(aes(y = .value, group = paste(location, .draw)), alpha = .1) +\n    geom_point(data = weather_WU, size = 0.1) +\n  theme_bw()"
-  },
-  {
-    "objectID": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-5",
-    "href": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-5",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Multiple Predictors",
-    "text": "Multiple Predictors\n\n\n\n\n\n\n\n\n\n\n\n\n3 p.m. temperature is positively associated with 9 a.m. temperature and tends to be higher in Uluru than in Wollongong.\nFurther, relative to the prior simulated relationships in Figure 11.9, these posterior relationships are very consistent"
-  },
-  {
-    "objectID": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-6",
-    "href": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-6",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Multiple Predictors",
-    "text": "Multiple Predictors\n\nLooking at the posterior summary statistics,\n\n\ntidy(weather_model_3, effects = c(\"fixed\", \"aux\"),\n     conf.int = TRUE, conf.level = 0.80) %&gt;% \n  select(-std.error)\n\n\n\n\n\nterm\nestimate\nconf.low\nconf.high\n\n\n\n\n(Intercept)\n11.3391917\n10.4809210\n12.2016762\n\n\ntemp9am\n0.8573355\n0.8196281\n0.8945346\n\n\nlocationWollongong\n-7.0599280\n-7.5067716\n-6.5999057\n\n\nsigma\n2.3793095\n2.2338336\n2.5420914\n\n\nmean_PPD\n24.5593686\n24.2584132\n24.8609334"
-  },
-  {
-    "objectID": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-7",
-    "href": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-7",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Multiple Predictors",
-    "text": "Multiple Predictors\n\nYou try! Run the following code to look at our posterior predictive models.\n\n\n\n# Simulate a set of predictions\nset.seed(84735)\ntemp3pm_prediction &lt;- posterior_predict(\n  weather_model_3,\n  newdata = data.frame(temp9am = c(10, 10), \n                       location = c(\"Uluru\", \"Wollongong\")))\n\n# Plot the posterior predictive models\nmcmc_areas(temp3pm_prediction) +\n  ggplot2::scale_y_discrete(labels = c(\"Uluru\", \"Wollongong\")) + \n  xlab(\"temp3pm\")"
-  },
-  {
-    "objectID": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-8",
-    "href": "files/lectures/4-1-bayesian-glm.html#multiple-predictors-8",
-    "title": "Regression in the Bayesian Framework",
-    "section": "Multiple Predictors",
-    "text": "Multiple Predictors\n\n\n\n\n\n\n\n\n\n\n\n\nRoughly speaking, we can anticipate 3 p.m. temperatures between 15 and 25 degrees in Uluru, and cooler temperatures between 8 and 18 in Wollongong."
+    "text": "Multiple Predictors\n\nLooking at our posterior predictive models,"
   },
   {
     "objectID": "files/lectures/4-1-bayesian-glm.html#wrap-up",
@@ -3500,11 +3276,228 @@
     "text": "Wrap Up\n\nToday, we have learned about regression (under the normal distribution) in the Bayesian framework.\nWednesday: Evaluating the Model\nProject stuff:\n\nEES students should have their data this week\n\nDr. Seals and Dr. Schmutz will review before passing to Bayesian students.\n\n\nNext week:\n\nMonday: Binary logistic and Poisson regressions.\nWednesday: How to “read” (non-statistical) research papers."
   },
   {
-    "objectID": "files/lectures/4-1-bayesian-glm.html#practice-homework",
-    "href": "files/lectures/4-1-bayesian-glm.html#practice-homework",
+    "objectID": "files/lectures/4-1-bayesian-glm.html#section",
+    "href": "files/lectures/4-1-bayesian-glm.html#section",
     "title": "Regression in the Bayesian Framework",
-    "section": "Practice / Homework",
-    "text": "Practice / Homework\n\nFrom the Bayes Rules! textbook:\n\n9.9, 9.10, 9.11, 9.12\n9.16, 9.17, 9.18"
+    "section": "",
+    "text": "Take a break!\n  \n  Back in 10 minutes."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#evaluating-the-model",
+    "href": "files/lectures/4-1-bayesian-glm.html#evaluating-the-model",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Evaluating the Model",
+    "text": "Evaluating the Model\n\nWe will now learn how to evaluate how good our regression model is.\nHow fair is the model?\n\nHow was the data collected?\nBy whom and for what purpose?\nHow might the results of the data collection or analysis impact individuals and society?\nWhat biases might be baked into the analysis?"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#evaluating-the-model-1",
+    "href": "files/lectures/4-1-bayesian-glm.html#evaluating-the-model-1",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Evaluating the Model",
+    "text": "Evaluating the Model\n\nWe want to now learn how to evaluate how good our regression model is.\nHow wrong is the model?\n\nAre our assumptions reasonable?\nIs the predictor set appropriate and complete?\n\nHow accurate are the posterior predictive models?\n\nHow far are the posterior predictive models from reality?"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#working-example-12",
+    "href": "files/lectures/4-1-bayesian-glm.html#working-example-12",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Working Example",
+    "text": "Working Example\n\nConsider our example before the break, the Capital Bikeshare data.\nWe simulated under the following model:\n\n\n\\begin{align*}\nY_i | \\beta_0, \\beta_1, \\sigma &\\overset{\\text{ind}}{\\sim} N(\\beta_0 + \\beta_1X_i,\\sigma^2) \\\\\n\\beta_{0\\text{c}} &\\sim N(5000, 1000^2) \\\\\n\\beta_{1\\text{c}} &\\sim N(100, 40^2) \\\\\n\\sigma &\\sim \\text{Exp}(0.0008)\n\\end{align*}"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#is-the-model-fair",
+    "href": "files/lectures/4-1-bayesian-glm.html#is-the-model-fair",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Is the Model Fair?",
+    "text": "Is the Model Fair?\n\nHow was the data collected?\n\nIt is reasonable to assume that the bikeshare was collected electronically.\nWe do not have individual-level information, only aggregated ride data.\n\nBy whom and for what purpose was the data collected?\n\nIt is reasonable for a bike sharing company to track data such as number of rides in a day.\nThe company is likely doing this to make evidence-based business decisions."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#is-the-model-fair-1",
+    "href": "files/lectures/4-1-bayesian-glm.html#is-the-model-fair-1",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Is the Model Fair?",
+    "text": "Is the Model Fair?\n\nHow might the results of the analysis, or the data collection itself, impact individuals and society?\n\nBecause there is no individual-level information, this will not negatively impact customers.\nImproving the service might help reduce car traffic in D.C. - this is good!\n\nNote!\n\nJust because we cannot imagine societal impacts does not mean that none exist.\nIt’s critical to recognize our perspective based on our experiences.\nHow can we truly determine the impacts?\n\nWe would need to engage with the company and its community."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#is-the-model-fair-2",
+    "href": "files/lectures/4-1-bayesian-glm.html#is-the-model-fair-2",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Is the Model Fair?",
+    "text": "Is the Model Fair?\n\nWhat biases might be baked into this analysis?\n\nThe data is only for one company.\n\nOther bikeshare companies may have different usage patterns.\n\nThe data is only for one city.\n\nOther cities may have different usage patterns for bikeshare.\nOther cities will have different weather patterns.\n\nHow generalizable is our model?"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#is-the-model-fair-3",
+    "href": "files/lectures/4-1-bayesian-glm.html#is-the-model-fair-3",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Is the Model Fair?",
+    "text": "Is the Model Fair?\n\nHow do I approach thinking about bias in analysis?\n\nWho is and is not represented in the data?\nWhat assumptions were made about the data?\nWhat assumptions are made about the truth/the population?\nIs the analysis method appropriate for the question posed?\n\ne.g., did they use logistic regression for a binary outcome?\n\nWere there any “reaching” assumptions made in order to complete the analysis?\n\ne.g., assuming data is MCAR when it is likely MAR or MNAR.\ne.g., assuming independent observations when there is likely correlation.\n\nAre the results stated appropriately? (vs. overstated)\n\nAre broad, sweeping generalizations made from a narrow dataset?"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-1",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-1",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nRecall the data model,\n\n\nY_i | \\beta_0, \\beta_1, \\sigma \\overset{\\text{ind}}{\\sim} N(\\beta_0 + \\beta_1X_i,\\sigma^2)\n\n\nWhat are the assumptions on our model?\n\nThe observed data, Y_i, is independent of other observed data, Y_j for i \\neq j.\nY can be written as a linear function of X, \\mu=\\beta_0 + \\beta_1 X.\nAt any X, Y varys normally around \\mu with consistent variability, \\sigma."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-2",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-2",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nThe observed data, Y_i, is independent of other observed data, Y_j for i \\neq j.\n\nWe can technically test for this, but it is not often employed by statisticians.\nInstead, we rely on knowledge of the data collection process.\nIf the data collection process suggests dependence, we should consider a different model.\n\ne.g., a modeling approach that will account for the correlation between observations."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-3",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-3",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nThe observed data, Y_i, is independent of other observed data, Y_j for i \\neq j.\nIn this example, the data are daily counts of bike rides.\n\nThere is inherently some correlation – the ridership today is likely correlated to the ridership yesterday.\nHowever, this can be explained by the time of year and features associated with the time of year, like temperature.\nWe should ask ourselves if it’s reasonable to assume that the temperature cancels out the time correlation.\n\n“Reasonable” does not mean “perfect,” but instead, “good enough to proceed.”"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-4",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-4",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nReturning to our bike data, we can look at the scatterplot of temperature and number of rides."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-5",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-5",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nWe can overlay a line of best fit using geom_smooth(method = \"lm\")."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-6",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-6",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nOr we can overlay a locally estimated scatterplot smoothing (LOESS) line using geom_smooth()."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-7",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-7",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nHow different are the two lines?"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-8",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-8",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nWhen does “visualization” suggest that a linear model is not appropriate?\n\nDoes the LOESS line deviates substantially from the linear line?\nHere, we see that the LOESS line is fairly close to the linear line.\nThus, it is reasonable to assume a linear relationship between X and Y.\n\nAre there “issues” with this approach?\n\nWhen we have more than one predictor, yes.\nWe are only visualizing one predictor at a time.\nWe will need to use other tools to assess linearity in multiple regression."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-9",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-9",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nTo examine linearity in multiple regression, we will perform a posterior predictive check.\nIf the combined model assumptions are reasonable, then our posterior model should be able to simulate ridership data that’s similar to the original 500 rides observations.\n\n\n\n\n\nFor each of the 20,000 posterior plausible parameter sets, \\{\\beta_0, \\beta_1, \\sigma\\}, we can predict ridership data from the observed temperature data.\n\nThis gives us 20,000 unique datasets of predicted ridership, each with n=500."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-10",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-10",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nRecall our analysis,\n\n\nbike_model &lt;- stan_glm(rides ~ temp_feel, \n                       data = bikes, \n                       family = gaussian,\n                       prior_intercept = normal(5000, 1000, autoscale = TRUE), \n                       prior = normal(100, 40, autoscale = TRUE), \n                       prior_aux = exponential(0.0008, autoscale = TRUE), # sigma\n                       chains = 4, \n                       iter = 5000*2, \n                       seed = 84735)"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-11",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-11",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nRecall our analysis,\n\n\ntidy(bike_model, conf.int = TRUE) \n\n\n\n\n\nterm\nestimate\nstd.error\nconf.low\nconf.high\n\n\n\n\n(Intercept)\n-2177.92731\n357.204567\n-2771.30965\n-1593.26616\n\n\ntemp_feel\n81.88632\n5.071117\n73.48454\n90.30665\n\n\n\n\n\n\n\nThis gives the model,\n\n\\hat{y} = -2177.9 + 81.9x \\ \\ \\ \\to \\ \\ \\ \\hat{\\text{rides}} = -2177.9 + 81.9\\text{temp}"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-12",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-12",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nHow do we perform the posterior predictive check?\nThe pp_check() function plots a number of the corresponding simulated datasets.\n\n\npp_check(bike_model, \n         nreps=50, \n         seed = 84735) + \n  xlab(\"Number of Rides\") + \n  theme_minimal()"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-13",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-wrong-is-the-model-13",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Wrong is the Model?",
+    "text": "How Wrong is the Model?\n\nThe pp_check() function plots a number of the corresponding simulated datasets."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Accurate are Posterior Predictive Models?",
+    "text": "How Accurate are Posterior Predictive Models?\n\nAlthough we are interested in predicting the future, we can begin by evaluating how well it predicts the data that was used to build the model.\nWe can use the posterior_predict() function to generate posterior predictive summaries to either our data or new data.\n\n\npredictions &lt;- posterior_predict(bike_model, newdata=bikes, seed = 84735)\ndim(predictions)\n\n[1] 20000   500\n\n\n\nWe have 20,000 posterior predictive datasets, each with 500 predicted ride counts."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-1",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-1",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Accurate are Posterior Predictive Models?",
+    "text": "How Accurate are Posterior Predictive Models?\n\nWe can also use the ppc_intervals() function to visualize the posterior predictive intervals for each observation.\n\n\nppc_intervals(bikes$rides, \n              yrep = predictions, \n              x = bikes$temp_feel, \n              prob = 0.5, \n              prob_outer = 0.95) + \n  theme_minimal()"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-2",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-2",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Accurate are Posterior Predictive Models?",
+    "text": "How Accurate are Posterior Predictive Models?\n\nWe can also use the ppc_intervals() function to visualize the posterior predictive intervals for each observation."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-3",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-3",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Accurate are Posterior Predictive Models?",
+    "text": "How Accurate are Posterior Predictive Models?\n\nLet Y_1, Y_2, ..., Y_n denote n observed outcomes. Each Y_i has a corresponding posterior predictive model with mean Y_i' and standard deviation \\text{sd}_i\nMedian Absolute Error (MAE): the typical difference between the observed value and posterior predictive mean.\n\n\\text{MAE} = \\text{median} | Y_i - Y_i'|\n\nScaled Median Absolute Error (MAE scaled): the typical difference between the observed value and posterior predictive mean.\n\n\\text{MAE scaled} = \\text{median} \\frac{| Y_i - Y_i'|}{\\text{sd}_i}"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-4",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-4",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Accurate are Posterior Predictive Models?",
+    "text": "How Accurate are Posterior Predictive Models?\n\nLet Y_1, Y_2, ..., Y_n denote n observed outcomes. Each Y_i has a corresponding posterior predictive model with mean Y_i' and standard deviation \\text{sd}_i\nWithin 50: Proportion of observed values that fall within their 50% posterior prediction interval.\nWithin 95: Proportion of observed values that fall within their 95% posterior prediction interval.\nWe get these four values out of the prediction_summary() function,\n\n\nset.seed(84735)\nprediction_summary(bike_model, data = bikes)\n\n\n\n\n\nmae\nmae_scaled\nwithin_50\nwithin_95\n\n\n\n\n993.3983\n0.7720912\n0.438\n0.968"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-5",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-5",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Accurate are Posterior Predictive Models?",
+    "text": "How Accurate are Posterior Predictive Models?\n\nLet’s now interpret these values.\n\n\nset.seed(84735)\nprediction_summary(bike_model, data = bikes)\n\n\n\n\n\nmae\nmae_scaled\nwithin_50\nwithin_95\n\n\n\n\n993.3983\n0.7720912\n0.438\n0.968\n\n\n\n\n\n\n\nThe MAE of 989.7 means that the typical difference between the observed ride count and the posterior predictive mean is about 990 rides.\n\nThe scaled MAE of 0.77 means that the typical difference between the observed ride count and the posterior predictive mean is about 0.77 standard deviations.\n\nOnly 43.8% of test observations fall within their respective 50% prediction interval, while 95.8% fall within their respective 95% prediction interval."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-6",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-6",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Accurate are Posterior Predictive Models?",
+    "text": "How Accurate are Posterior Predictive Models?\n\nLooking at these side by side,\n\n\n\n\n\n\n\nmae\nmae_scaled\nwithin_50\nwithin_95\n\n\n\n\n993.3983\n0.7720912\n0.438\n0.968"
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-7",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-7",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Accurate are Posterior Predictive Models?",
+    "text": "How Accurate are Posterior Predictive Models?\n\nWhat is our final conclusion? Does our Bayesian model produce accurate predictions?\nUnfortunately, the answer is subjective and dependent on context.\n\nIs an MAE of 990 rides acceptable for the business?\nIs having only 43.8% of observations within the 50% prediction interval acceptable?\n\nPer usual, we are just the statisticians. The business must decide what is acceptable."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-8",
+    "href": "files/lectures/4-1-bayesian-glm.html#how-accurate-are-posterior-predictive-models-8",
+    "title": "Regression in the Bayesian Framework",
+    "section": "How Accurate are Posterior Predictive Models?",
+    "text": "How Accurate are Posterior Predictive Models?\n\nHow can we improve the model’s posterior predictive accuracy?\n\nAdd additional predictors or terms (e.g., interactions) to the model.\nConsider different distributions for the outcome variable.\n\ne.g., Poisson, negative binomial, binomial, etc.\n\n\nCollect more data.\n\nThis is always the cheeky answer."
+  },
+  {
+    "objectID": "files/lectures/4-1-bayesian-glm.html#wrap-up-1",
+    "href": "files/lectures/4-1-bayesian-glm.html#wrap-up-1",
+    "title": "Regression in the Bayesian Framework",
+    "section": "Wrap Up",
+    "text": "Wrap Up\n\nToday we covered Bayesian general linear regression and basic evaluation of regression models.\n\nIs the model fair?\nHow wrong is the model?,\nHow accurate are the posterior predictive models?\n\nWe as statisticians provide the numbers, but our collaborator decides what is acceptable in terms of “good enough” for the model’s predictive accuracy."
   },
   {
     "objectID": "syllabus.html",
